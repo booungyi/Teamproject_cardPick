@@ -98,6 +98,7 @@ export default function Quiz() {
                     이전 질문으로 돌아가기
                 </button>
             )}
+            <p className={styles.progressStatus}>{`page ${step + 1} / ${questions.length}`}</p>
         </div>
     );
 }
