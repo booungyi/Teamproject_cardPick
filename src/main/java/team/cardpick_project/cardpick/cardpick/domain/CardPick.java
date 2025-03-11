@@ -1,10 +1,9 @@
-package team.cardpick_project.cardpick.cardpick;
+package team.cardpick_project.cardpick.cardpick.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
