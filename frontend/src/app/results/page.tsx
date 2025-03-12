@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import {useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
 import Image from "next/image";
 import styles from "@/styles/Results.module.css";
 
@@ -62,214 +62,6 @@ const typeBenefits: Record<UserType, string[]> = {
     ]
 };
 
-// 백엔드가 완성되기 전에 사용할 임시 데이터
-const mockCardData: Record<UserType, CategoryInfo> = {
-    J: {
-        title: "계획적인 소비를 위한 J유형 추천 카드",
-        benefits: typeBenefits.J,
-        cards: [
-            {
-                id: "j1",
-                name: "삼성카드 & MILEAGE PLATINUM",
-                description: "(스카이패스)",
-                imageUrl: "/images/cards/samsung-mileage.jpg",
-                hasEvent: true
-            },
-            {
-                id: "j2",
-                name: "카드의정석 EVERY MILE SKYPASS",
-                description: "",
-                imageUrl: "/images/cards/every-mile.jpg",
-                hasEvent: true
-            },
-            {
-                id: "j3",
-                name: "신한카드 Air 1.5",
-                description: "",
-                imageUrl: "/images/cards/shinhan-air.jpg",
-                hasEvent: true
-            },
-            {
-                id: "j4",
-                name: "I-Mileage",
-                description: "(대한항공)",
-                imageUrl: "/images/cards/i-mileage.jpg",
-                hasEvent: false
-            }
-        ]
-    },
-    P: {
-        title: "유연한 소비를 위한 P유형 추천 카드",
-        benefits: typeBenefits.P,
-        cards: [
-            {
-                id: "p1",
-                name: "신한카드 Air 1.5",
-                description: "",
-                imageUrl: "/images/cards/shinhan-air.jpg",
-                hasEvent: true
-            },
-            {
-                id: "p2",
-                name: "I-Mileage",
-                description: "(대한항공)",
-                imageUrl: "/images/cards/i-mileage.jpg",
-                hasEvent: false
-            },
-            {
-                id: "p3",
-                name: "삼성카드 & MILEAGE PLATINUM",
-                description: "(스카이패스)",
-                imageUrl: "/images/cards/samsung-mileage.jpg",
-                hasEvent: true
-            },
-            {
-                id: "p4",
-                name: "하나 스카이패스",
-                description: "아멕스 플래티늄카드",
-                imageUrl: "/images/cards/hana-skypass.jpg",
-                hasEvent: false
-            }
-        ]
-    },
-    T: {
-        title: "혜택 분석에 강한 T유형 추천 카드",
-        benefits: typeBenefits.T,
-        cards: [
-            {
-                id: "t1",
-                name: "카드의정석 EVERY MILE SKYPASS",
-                description: "",
-                imageUrl: "/images/cards/every-mile.jpg",
-                hasEvent: true
-            },
-            {
-                id: "t2",
-                name: "신한카드 Air 1.5",
-                description: "",
-                imageUrl: "/images/cards/shinhan-air.jpg",
-                hasEvent: true
-            },
-            {
-                id: "t3",
-                name: "I-Mileage",
-                description: "(대한항공)",
-                imageUrl: "/images/cards/i-mileage.jpg",
-                hasEvent: false
-            },
-            {
-                id: "t4",
-                name: "하나 스카이패스",
-                description: "아멕스 플래티늄카드",
-                imageUrl: "/images/cards/hana-skypass.jpg",
-                hasEvent: false
-            }
-        ]
-    },
-    F: {
-        title: "감성적 가치를 중시하는 F유형 추천 카드",
-        benefits: typeBenefits.F,
-        cards: [
-            {
-                id: "f1",
-                name: "I-Mileage",
-                description: "(대한항공)",
-                imageUrl: "/images/cards/i-mileage.jpg",
-                hasEvent: false
-            },
-            {
-                id: "f2",
-                name: "하나 스카이패스",
-                description: "아멕스 플래티늄카드",
-                imageUrl: "/images/cards/hana-skypass.jpg",
-                hasEvent: false
-            },
-            {
-                id: "f3",
-                name: "삼성카드 & MILEAGE PLATINUM",
-                description: "(스카이패스)",
-                imageUrl: "/images/cards/samsung-mileage.jpg",
-                hasEvent: true
-            },
-            {
-                id: "f4",
-                name: "신한카드 Air 1.5",
-                description: "",
-                imageUrl: "/images/cards/shinhan-air.jpg",
-                hasEvent: true
-            }
-        ]
-    },
-    S: {
-        title: "안정적인 혜택의 S유형 추천 카드",
-        benefits: typeBenefits.S,
-        cards: [
-            {
-                id: "s1",
-                name: "하나 스카이패스",
-                description: "아멕스 플래티늄카드",
-                imageUrl: "/images/cards/hana-skypass.jpg",
-                hasEvent: false
-            },
-            {
-                id: "s2",
-                name: "삼성카드 & MILEAGE PLATINUM",
-                description: "(스카이패스)",
-                imageUrl: "/images/cards/samsung-mileage.jpg",
-                hasEvent: true
-            },
-            {
-                id: "s3",
-                name: "I-Mileage",
-                description: "(대한항공)",
-                imageUrl: "/images/cards/i-mileage.jpg",
-                hasEvent: false
-            },
-            {
-                id: "s4",
-                name: "카드의정석 EVERY MILE SKYPASS",
-                description: "",
-                imageUrl: "/images/cards/every-mile.jpg",
-                hasEvent: true
-            }
-        ]
-    },
-    N: {
-        title: "다양한 혜택을 활용하는 N유형 추천 카드",
-        benefits: typeBenefits.N,
-        cards: [
-            {
-                id: "n1",
-                name: "신한카드 Air 1.5",
-                description: "",
-                imageUrl: "/images/cards/shinhan-air.jpg",
-                hasEvent: true
-            },
-            {
-                id: "n2",
-                name: "카드의정석 EVERY MILE SKYPASS",
-                description: "",
-                imageUrl: "/images/cards/every-mile.jpg",
-                hasEvent: true
-            },
-            {
-                id: "n3",
-                name: "I-Mileage",
-                description: "(대한항공)",
-                imageUrl: "/images/cards/i-mileage.jpg",
-                hasEvent: false
-            },
-            {
-                id: "n4",
-                name: "하나 스카이패스",
-                description: "아멕스 플래티늄카드",
-                imageUrl: "/images/cards/hana-skypass.jpg",
-                hasEvent: false
-            }
-        ]
-    }
-};
-
 export default function Results() {
     const router = useRouter();
     const [results, setResults] = useState<string[]>([]);
@@ -299,32 +91,26 @@ export default function Results() {
         const userType = sortedTypes[0] as UserType;
         setType(userType);
 
-        // 백엔드 연결 대신 임시 데이터 사용
-        fetchMockCardsByUserType(userType);
+        // 백엔드 API 호출
+        fetchCardsByUserType(userType);
     };
 
-    const fetchMockCardsByUserType = (userType: UserType) => {
-        // 로딩 상태 설정
-        setLoading(true);
-
-        // 백엔드 API 호출을 시뮬레이션
-        setTimeout(() => {
-            // 해당 유형에 맞는 목업 데이터 설정
-            if (userType && Object.keys(mockCardData).includes(userType)) {
-                setCategoryInfo(mockCardData[userType]);
-            } else {
-                // 해당 유형이 없으면 퀴즈 페이지로 리다이렉트
-                router.push("/quiz");
-            }
-            setLoading(false);
-        }, 800); // 0.8초 지연으로 로딩 효과 추가
-    };
-
-    // 실제 백엔드 연결 시 사용할 함수 (나중에 활성화)
     const fetchCardsByUserType = async (userType: UserType) => {
         try {
             setLoading(true);
-            const response = await fetch(`/api/card-recommendations?type=${userType}`);
+            const response = await fetch(`/api/card_picks/mbti?mbti=${userType}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (!response.ok) {
+                throw Error(`네트워크 응답이 올바르지 않습니다. 상태 코드: ${response.status}`);
+            }
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new TypeError("JSON 형식의 응답이 아닙니다.");
+            }
             const data = await response.json();
             setCategoryInfo(data);
         } catch (error) {

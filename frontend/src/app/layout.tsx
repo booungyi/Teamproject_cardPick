@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "카드 픽커: [쉽고 빠르게 찾아드립니다.] ",
+  title: "Card Picker: [쉽고 빠르게 찾아드립니다.] ",
   description: "나에게 딱 맞는 카드를 쉽고 빠르게 찾아드립니다.",
 };
 
