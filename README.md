@@ -11,12 +11,13 @@
   ### 🧑‍💻인혁    
 ***
   > #### 활용 언어 ####
-  ![Python.svg](HTML5.svg)   
-  ![JAVA_Script.svg](JAVA_Script.svg)   
-  ![CSS3.svg](CSS3.svg)   
-  ![PYTHON.svg](PYTHON.svg)
+![PYTHON.svg](logoicon/PYTHON.svg)
+![JAVA_Script.svg](logoicon/JAVA_Script.svg)
+![CSS3.svg](logoicon/CSS3.svg)
+![HTML5.svg](logoicon/HTML5.svg)
   > #### 활용 프레임워크 ####
- ![spring-svgrepo-com (4).svg](spring-svgrepo-com%20%284%29.svg)
+![SPRING.svg](logoicon/SPRING.svg)   
+React
 ***
 ## 로직 설계   
 ### 홈 -> 카드 추천 or 카드 필터 페이지
@@ -50,7 +51,7 @@ ENTITY 설계
   - 주유
   - 음식
   - 항공
-  - 기타
+  - 기타 
 #### 카드 추천 Request
   - 카드 발급사 
   - 카드 카테고리
