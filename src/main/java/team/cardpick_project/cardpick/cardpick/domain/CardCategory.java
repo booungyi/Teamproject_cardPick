@@ -2,7 +2,7 @@ package team.cardpick_project.cardpick.cardpick.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+ 
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
