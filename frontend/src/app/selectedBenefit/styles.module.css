@@ -1,8 +1,31 @@
 .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    /*display: flex;*/
+    /*justify-content: space-between; !* 왼쪽 콘텐츠 영역과 오른쪽 사이드바 영역을 나눕니다 *!*/
+    /*padding: 20px;*/
+    /*min-width: 1024px; !* 최소 너비 설정 (창이 줄어들어도 사이드바가 유지됨) *!*/
+
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    align-items: flex-start;
+    position: relative;
+    padding: 40px 20px;
+    min-width: 1024px; /* 최소 너비 제한 */
+}
+
+.sidebar {
+    position: fixed;
+    top: 20px; /* 페이지 상단에서 20px 떨어지게 */
+    right: 20px; /* 페이지 오른쪽에서 20px 떨어지게 */
+    width: 250px; /* 사이드바 너비 */
+    background-color: white;
     padding: 20px;
+    border-radius: 8px;
+    z-index: 10;
+}
+
+.content {
+    margin-right: 0px; /* 사이드바와 겹치지 않도록 오른쪽 여백 추가 */
+    flex-grow: 1; /* 남은 공간을 채우도록 */
 }
 
 .title {
@@ -15,8 +38,9 @@
 
 .benefitsGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* 한 행에 3개의 카드를 고정으로 배치 */
     gap: 16px;
+    margin-top: 20px; /* 혜택 선택 부분과 카드 리스트 사이의 여백 */
 }
 
 .benefitCard {
@@ -80,4 +104,41 @@
 .selected .selectButton {
     background-color: #3182ce;
     color: white;
+}
+
+.resetButton{
+    background-color: lightcoral;
+    border-radius: 12px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid #eaeaea;
+}
+
+.cardCount {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+
+/* 카드 리스트 영역 스타일 */
+.cardList {
+    margin-top: 40px;
+}
+
+.cardItem {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.noCards {
+    font-size: 18px;
+    color: #888;
 }
