@@ -2,18 +2,14 @@ package team.cardpick_project.cardpick.cardpick.domain;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CardMbtiResponse;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponse;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponseQDto;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -61,7 +57,7 @@ public class CardPickDao {
         return cardResponseQDtos;
     }
 
-    public List<CardResponseQDto> getCardsByMbti(@Valid CardMbtiResponse rq) {
+    public List<CardResponseQDto> getCardsByMbti(String mbti) {
 
         BooleanBuilder bb = new BooleanBuilder();
 
@@ -69,9 +65,9 @@ public class CardPickDao {
                 .selectOne()
                 .from(qCardCategory)
                 .where(qCardCategory.cardPick.eq(qCardPick)
-                        .and(qCardCategory.category.in(Mbti.fromString(rq.mbti()).getCategories())))
+                        .and(qCardCategory.category.in(Mbti.fromString(mbti).getCategories())))
                 .groupBy(qCardCategory.cardPick)
-                .having(qCardCategory.cardPick.count().goe((long)Mbti.fromString(rq.mbti()).getCategories().size()))
+                .having(qCardCategory.cardPick.count().goe((long)Mbti.fromString(mbti).getCategories().size()))
                 .exists());
 
         List<CardResponseQDto> cardResponseQDtos = queryFactory

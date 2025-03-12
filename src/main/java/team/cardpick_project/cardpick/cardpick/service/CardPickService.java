@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CardMbtiResponse;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponse;
 import team.cardpick_project.cardpick.cardpick.domain.*;
@@ -67,8 +66,8 @@ public class CardPickService {
         return cardResponse.size();
     }
 
-    public List<CardResponse> getCardsByMbti(@Valid CardMbtiResponse rq) {
-        List<CardResponse> cardResponse = cardPickDao.getCardsByMbti(rq).stream()
+    public List<CardResponse> getCardsByMbti(String mbti) {
+        List<CardResponse> cardResponse = cardPickDao.getCardsByMbti(mbti).stream()
                 .map(CardResponse::toDtoFromQDto)
                 .toList();
         return cardResponse;
