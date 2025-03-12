@@ -4,9 +4,9 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import team.cardpick_project.cardpick.cardpick.cardpickDto.CardMbtiResponse;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponse;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponseQDto;
 import team.cardpick_project.cardpick.cardpick.domain.*;
 import org.apache.commons.csv.*;
 
@@ -20,7 +20,7 @@ public class CardPickService {
     private final CardPickRepository cardPickRepository;
     private final CardPickDao cardPickDao;
 
-    public List<CardResponse> getCardsByCondition(@Valid CardRecommendationRequest rq) {
+    public List<CardResponse> getCardsByConditions(@Valid CardRecommendationRequest rq) {
         List<CardResponse> cardResponse = cardPickDao.getCardsByConditions(rq).stream()
                 .map(CardResponse::toDtoFromQDto)
                 .toList();
@@ -58,5 +58,19 @@ public class CardPickService {
         } catch (IOException e) {
             System.err.println("CSV 파일을 읽는 중 오류 발생: " + e.getMessage());
         }
+    }
+
+    public Integer getCountByConditions(@Valid CardRecommendationRequest rq) {
+        List<CardResponse> cardResponse = cardPickDao.getCardsByConditions(rq).stream()
+                .map(CardResponse::toDtoFromQDto)
+                .toList();
+        return cardResponse.size();
+    }
+
+    public List<CardResponse> getCardsByMbti(@Valid CardMbtiResponse rq) {
+        List<CardResponse> cardResponse = cardPickDao.getCardsByMbti(rq).stream()
+                .map(CardResponse::toDtoFromQDto)
+                .toList();
+        return cardResponse;
     }
 }
