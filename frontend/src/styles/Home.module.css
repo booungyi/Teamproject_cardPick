@@ -3,35 +3,122 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-color: #f3f4f6;
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: #f9f9f9;
 }
 
 .title {
-    font-size: 1.875rem;
+    font-size: 2.5rem;
     font-weight: bold;
-    color: #111827;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
 }
 
-.description {
-    font-size: 1.125rem;
-    color: #4b5563;
+.subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.optionsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 900px;
+}
+
+.optionCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 400px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.optionCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.iconWrapper {
+    position: relative;
     margin-bottom: 1.5rem;
+    background-color: #f2f2f2;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
-.button {
-    padding: 0.75rem 1.5rem;
-    background-color: #3b82f6;
-    color: white;
-    font-size: 1.125rem;
+.timerBadge {
+    position: absolute;
+    right: -10px;
+    top: -5px;
+    background-color: #FFD3B5;
+    color: #4A6572; /* 텍스트 색상도 어두운 색으로 변경 */
+    font-weight: bold;
+    padding: 0.3rem 0.5rem;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.optionTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.optionDesc {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.cardButton {
+    background-color: #FFD3B5;
+    color: #4A6572; /* 대비를 위해 어두운 텍스트 색상 */
+    border: none;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
     transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.button:hover {
-    background-color: #2563eb;
+.cardButton:hover {
+    background-color: #EABE9A; /* 호버 시 약간 더 어두운 톤 */
 }
 
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .optionsContainer {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
 
+    .optionCard {
+        max-width: 100%;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+}
