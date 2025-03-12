@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect, useState} from "react";
-import styles from './selectedBenefit.module.css';
+import styles from './styles.module.css';
 import { FaShoppingBag, FaBus, FaMobileAlt, FaGasPump, FaPlane, FaUtensils, FaTags } from "react-icons/fa";
 
 // 백엔드 enum과 일치하는 카테고리 타입
