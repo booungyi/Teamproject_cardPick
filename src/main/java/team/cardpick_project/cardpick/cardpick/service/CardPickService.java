@@ -1,12 +1,15 @@
 package team.cardpick_project.cardpick.cardpick.service;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import team.cardpick_project.cardpick.cardpick.domain.CardPick;
-import team.cardpick_project.cardpick.cardpick.domain.CardPickRepository;
+import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
+import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponse;
+import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponseQDto;
+import team.cardpick_project.cardpick.cardpick.domain.*;
 import org.apache.commons.csv.*;
-import team.cardpick_project.cardpick.cardpick.domain.Category;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -15,6 +18,14 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CardPickService {
     private final CardPickRepository cardPickRepository;
+    private final CardPickDao cardPickDao;
+
+    public List<CardResponse> getCardsByCondition(@Valid CardRecommendationRequest rq) {
+        List<CardResponse> cardResponse = cardPickDao.getCardsByConditions(rq).stream()
+                .map(CardResponse::toDtoFromQDto)
+                .toList();
+        return cardResponse;
+    }
 
     @Transactional
     public void saveCardsFromCSV(String filePath) {
@@ -31,13 +42,14 @@ public class CardPickService {
                 String imageUrl = record.get("image_url");
                 String detailUrl = record.get("detail_url");
 
+                CardPick cardPick = new CardPick(name, description, annualFee, imageUrl, detailUrl);
+
                 // parsed_desc 문자열을 리스트로 변환
                 String parsedDescStr = record.get("parsed_desc").replace("[", "").replace("]", "").replace("'", "");
-                List<Category> parsedDesc = Arrays.asList(parsedDescStr.split(", ")).stream()
-                        .map(Category::fromString)
+                List<CardCategory> parsedDesc = Arrays.asList(parsedDescStr.split(", ")).stream()
+                        .map( category -> new CardCategory(cardPick, Category.fromString(category)))
                         .toList();
-
-                CardPick cardPick = new CardPick(name, parsedDesc, description, annualFee, imageUrl, detailUrl);
+                cardPick.addCategory(parsedDesc);
                 cardPickRepository.save(cardPick);
             }
 
