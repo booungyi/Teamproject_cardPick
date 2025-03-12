@@ -98,7 +98,7 @@ export default function Results() {
     const fetchCardsByUserType = async (userType: UserType) => {
         try {
             setLoading(true);
-            const response = await fetch(`/api/card_picks/mbti?mbti=${userType}`, {
+            const response = await fetch(`http://localhost:8080/api/card_picks/mbti?mbti=${userType}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
