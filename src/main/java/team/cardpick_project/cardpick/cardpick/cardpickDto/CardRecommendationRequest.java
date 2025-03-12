@@ -1,9 +1,9 @@
 package team.cardpick_project.cardpick.cardpick.cardpickDto;
 
-import team.cardpick_project.cardpick.cardpick.domain.Category;
+import java.util.List;
 
 public record CardRecommendationRequest(
         String issuer,
-        Category category
+        List<String> categories
 ) {
 }

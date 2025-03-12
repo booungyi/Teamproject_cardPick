@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,8 +26,8 @@ public class CardPick {
     private String cardName;
 
     @Column(nullable = false)
-    @NonNull
-    private List<Category> categories;
+    @OneToMany(mappedBy = "cardPick",cascade = CascadeType.ALL)
+    private List<CardCategory> cardCategories = new ArrayList<>();
 
     @Column(nullable = false)
     @NonNull
@@ -52,4 +53,8 @@ public class CardPick {
     @CreatedBy
     @Column(nullable = true)
     private LocalDateTime createAt;
+
+    public void addCategory(List<CardCategory> categories){
+        this.cardCategories.addAll(categories);
+    }
 }
