@@ -1,0 +1,174 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.recommendationSection {
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 3rem;
+}
+
+.mainTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.benefitPoints {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.benefitItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.checkmark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #bb8b2f;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* 호버 효과 추가된 카드 아이템 */
+.cardItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+/* 호버 시 카드가 위로 살짝 올라가는 효과 */
+.cardItem:hover {
+    transform: translateY(-10px);
+}
+
+.cardImageWrapper {
+    position: relative;
+    margin-bottom: 1rem;
+    width: 180px;
+    height: 280px;
+    border-radius: 12px;
+    transition: box-shadow 0.3s ease;
+}
+
+/* 호버 시 그림자 효과 강화 */
+.cardItem:hover .cardImageWrapper {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.eventTag {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #ff6b00;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    z-index: 10;
+}
+
+.cardImage {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: white;
+    transition: transform 0.3s ease;
+}
+
+/* 호버 시 이미지가 살짝 확대되는 효과 */
+.cardItem:hover .cardImage {
+    transform: scale(1.05);
+}
+
+.cardName {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+/* 호버 시 카드 이름 색상 변경 */
+.cardItem:hover .cardName {
+    color: #bb8b2f;
+}
+
+.cardDescription {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+}
+
+.homeButton {
+    padding: 0.75rem 1.5rem;
+    background-color: #3b82f6;
+    color: white;
+    font-size: 1.125rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.homeButton:hover {
+    background-color: #2563eb;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .cardContainer {
+        gap: 1rem;
+    }
+
+    .cardItem {
+        width: 150px;
+    }
+
+    .cardImageWrapper {
+        width: 130px;
+        height: 200px;
+    }
+
+    .mainTitle {
+        font-size: 1.5rem;
+    }
+}
