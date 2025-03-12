@@ -2,11 +2,7 @@ package team.cardpick_project.cardpick.cardpick.service;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CardMbtiResponse;
+import org.springframework.web.bind.annotation.*;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponse;
 
@@ -30,7 +26,7 @@ public class CardPickController {
     }
     //성향에 맞는 카드 추천
     @GetMapping("/mbti")
-    public List<CardResponse> getCardsByMbti(@RequestBody@Valid CardMbtiResponse rq){
-        return cardPickService.getCardsByMbti(rq);
+    public List<CardResponse> getCardsByMbti(@RequestParam String mbti){
+        return cardPickService.getCardsByMbti(mbti);
     }
 }
