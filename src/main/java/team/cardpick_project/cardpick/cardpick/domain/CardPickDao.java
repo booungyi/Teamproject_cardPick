@@ -5,12 +5,15 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import team.cardpick_project.cardpick.cardpick.cardpickDto.CardMbtiResponse;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponse;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponseQDto;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -39,6 +42,36 @@ public class CardPickDao {
                         .and(qCardCategory.category.in(categories)))
                 .groupBy(qCardCategory.cardPick)
                 .having(qCardCategory.cardPick.count().goe((long)categories.size()))
+                .exists());
+
+        List<CardResponseQDto> cardResponseQDtos = queryFactory
+                .select(
+                        Projections.constructor(
+                                CardResponseQDto.class,
+                                qCardPick.cardName,
+                                qCardPick.imageUrl,
+                                qCardPick.detailUrl
+                        )
+                )
+                .from(qCardPick)
+                .leftJoin(qCardCategory).on(qCardCategory.cardPick.eq(qCardPick))
+                .where(bb)
+                .fetch();
+
+        return cardResponseQDtos;
+    }
+
+    public List<CardResponseQDto> getCardsByMbti(@Valid CardMbtiResponse rq) {
+
+        BooleanBuilder bb = new BooleanBuilder();
+
+        bb.and(JPAExpressions
+                .selectOne()
+                .from(qCardCategory)
+                .where(qCardCategory.cardPick.eq(qCardPick)
+                        .and(qCardCategory.category.in(Mbti.fromString(rq.mbti()).getCategories())))
+                .groupBy(qCardCategory.cardPick)
+                .having(qCardCategory.cardPick.count().goe((long)Mbti.fromString(rq.mbti()).getCategories().size()))
                 .exists());
 
         List<CardResponseQDto> cardResponseQDtos = queryFactory
