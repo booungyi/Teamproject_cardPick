@@ -228,8 +228,15 @@
     }
 
     .cardImageWrapper {
-        width: 120px;
-        height: 180px;
+        position: relative;
+        margin-bottom: 1rem;
+        width: 160px;
+        height: 250px;
+        border-radius: 12px;
+        transition: box-shadow 0.3s ease;
+        /* 추가: 이미지 컨테이너 비율 고정 */
+        aspect-ratio: 2/3; /* 세로형 비율로 통일 */
+        overflow: hidden;
     }
 
     .cardName {

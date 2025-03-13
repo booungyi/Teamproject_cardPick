@@ -20,6 +20,51 @@
         cards: Card[];
     }
 
+    const recommendations = {
+        J: {
+            title: "철저한 예산 관리자를 위한 추천",
+            benefits: [
+                "매일 쓰기 좋은 생활비 할인 카드 찾아요",
+                "공과금, 통신비 등 '고정비'를 묶고 싶어요"
+            ]
+        },
+        P: {
+            title: "자유로운 소비자를 위한 추천",
+            benefits: [
+                "다양한 혜택을 제공하는 카드 찾아요",
+                "쇼핑할 때 혜택이 많은 카드 원해요"
+            ]
+        },
+        T: {
+            title: "분석적인 소비자를 위한 추천",
+            benefits: [
+                "혜택을 꼼꼼히 따지고 분석해요",
+                "최대 할인을 받을 수 있는 카드 찾아요"
+            ]
+        },
+        F: {
+            title: "감성적인 소비자를 위한 추천",
+            benefits: [
+                "디자인이나 감성적인 요소가 중요해요",
+                "감성적인 혜택이 많은 카드 찾아요"
+            ]
+        },
+        S: {
+            title: "집중적인 소비자를 위한 추천",
+            benefits: [
+                "한 가지 카드만 집중적으로 사용해요",
+                "특정 영역에서 최대 할인을 받아요"
+            ]
+        },
+        N: {
+            title: "다양한 혜택을 추구하는 소비자를 위한 추천",
+            benefits: [
+                "여러 카드를 사용하며 혜택을 최대로 활용해요",
+                "다양한 혜택을 제공하는 카드 찾아요"
+            ]
+        }
+    };
+
     export default function Results() {
         const router = useRouter();
         const [categoryInfo, setCategoryInfo] = useState<CategoryInfo | null>(null);
@@ -85,12 +130,10 @@
                 setPages(groupedCards);
 
                 // 최종 데이터 구성
+                const recommendation = recommendations[userType] || recommendations.J;
                 setCategoryInfo({
-                    title: "이번달도 생활비 걱정인 픽커님께 추천",
-                    benefits: [
-                        "매일 쓰기 좋은 생활비 할인 카드 찾아요",
-                        "공과금, 통신비 등 '고정비'를 묶고 싶어요"
-                    ],
+                    title: recommendation.title,
+                    benefits: recommendation.benefits,
                     cards: cardsWithEvents // 전체 카드 목록
                 });
             } catch (error) {
@@ -223,7 +266,7 @@
                                                 <img
                                                     src={card.imageUrl}
                                                     alt={card.cardName}
-                                                    style={{width: '100%', height: '100%', objectFit: 'contain'}}
+                                                    style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center'}}
                                                     onError={(e) => {
                                                         e.currentTarget.onerror = null;
                                                         e.currentTarget.src = '/images/card-placeholder.jpg';
