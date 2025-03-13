@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,6 +23,9 @@ public class CardPickController {
     //현재 선택된 조건에 맞는 카드 개수
     @GetMapping("/conditions/count")
     public Long getCountByConditions(@RequestParam(required = false) String issuer, @RequestParam(required = false) List<String> categories){
+        if (categories == null){
+            categories = new ArrayList<>();
+        }
         return cardPickService.getCountByConditions(issuer, categories);
     }
     //성향에 맞는 카드 추천

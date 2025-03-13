@@ -101,7 +101,7 @@ public class CardPickDao {
             bb.and(qCardPick.cardName.contains(issuer));
         }
 
-        if (categories.isEmpty()){
+        if (!categories.isEmpty()){
             bb.and(JPAExpressions
                     .selectOne()
                     .from(qCardCategory)
