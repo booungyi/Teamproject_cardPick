@@ -86,4 +86,40 @@ public class CardPickDao {
 
         return cardResponseQDtos;
     }
+
+    public Long getCountByConditions(@Valid CardRecommendationRequest rq) {
+
+
+
+        List<Category> categories = rq.categories().stream()
+                .map(Category::valueOf)
+                .toList();
+
+        BooleanBuilder bb = new BooleanBuilder();
+
+        if (rq.issuer() != null){
+            bb.and(qCardPick.cardName.contains(rq.issuer()));
+        }
+
+        if (!rq.categories().isEmpty()){
+            bb.and(JPAExpressions
+                    .selectOne()
+                    .from(qCardCategory)
+                    .where(qCardCategory.cardPick.eq(qCardPick)
+                            .and(qCardCategory.category.in(categories)))
+                    .groupBy(qCardCategory.cardPick)
+                    .having(qCardCategory.cardPick.count().goe((long)categories.size()))
+                    .exists());
+        }
+
+        Long count = queryFactory
+                .select(
+                        qCardPick.count()
+                )
+                .from(qCardPick)
+                .where(bb)
+                .fetchOne();
+
+        return count;
+    }
 }

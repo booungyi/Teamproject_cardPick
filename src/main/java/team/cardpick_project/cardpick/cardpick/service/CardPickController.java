@@ -21,7 +21,7 @@ public class CardPickController {
     }
     //현재 선택된 조건에 맞는 카드 개수
     @GetMapping("/conditions/count")
-    public Integer getCountByConditions(@RequestBody@Valid CardRecommendationRequest rq){
+    public Long getCountByConditions(@RequestBody@Valid CardRecommendationRequest rq){
         return cardPickService.getCountByConditions(rq);
     }
     //성향에 맞는 카드 추천

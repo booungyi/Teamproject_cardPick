@@ -59,11 +59,9 @@ public class CardPickService {
         }
     }
 
-    public Integer getCountByConditions(@Valid CardRecommendationRequest rq) {
-        List<CardResponse> cardResponse = cardPickDao.getCardsByConditions(rq).stream()
-                .map(CardResponse::toDtoFromQDto)
-                .toList();
-        return cardResponse.size();
+    public Long getCountByConditions(@Valid CardRecommendationRequest rq) {
+        Long count = cardPickDao.getCountByConditions(rq);
+        return count;
     }
 
     public List<CardResponse> getCardsByMbti(String mbti) {
