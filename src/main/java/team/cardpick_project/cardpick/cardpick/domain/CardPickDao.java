@@ -19,25 +19,25 @@ public class CardPickDao {
     private final QCardPick qCardPick = QCardPick.cardPick;
     private final QCardCategory qCardCategory = QCardCategory.cardCategory;
 
-    public List<CardResponseQDto> getCardsByConditions(CardRecommendationRequest rq) {
+    public List<CardResponseQDto> getCardsByConditions(String issuer, List<String> categories) {
 
-        List<Category> categories = rq.categories().stream()
+        List<Category> categoryList = categories.stream()
                 .map(Category::valueOf)
                 .toList();
 
         BooleanBuilder bb = new BooleanBuilder();
 
-        if (rq.issuer() != null){
-            bb.and(qCardPick.cardName.contains(rq.issuer()));
+        if (issuer != null){
+            bb.and(qCardPick.cardName.contains(issuer));
         }
 
         bb.and(JPAExpressions
                 .selectOne()
                 .from(qCardCategory)
                 .where(qCardCategory.cardPick.eq(qCardPick)
-                        .and(qCardCategory.category.in(categories)))
+                        .and(qCardCategory.category.in(categoryList)))
                 .groupBy(qCardCategory.cardPick)
-                .having(qCardCategory.cardPick.count().goe((long)categories.size()))
+                .having(qCardCategory.cardPick.count().goe((long)categoryList.size()))
                 .exists());
 
         List<CardResponseQDto> cardResponseQDtos = queryFactory
@@ -87,28 +87,28 @@ public class CardPickDao {
         return cardResponseQDtos;
     }
 
-    public Long getCountByConditions(@Valid CardRecommendationRequest rq) {
+    public Long getCountByConditions(String issuer, List<String> categories) {
 
 
 
-        List<Category> categories = rq.categories().stream()
+        List<Category> categoryList = categories.stream()
                 .map(Category::valueOf)
                 .toList();
 
         BooleanBuilder bb = new BooleanBuilder();
 
-        if (rq.issuer() != null){
-            bb.and(qCardPick.cardName.contains(rq.issuer()));
+        if (issuer != null){
+            bb.and(qCardPick.cardName.contains(issuer));
         }
 
-        if (!rq.categories().isEmpty()){
+        if (categories.isEmpty()){
             bb.and(JPAExpressions
                     .selectOne()
                     .from(qCardCategory)
                     .where(qCardCategory.cardPick.eq(qCardPick)
-                            .and(qCardCategory.category.in(categories)))
+                            .and(qCardCategory.category.in(categoryList)))
                     .groupBy(qCardCategory.cardPick)
-                    .having(qCardCategory.cardPick.count().goe((long)categories.size()))
+                    .having(qCardCategory.cardPick.count().goe((long)categoryList.size()))
                     .exists());
         }
 
