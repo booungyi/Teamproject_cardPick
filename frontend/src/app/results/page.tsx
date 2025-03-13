@@ -266,7 +266,7 @@
                                                 <img
                                                     src={card.imageUrl}
                                                     alt={card.cardName}
-                                                    style={{width: '100%', height: '100%', objectFit: 'cover, object-position: center'}}
+                                                    style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center'}}
                                                     onError={(e) => {
                                                         e.currentTarget.onerror = null;
                                                         e.currentTarget.src = '/images/card-placeholder.jpg';
