@@ -19,8 +19,8 @@ public class CardPickService {
     private final CardPickRepository cardPickRepository;
     private final CardPickDao cardPickDao;
 
-    public List<CardResponse> getCardsByConditions(@Valid CardRecommendationRequest rq) {
-        List<CardResponse> cardResponse = cardPickDao.getCardsByConditions(rq).stream()
+    public List<CardResponse> getCardsByConditions(String issuer, List<String> categories) {
+        List<CardResponse> cardResponse = cardPickDao.getCardsByConditions(issuer, categories).stream()
                 .map(CardResponse::toDtoFromQDto)
                 .toList();
         return cardResponse;
@@ -59,8 +59,8 @@ public class CardPickService {
         }
     }
 
-    public Long getCountByConditions(@Valid CardRecommendationRequest rq) {
-        Long count = cardPickDao.getCountByConditions(rq);
+    public Long getCountByConditions(String issuer, List<String> categories) {
+        Long count = cardPickDao.getCountByConditions(issuer, categories);
         return count;
     }
 

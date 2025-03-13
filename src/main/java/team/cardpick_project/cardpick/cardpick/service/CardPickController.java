@@ -16,13 +16,13 @@ public class CardPickController {
 
     //선택된 조건에 맞는 카드 추천
     @GetMapping("/conditions")
-    public List<CardResponse> getCardsByConditions(@RequestBody@Valid CardRecommendationRequest rq){
-        return cardPickService.getCardsByConditions(rq);
+    public List<CardResponse> getCardsByConditions(@RequestParam(required = false) String issuer, @RequestParam List<String> categories){
+        return cardPickService.getCardsByConditions(issuer, categories);
     }
     //현재 선택된 조건에 맞는 카드 개수
     @GetMapping("/conditions/count")
-    public Long getCountByConditions(@RequestBody@Valid CardRecommendationRequest rq){
-        return cardPickService.getCountByConditions(rq);
+    public Long getCountByConditions(@RequestParam(required = false) String issuer, @RequestParam(required = false) List<String> categories){
+        return cardPickService.getCountByConditions(issuer, categories);
     }
     //성향에 맞는 카드 추천
     @GetMapping("/mbti")
