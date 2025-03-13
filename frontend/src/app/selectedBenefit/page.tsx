@@ -152,6 +152,7 @@
 //                 )}
 //             </div>
 //
+
 //             {/*/!* ✅ 필터링된 카드 리스트 *!/*/}
 //             {/*<div className={styles.cardList}>*/}
 //             {/*    {filteredCards.length > 0 ? (*/}
@@ -220,11 +221,12 @@ export default function selectedBenefit() {
         };
     }, [router]);
 
+
     // 전체 카드 개수 가져오는 함수
     const fetchTotalCardCount = async () => {
         try {
-            const response = await fetch(`api/card_picks/conditions/count`, {
-                method: 'POST',
+            const response = await fetch(`http://localhost:8080/api/card_picks/conditions/count`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -241,19 +243,23 @@ export default function selectedBenefit() {
     // 선택된 혜택에 맞는 카드 개수 가져오는 함수
     const fetchFilteredCards = async (categories: Category[]) => {
         try {
-            const response = await fetch(`api/card_picks/conditions/count`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ categories: categories })
+            // categories 배열을 문자열로
+            const queryString = `search_benefit=${categories.join(",")}`;
+
+            // GET 요청으로 백엔드에 카드 개수 요청
+            const response = await fetch(`http://localhost:8080/api/card_picks/conditions/count?${queryString}`, {
+                method: 'GET',  // GET 요청
+                headers: { 'Content-Type': 'application/json' }
             });
+
+            // 응답에서 카드 개수 받아오기
             const count = await response.json();
-            setFilteredCardCount(count);
+            setFilteredCardCount(count);  // 필터링된 카드 개수 설정
         } catch (error) {
             console.error("카드 데이터 가져오기 실패:", error);
         }
     };
+
 
     // 카테고리 선택/해제 함수
     const toggleCategory = (category: Category) => {
@@ -286,10 +292,10 @@ export default function selectedBenefit() {
     // URL 업데이트 함수
     const updateURL = (categoryNames: Category[]) => {
         // 기본 URL 구조 설정
-        const baseUrl = 'https://www.card-gorilla.com/search/condition';
+        const baseUrl = `${window.location.origin}/search/condition`;
         const url = new URL(baseUrl);
 
-        // 항상 cate=CRD 파라미터 추가
+        // 항상 cate=CRD 파라미터 추가 - 필요없는 부분???
         url.searchParams.set('cate', 'CRD');
 
         // 선택된 카테고리가 있으면 search_benefit 파라미터 추가
