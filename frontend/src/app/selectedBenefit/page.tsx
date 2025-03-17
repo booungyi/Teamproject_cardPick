@@ -74,20 +74,40 @@ export default function selectedBenefit() {
     //     }
     // };
 
+    // const fetchTotalCardCount = async () => {
+    //     try {
+    //         const response = await fetch(`http://localhost:8080/api/card_picks/conditions/count`, {
+    //             method: 'GET',
+    //             headers: {'Content-Type': 'application/json'}
+    //         });
+    //
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! Status: ${response.status}`);
+    //         }
+    //
+    //         const data = await response.json();
+    //
+    //         // ⚠️ 백엔드에서 객체를 반환할 수도 있으므로, 숫자가 맞는지 확인
+    //         if (typeof data === "number") {
+    //             setTotalCardCount(data);
+    //             setFilteredCardCount(data);
+    //         } else {
+    //             console.error("Unexpected response format:", data);
+    //         }
+    //     } catch (error) {
+    //         console.error("카드 개수 가져오기 실패:", error);
+    //     }
+    // };
+
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
+
     const fetchTotalCardCount = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/card_picks/conditions/count`, {
+            const response = await fetch(`${API_BASE_URL}/api/card_picks/conditions/count`, {
                 method: 'GET',
-                headers: {'Content-Type': 'application/json'}
+                headers: { 'Content-Type': 'application/json' }
             });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
             const data = await response.json();
-
-            // ⚠️ 백엔드에서 객체를 반환할 수도 있으므로, 숫자가 맞는지 확인
             if (typeof data === "number") {
                 setTotalCardCount(data);
                 setFilteredCardCount(data);
@@ -99,46 +119,63 @@ export default function selectedBenefit() {
         }
     };
 
+
+// 선택된 혜택에 맞는 카드 개수 가져오는 함수
+//     const fetchFilteredCards = async (categories: Category[]) => {
+//         try {
+//             // categories 배열을 문자열로
+//             const queryString = `search_benefit=${categories.join(",")}`;
+//
+//             // GET 요청으로 백엔드에 카드 개수 요청
+//             const response = await fetch(`http://localhost:8080/api/card_picks/conditions/count?${queryString}`, {
+//                 method: 'GET',  // GET 요청
+//                 headers: { 'Content-Type': 'application/json' }
+//             });
+//
+//             // 응답에서 카드 개수 받아오기
+//             const count = await response.json();
+//             setFilteredCardCount(count);  // 필터링된 카드 개수 설정
+//         } catch (error) {
+//             console.error("카드 데이터 가져오기 실패:", error);
+//         }
+//     };
     const fetchFilteredCards = async (categories: Category[]) => {
         try {
-            // 카테고리 ID를 문자열 값으로 변환
-            const categoryStrings = categories.map(catId => categoryMap[catId].name);
-
-            // 쿼리 파라미터 구성
-            const queryParams = new URLSearchParams();
-            if (categoryStrings.length > 0) {
-                categoryStrings.forEach(cat => queryParams.append('categories', cat));
-            }
-
-            const response = await fetch(`http://localhost:8080/api/card_picks/conditions/count?${queryParams.toString()}`, {
+            const queryString = `search_benefit=${categories.join(",")}`;
+            const response = await fetch(`${API_BASE_URL}/api/card_picks/conditions/count?${queryString}`, {
                 method: 'GET',
-                headers: {'Content-Type': 'application/json'}
+                headers: { 'Content-Type': 'application/json' }
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            if (typeof data === "number") {
-                setFilteredCardCount(data);
+            const count = await response.json();
+            if (typeof count === "number") {
+                setFilteredCardCount(count);
             } else {
-                console.error("예상치 못한 응답 형식:", data);
+                console.error("Unexpected response format:", count);
             }
         } catch (error) {
             console.error("카드 데이터 가져오기 실패:", error);
         }
     };
 
-    // 카테고리 선택/해제 함수
-    const toggleCategory = (category: number) => { // number 타입 허용
-        setSelectedCategories(prev => {
-            let updatedCategories = prev.includes(category as Category) //강제 변환
-                ? prev.filter(c => c !== (category as Category))
-                : [...prev, category as Category];
 
+
+    // 카테고리 선택/해제 함수
+    const toggleCategory = (category: Category) => {
+        setSelectedCategories(prev => {
+            let updatedCategories;
+
+            if (prev.includes(category)) {
+                // 이미 선택된 경우 제거
+                updatedCategories = prev.filter(c => c !== category);
+            } else {
+                // 선택되지 않은 경우 추가
+                updatedCategories = [...prev, category];
+            }
+
+            // URL 업데이트
             updateURL(updatedCategories);
-            fetchFilteredCards(updatedCategories);
+            fetchFilteredCards(updatedCategories); // 백엔드에서 필터링된 카드 요청
 
             return updatedCategories;
         });
@@ -148,23 +185,35 @@ export default function selectedBenefit() {
     const resetSearch = () => {
         setSelectedCategories([]);
         updateURL([]);
-        fetchTotalCardCount();
+        fetchTotalCardCount(); // 전체 카드 개수 다시 가져오기
     };
 
     // URL 업데이트 함수
-    const updateURL = (categoryNames: Category[]) => {
-        // 기본 URL 구조 설정
-        const baseUrl = `${window.location.origin}api/card_picks/search/condition`;
-        const url = new URL(baseUrl);
+    // const updateURL = (categoryNames: Category[]) => {
+    //     // 기본 URL 구조 설정
+    //     const baseUrl = `${window.location.origin}/api/card_picks/search/condition`;
+    //     const url = new URL(baseUrl);
+    //
+    //     // 선택된 카테고리가 있으면 search_benefit 파라미터 추가
+    //     if (categoryNames.length > 0) {
+    //         url.searchParams.set('search_benefit', categoryNames.join(','));
+    //     } else {
+    //         url.searchParams.delete("search_benefit");
+    //     }
+    //
+    //     // 페이지 리로드 없이 URL 업데이트 (디코딩 추가)
+    //     window.history.pushState(null, '', decodeURIComponent(url.toString()));
+    // };
 
-        // 선택된 카테고리가 있으면 search_benefit 파라미터 추가
+    const updateURL = (categoryNames: Category[]) => {
+        const url = new URL(window.location.origin + window.location.pathname);
+
         if (categoryNames.length > 0) {
             url.searchParams.set('search_benefit', categoryNames.join(','));
         } else {
             url.searchParams.delete("search_benefit");
         }
 
-        // 페이지 리로드 없이 URL 업데이트 (디코딩 추가)
         window.history.pushState(null, '', decodeURIComponent(url.toString()));
     };
 
