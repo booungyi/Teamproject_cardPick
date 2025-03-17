@@ -74,7 +74,7 @@ export default function Quiz() {
             const finalAnswers = [...answers, value];
             console.log("최종 답변: ", finalAnswers);
             localStorage.setItem("quizAnswers", JSON.stringify(finalAnswers)); // 답변을 로컬 스토리지에 저장
-            router.push("/results"); // 결과 페이지로 이동
+            router.push("/quiz/results"); // 결과 페이지로 이동
         }
     };
 

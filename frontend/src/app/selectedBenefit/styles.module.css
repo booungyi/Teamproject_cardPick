@@ -1,144 +1,178 @@
 .container {
-    /*display: flex;*/
-    /*justify-content: space-between; !* 왼쪽 콘텐츠 영역과 오른쪽 사이드바 영역을 나눕니다 *!*/
-    /*padding: 20px;*/
-    /*min-width: 1024px; !* 최소 너비 설정 (창이 줄어들어도 사이드바가 유지됨) *!*/
+        /*display: flex;*/
+        /*justify-content: space-between; !* 왼쪽 콘텐츠 영역과 오른쪽 사이드바 영역을 나눕니다 *!*/
+        /*padding: 20px;*/
+        /*min-width: 1024px; !* 최소 너비 설정 (창이 줄어들어도 사이드바가 유지됨) *!*/
 
-    display: flex;
-    justify-content: center; /* 중앙 정렬 */
-    align-items: flex-start;
-    position: relative;
-    padding: 40px 20px;
-    min-width: 1024px; /* 최소 너비 제한 */
-}
+        display: flex;
+        justify-content: center; /* 중앙 정렬 */
+        align-items: flex-start;
+        position: relative;
+        padding: 40px 20px;
+        min-width: 1024px; /* 최소 너비 제한 */
+    }
 
-.sidebar {
-    position: fixed;
-    top: 20px; /* 페이지 상단에서 20px 떨어지게 */
-    right: 20px; /* 페이지 오른쪽에서 20px 떨어지게 */
-    width: 250px; /* 사이드바 너비 */
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    z-index: 10;
-}
+    .sidebar {
+        position: fixed;
+        top: 20px; /* 페이지 상단에서 20px 떨어지게 */
+        right: 20px; /* 페이지 오른쪽에서 20px 떨어지게 */
+        width: 250px; /* 사이드바 너비 */
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        z-index: 10;
+    }
 
-.content {
-    margin-right: 0px; /* 사이드바와 겹치지 않도록 오른쪽 여백 추가 */
-    flex-grow: 1; /* 남은 공간을 채우도록 */
-}
+    .content {
+        margin-right: 0px; /* 사이드바와 겹치지 않도록 오른쪽 여백 추가 */
+        flex-grow: 1; /* 남은 공간을 채우도록 */
+    }
 
-.title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eaeaea;
-}
+    .title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eaeaea;
+    }
 
-.benefitsGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 한 행에 3개의 카드를 고정으로 배치 */
-    gap: 16px;
-    margin-top: 20px; /* 혜택 선택 부분과 카드 리스트 사이의 여백 */
-}
+    .benefitsGrid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 한 행에 3개의 카드를 고정으로 배치 */
+        gap: 16px;
+        margin-top: 20px; /* 혜택 선택 부분과 카드 리스트 사이의 여백 */
+    }
 
-.benefitCard {
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    border: 1px solid #eaeaea;
-}
+    .benefitCard {
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        border: 1px solid #eaeaea;
+    }
 
-.benefitCard:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transform: translateY(-2px);
-}
+    .benefitCard:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transform: translateY(-2px);
+    }
 
-.benefitCard.selected {
-    background-color: #f0f7ff;
-    border-color: #3182ce;
-}
+    .benefitCard.selected {
+        background-color: #f0f7ff;
+        border-color: #3182ce;
+    }
 
-.iconWrapper {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
+    .iconWrapper {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
 
-.icon {
-    font-size: 24px;
-    color: #333;
-}
+    .icon {
+        font-size: 24px;
+        color: #333;
+    }
 
-.benefitName {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 12px;
-    text-align: center;
-}
+    .benefitName {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 12px;
+        text-align: center;
+    }
 
-.selectButton {
-    width: 100%;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background-color: #eeeeee;
-    color: #666;
-    border: none;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
+    .selectButton {
+        width: 100%;
+        padding: 8px 16px;
+        border-radius: 20px;
+        background-color: #eeeeee;
+        color: #666;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
 
-.selected .selectButton {
-    background-color: #3182ce;
-    color: white;
-}
+    .selectButton:hover {
+        background-color: #dddddd;
+    }
 
-.resetButton{
-    background-color: lightcoral;
-    border-radius: 12px;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    border: 1px solid #eaeaea;
-}
+    .selected .selectButton {
+        background-color: #3182ce;
+        color: white;
+    }
 
-.cardCount {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
+    .selected .selectButton:hover {
+        background-color: #276bb5;
+    }
 
+    .resetButton {
+        background-color: lightcoral;
+        color: white;
+        border-radius: 12px;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        border: none;
+        font-size: 14px;
+        margin-top: 10px;
+    }
 
-/* 카드 리스트 영역 스타일 */
-.cardList {
-    margin-top: 40px;
-}
+    .resetButton:hover {
+        background-color: #e57373;
+    }
 
-.cardItem {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
+    .serchresultButton {
+        background-color: #3182ce;
+        color: white;
+        border-radius: 12px;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        border: none;
+        font-size: 14px;
+        text-decoration: none;
+        margin-top: 10px;
+    }
 
-.noCards {
-    font-size: 18px;
-    color: #888;
-}
+    .serchresultButton:hover {
+        background-color: #276bb5;
+    }
+
+    .cardCount {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    /* 카드 리스트 영역 스타일 */
+    .cardList {
+        margin-top: 40px;
+    }
+
+    .cardItem {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .noCards {
+        font-size: 18px;
+        color: #888;
+    }
