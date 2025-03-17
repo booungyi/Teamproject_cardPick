@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import styles from './styles.module.css';
 import {FaTags} from "react-icons/fa";
-import Link from "next/link";
 
 // 백엔드 enum과 일치하는 카테고리 타입
 type Category = '쇼핑' | '교통' | '통신' | '할인_및_적립' | '주유' | '항공' | '음식';
@@ -91,7 +90,7 @@ export default function selectedBenefit() {
             // GET 요청으로 백엔드에 카드 정보 요청
             const response = await fetch(`http://localhost:8080/api/card_picks/conditions?${queryString}`, {
                 method: 'GET',  // GET 요청
-                headers: { 'Content-Type': 'application/json' }
+                headers: {'Content-Type': 'application/json'}
             });
 
             // 응답에서 카드 정보 받아오기
@@ -144,6 +143,13 @@ export default function selectedBenefit() {
         window.history.pushState(null, '', url.toString());
     };
 
+    // 검색된 카드 목록 보기 버튼 클릭 핸들러
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        const queryString = `categories=${JSON.stringify(selectedCategories)}`;
+        router.push(`/selectedBenefit/results?${queryString}`);
+    };
+
     return (
         <div className={styles.container}>
             {/* 혜택 선택 부분 */}
@@ -172,11 +178,12 @@ export default function selectedBenefit() {
 
             <div className={styles.sidebar}>
                 <h3>🔍 검색 결과</h3>
-                <span className={styles.cardCount}>맞춤 카드: {selectedCategories.length === 0 ? totalCardCount : filteredCards.length}개</span>
+                <span
+                    className={styles.cardCount}>맞춤 카드: {selectedCategories.length === 0 ? totalCardCount : filteredCards.length}개</span>
                 <div>
-                    <Link href="/search/results" className={styles.serchresultButton}>
+                    <a href="/selectedBenefit/results" className={styles.serchresultButton} onClick={handleLinkClick}>
                         검색된 카드 목록 보기
-                    </Link>
+                    </a>
                 </div>
                 {selectedCategories.length > 0 && (
                     <button className={styles.resetButton} onClick={resetSearch}>검색 초기화</button>
