@@ -198,6 +198,13 @@
     background-color: #555;
 }
 
+.cardGrid {
+    display: flex;
+    flex-wrap: nowrap; /* 한 줄 유지 */
+    overflow-x: auto; /* 넘칠 경우 가로 스크롤 */
+    gap: 16px; /* 카드 간격 */
+}
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
     .progressSteps {
