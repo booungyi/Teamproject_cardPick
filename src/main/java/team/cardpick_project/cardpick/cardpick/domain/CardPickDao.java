@@ -50,7 +50,6 @@ public class CardPickDao {
                         )
                 )
                 .from(qCardPick)
-                .leftJoin(qCardCategory).on(qCardCategory.cardPick.eq(qCardPick))
                 .where(bb)
                 .fetch();
 
