@@ -1,9 +1,9 @@
 'use client';
 
-import {useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from './styles.module.css';
-import {FaTags} from "react-icons/fa";
+import { FaTags } from "react-icons/fa";
 import Link from "next/link";
 
 type Category = '쇼핑' | '교통' | '통신' | '할인_및_적립' | '주유' | '항공' | '음식';
@@ -21,13 +21,13 @@ interface CategoryInfo {
 }
 
 const categories: CategoryInfo[] = [
-    {name: '쇼핑', displayName: "쇼핑", icon: "👕"},
-    {name: '교통', displayName: "교통", icon: "🚌"},
-    {name: '통신', displayName: "통신", icon: "📱"},
-    {name: '할인_및_적립', displayName: "할인 및 적립", icon: <FaTags/>},
-    {name: '주유', displayName: "주유", icon: "⛽"},
-    {name: '항공', displayName: "항공", icon: "✈️"},
-    {name: '음식', displayName: "음식", icon: "🍔"}
+    { name: '쇼핑', displayName: "쇼핑", icon: "👕" },
+    { name: '교통', displayName: "교통", icon: "🚌" },
+    { name: '통신', displayName: "통신", icon: "📱" },
+    { name: '할인_및_적립', displayName: "할인 및 적립", icon: <FaTags /> },
+    { name: '주유', displayName: "주유", icon: "⛽" },
+    { name: '항공', displayName: "항공", icon: "✈️" },
+    { name: '음식', displayName: "음식", icon: "🍔" }
 ];
 
 export default function SelectedBenefit() {
