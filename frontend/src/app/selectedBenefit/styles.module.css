@@ -1,48 +1,82 @@
-.container {
-    /*display: flex;*/
-    /*justify-content: space-between; !* 왼쪽 콘텐츠 영역과 오른쪽 사이드바 영역을 나눕니다 *!*/
-    /*padding: 20px;*/
-    /*min-width: 1024px; !* 최소 너비 설정 (창이 줄어들어도 사이드바가 유지됨) *!*/
-
+/* 전체 레이아웃을 감싸는 래퍼 */
+.wrapper {
+    background-color: #f5f5f5;
     display: flex;
-    justify-content: center; /* 중앙 정렬 */
-    align-items: flex-start;
-    position: relative;
-    padding: 40px 20px;
-    min-width: 1024px; /* 최소 너비 제한 */
+    flex-direction: column; /* 세로 방향으로 배치 */
+    align-items: center;
+    padding-bottom: 40px;
 }
 
+/* 헤더 영역 - 상단에 고정 */
+.header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+}
+
+.headerContent {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 40px;
+}
+
+/* 컨테이너 - 중앙 정렬을 위해 max-width 설정 */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    width: 100%;
+    margin-top: 20px; /* 헤더와의 간격 */
+}
+
+/* 사이드바 */
 .sidebar {
-    position: fixed;
-    top: 20px; /* 페이지 상단에서 20px 떨어지게 */
-    right: 20px; /* 페이지 오른쪽에서 20px 떨어지게 */
-    width: 250px; /* 사이드바 너비 */
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    width: 250px;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     z-index: 10;
 }
 
+/* 메인 콘텐츠 */
 .content {
-    margin-right: 0px; /* 사이드바와 겹치지 않도록 오른쪽 여백 추가 */
-    flex-grow: 1; /* 남은 공간을 채우도록 */
+    flex-grow: 1;
+    max-width: 800px; /* 혜택 선택 영역 크기 고정 */
+    margin-right: 40px;; /* 사이드바 공간 확보 */
 }
+
 
 .title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eaeaea;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
 }
 
+/* 혜택 선택 영역 */
 .benefitsGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 한 행에 3개의 카드를 고정으로 배치 */
+    grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 고정 */
     gap: 16px;
-    margin-top: 20px; /* 혜택 선택 부분과 카드 리스트 사이의 여백 */
+    max-width: 600px; /* 최대 크기 제한 */
+    margin-top: 20px;
 }
 
+/* 혜택 카드 */
 .benefitCard {
     background-color: #f9f9f9;
     border-radius: 12px;
@@ -53,12 +87,14 @@
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     border: 1px solid #eaeaea;
+    width: 180px; /* 카드 크기 고정 */
 }
 
 .benefitCard:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
 }
+
 
 .benefitCard.selected {
     background-color: #f0f7ff;
@@ -106,10 +142,12 @@
     color: white;
 }
 
-.resetButton{
+.resetButton {
     background-color: lightcoral;
-    border-radius: 12px;
+    border-radius: 20px;
     padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -118,12 +156,12 @@
     border: 1px solid #eaeaea;
 }
 
+/* 검색 결과 개수 */
 .cardCount {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 8px;
 }
-
 
 /* 카드 리스트 영역 스타일 */
 .cardList {
@@ -141,4 +179,20 @@
 .noCards {
     font-size: 18px;
     color: #888;
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .content {
+        max-width: 100%;
+        margin-right: 0;
+    }
+    .sidebar {
+        width: 100%;
+        margin-top: 20px;
+    }
 }
