@@ -136,7 +136,7 @@ export default function SelectedBenefit() {
                         맞춤 카드: {selectedCategories.length === 0 ? totalCardCount : filteredCards.length}개
                     </span>
                     <div>
-                        <Link href="/search/results" className={styles.searchResultButton}>
+                        <Link href="/selectedBenefit/results" className={styles.searchResultButton}>
                             검색된 카드 목록 보기
                         </Link>
                     </div>
