@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import styles from "@/styles/Results.module.css";
+import styles from "@/app/selectedBenefit/results/Results.module.css";
 
 // 카드 정보를 포함하는 객체 (categories 제거)
 interface CardInfo {
@@ -54,9 +54,9 @@ export default function Results() {
     }, [categories]); // categories 값이 변경될 때마다 실행
 
     // 로딩 상태 표시
-    if (loading) {
-        return <div className={styles.loading}>카드 정보를 불러오는 중...</div>;
-    }
+    // if (loading) {
+    //     return <div className={styles.loading}>카드 정보를 불러오는 중...</div>;
+    // }
 
     // 에러 상태 표시
     if (error) {
