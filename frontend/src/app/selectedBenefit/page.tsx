@@ -41,6 +41,20 @@ export default function SelectedBenefit() {
     }, []); // 초기 로딩 시 카드 개수 가져오기
 
     useEffect(() => {
+        fetchTotalCardCount();
+
+        const handlePopState = () => {
+            router.push("/");
+        };
+        window.addEventListener("popstate", handlePopState);
+
+        return () => {
+            window.removeEventListener("popstate", handlePopState);
+        };
+    }, [router]);
+
+
+    useEffect(() => {
         if (selectedCategories.length > 0) {
             updateURL(selectedCategories);
             fetchFilteredCards(selectedCategories);
@@ -83,7 +97,7 @@ export default function SelectedBenefit() {
     };
 
     const updateURL = (categoryNames: Category[]) => {
-        const baseUrl = `${window.location.origin}/search/condition`;
+        const baseUrl = `${window.location.origin}${window.location.pathname}`;
         const url = new URL(baseUrl);
         categoryNames.forEach(category => url.searchParams.append('categories', category));
         window.history.pushState(null, '', url.toString());

@@ -13,12 +13,14 @@
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 20px;
+    text-align: center; /* 중앙 정렬 추가 */
 }
 
 .options {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    align-items: center; /* 버튼들을 수평으로 중앙 정렬 */
 }
 
 .optionButton {
@@ -30,6 +32,8 @@
     border: none;
     cursor: pointer;
     transition: background 0.3s;
+    width: 100%; /* 버튼 너비를 100%로 설정하여 중앙 정렬을 돕기 */
+    max-width: 300px; /* 버튼 너비 제한 */
 }
 
 .optionButton:hover {
@@ -43,6 +47,7 @@
     background: #ddd;
     border-radius: 4px;
     position: relative;
+    text-align: center; /* 중앙 정렬 추가 */
 }
 
 .progressBar {
@@ -58,6 +63,8 @@
     color: white;
     border-radius: 5px;
     cursor: pointer;
+    width: 100%; /* 버튼 너비를 100%로 설정하여 중앙 정렬을 돕기 */
+    max-width: 300px; /* 버튼 너비 제한 */
 }
 
 .backButton:hover {
