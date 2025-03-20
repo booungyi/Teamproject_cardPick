@@ -96,12 +96,14 @@ export default function SelectedBenefit() {
         const baseUrl = `${window.location.origin}/search/condition`;
         const url = new URL(baseUrl);
 
-        if (categoryNames.length > 0) {
-            url.searchParams.set('categories', categoryNames.join(','));
-        }
+        // 🔥 기존 방식 대신 반복문으로 여러 개의 쿼리 파라미터 추가
+        categoryNames.forEach(category => {
+            url.searchParams.append('categories', category);
+        });
 
         window.history.pushState(null, '', url.toString());
     };
+
 
     return (
         <div className={styles.wrapper}>
@@ -136,9 +138,20 @@ export default function SelectedBenefit() {
                         맞춤 카드: {selectedCategories.length === 0 ? totalCardCount : filteredCards.length}개
                     </span>
                     <div>
-                        <Link href="/selectedBenefit/results" className={styles.searchResultButton}>
+                        <Link
+                            href={{
+                                pathname: "/selectedBenefit/results",
+                                query: selectedCategories.reduce((acc, category) => {
+                                    acc[`categories`] = [...(acc[`categories`] || []), category];
+                                    return acc;
+                                }, {} as Record<string, string[]>)
+                            }}
+                            className={styles.searchResultButton}
+                        >
                             검색된 카드 목록 보기
                         </Link>
+
+
                     </div>
                     {selectedCategories.length > 0 && (
                         <button className={styles.resetButton} onClick={resetSearch}>검색 초기화</button>
