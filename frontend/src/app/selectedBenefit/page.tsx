@@ -38,20 +38,13 @@ export default function SelectedBenefit() {
 
     useEffect(() => {
         fetchTotalCardCount();
-
-        const handlePopState = () => {
-            router.push("/");
-        };
-        window.addEventListener("popstate", handlePopState);
-
-        return () => {
-            window.removeEventListener("popstate", handlePopState);
-        };
-    }, [router]);
+    }, []); // 초기 로딩 시 카드 개수 가져오기
 
     useEffect(() => {
-        updateURL(selectedCategories);
-        fetchFilteredCards(selectedCategories);
+        if (selectedCategories.length > 0) {
+            updateURL(selectedCategories);
+            fetchFilteredCards(selectedCategories);
+        }
     }, [selectedCategories]);
 
     const fetchTotalCardCount = async () => {
@@ -65,10 +58,7 @@ export default function SelectedBenefit() {
     };
 
     const fetchFilteredCards = async (categories: Category[]) => {
-        if (categories.length === 0) {
-            setFilteredCards([]);
-            return;
-        }
+        if (categories.length === 0) return; // 카테고리 없으면 요청 안 함
 
         try {
             const queryString = `categories=${categories.join(",")}`;
@@ -95,11 +85,7 @@ export default function SelectedBenefit() {
     const updateURL = (categoryNames: Category[]) => {
         const baseUrl = `${window.location.origin}/search/condition`;
         const url = new URL(baseUrl);
-
-        if (categoryNames.length > 0) {
-            url.searchParams.set('categories', categoryNames.join(','));
-        }
-
+        categoryNames.forEach(category => url.searchParams.append('categories', category));
         window.history.pushState(null, '', url.toString());
     };
 
@@ -108,7 +94,6 @@ export default function SelectedBenefit() {
             <div className={styles.container}>
                 <h2 className={styles.title}>카드 혜택 선택</h2>
 
-                {/* 혜택 선택 영역 */}
                 <div className={styles.benefitsGrid}>
                     {categories.map((category) => (
                         <div
@@ -116,11 +101,7 @@ export default function SelectedBenefit() {
                             className={`${styles.benefitCard} ${selectedCategories.includes(category.name) ? styles.selected : ''}`}
                             onClick={() => toggleCategory(category.name)}
                         >
-                            {category.icon && (
-                                <div className={styles.iconWrapper}>
-                                    <span className={styles.icon}>{category.icon}</span>
-                                </div>
-                            )}
+                            {category.icon && <div className={styles.iconWrapper}><span className={styles.icon}>{category.icon}</span></div>}
                             <div className={styles.benefitName}>{category.displayName}</div>
                             <button className={styles.selectButton}>
                                 {selectedCategories.includes(category.name) ? '선택됨' : '선택하기'}
@@ -129,16 +110,25 @@ export default function SelectedBenefit() {
                     ))}
                 </div>
 
-                {/* 검색 결과 영역 */}
                 <div className={styles.searchResult}>
                     <h3>🔍 검색 결과</h3>
                     <span className={styles.cardCount}>
                         맞춤 카드: {selectedCategories.length === 0 ? totalCardCount : filteredCards.length}개
                     </span>
                     <div>
-                        <Link href="/selectedBenefit/results" className={styles.searchResultButton}>
+                        <Link
+                            href={{
+                                pathname: "/selectedBenefit/results",
+                                query: selectedCategories.reduce((acc, category) => {
+                                    acc['categories'] = [...(acc['categories'] || []), category];
+                                    return acc;
+                                }, {} as Record<string, string[]>)
+                            }}
+                            className={styles.searchResultButton}
+                        >
                             검색된 카드 목록 보기
                         </Link>
+
                     </div>
                     {selectedCategories.length > 0 && (
                         <button className={styles.resetButton} onClick={resetSearch}>검색 초기화</button>
