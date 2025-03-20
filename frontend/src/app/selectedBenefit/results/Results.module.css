@@ -5,9 +5,10 @@
     padding: 2rem;
     background-color: #fff;
     min-height: 100vh;
+    margin: 0 10vw; /* 양옆에 일정한 공간 띄우기 */
 }
 
-.loading {
+.loading, .error {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,103 +18,57 @@
 }
 
 .error {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50vh;
-    font-size: 1.2rem;
     color: #e74c3c;
 }
 
-/* 진행 단계 표시 */
-.progressSteps {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-    width: 100%;
-    max-width: 320px;
+.header {
+    text-align: center; /* 제목 중앙 정렬 */
+    width: 100%; /* 전체 너비 */
+    margin-bottom: 1.5rem;
 }
 
-.step {
-    text-align: center;
-}
-
-.stepCircle {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #f2efe9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-.step.active .stepCircle {
-    background-color: #ffbb00;
-    color: #000;
-}
-
-.recommendationSection {
-    width: 100%;
-    max-width: 1200px;
-    margin-bottom: 3rem;
-}
-
-.mainTitle {
+.title {
     font-size: 2rem;
     font-weight: bold;
     color: #222;
-    margin-bottom: 1.5rem;
-    text-align: center;
 }
 
-.benefitPoints {
-    margin: 2rem 0;
+.main {
+    width: 100%; /* 전체 너비 */
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center; /* 카드 목록 중앙 정렬 */
+    margin-bottom: 3rem;
 }
 
-.benefitItem {
+.cardGrid {
     display: flex;
-    align-items: center;
-    margin-bottom: 0.75rem;
-    font-size: 1.1rem;
-}
-
-.checkmark {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #bb8b2f;
-    margin-right: 10px;
-    font-weight: bold;
-}
-
-.cardContainer {
-    display: flex;
-    justify-content: flex-start;
+    justify-content: flex-start; /* 카드들이 한 줄로 나열되도록 */
     gap: 1.5rem;
-    margin-top: 2rem;
+    width: 100%;
+    max-width: 100%; /* 카드들이 부모 컨테이너를 넘지 않도록 */
+    padding: 1rem;
     overflow-x: auto; /* 가로 스크롤 활성화 */
-    padding-bottom: 1rem; /* 스크롤바 공간 확보 */
+    white-space: nowrap; /* 카드들이 한 줄에 놓이게 설정 */
 }
 
 .cardItem {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 180px;
+    width: 200px; /* 카드 너비 고정 */
+    height: 350px; /* 카드 높이 고정 */
     transition: transform 0.3s ease;
     cursor: pointer;
-    flex-shrink: 0; /* 가로 스크롤 시 카드 크기 고정 */
+    flex-shrink: 0;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .cardItem:hover {
     transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 .cardImageWrapper {
@@ -122,63 +77,68 @@
     width: 160px;
     height: 250px;
     border-radius: 12px;
-    transition: box-shadow 0.3s ease;
-}
-
-.cardItem:hover .cardImageWrapper {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-.eventBadge {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background-color: #ff6b00;
-    color: white;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 0.75rem;
-    z-index: 10;
-    text-align: center;
-    line-height: 1.2;
+    overflow: hidden;
+    background-color: #eaeaea;
 }
 
 .cardImage {
     width: 100%;
     height: 100%;
-    position: relative;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
     border-radius: 12px;
-    overflow: hidden;
-    background-color: white;
-    transition: transform 0.3s ease;
-}
-
-.cardItem:hover .cardImage {
-    transform: scale(1.05);
 }
 
 .cardName {
     font-size: 1rem;
     font-weight: normal;
     text-align: center;
-    margin-bottom: 0.25rem;
-    transition: color 0.3s ease;
+    margin-top: 0.5rem;
     color: #333;
+    transition: color 0.3s ease;
 }
 
 .cardItem:hover .cardName {
     color: #bb8b2f;
 }
 
-.cardCategories {
-    font-size: 0.9rem;
-    color: #666;
-    text-align: center;
+.footer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.pageButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pageButtons button {
+    padding: 0.5rem 1rem;
+    background-color: #333;
+    color: white;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+.pageButtons button:hover {
+    background-color: #FFB300;
+}
+
+.pageButtons button:disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+}
+
+.pageButtons span {
+    font-size: 1rem;
+    font-weight: bold;
 }
 
 .homeButton {
@@ -191,80 +151,8 @@
     transition: background-color 0.3s ease;
     border: none;
     cursor: pointer;
-    margin-top: 2rem;
 }
 
 .homeButton:hover {
-    background-color: #555;
-}
-
-.cardGrid {
-    display: flex;
-    flex-wrap: nowrap; /* 한 줄 유지 */
-    overflow-x: auto; /* 넘칠 경우 가로 스크롤 */
-    gap: 16px; /* 카드 간격 */
-}
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-    .progressSteps {
-        gap: 0.5rem;
-    }
-
-    .stepCircle {
-        width: 50px;
-        height: 50px;
-        font-size: 0.8rem;
-    }
-
-    .mainTitle {
-        font-size: 1.5rem;
-    }
-
-    .cardContainer {
-        display: flex;
-        justify-content: flex-start;
-        gap: 1.5rem;
-        margin-top: 2rem;
-        overflow-x: auto; /* 가로 스크롤 활성화 */
-        padding-bottom: 1rem; /* 스크롤바 공간 확보 */
-    }
-
-    .cardItem {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 180px;
-        transition: transform 0.3s ease;
-        cursor: pointer;
-        flex-shrink: 0; /* 가로 스크롤 시 카드 크기 고정 */
-    }
-
-    .cardItem:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        background-color: #f8f8f8;
-    }
-
-    .cardImageWrapper {
-        position: relative;
-        margin-bottom: 1rem;
-        width: 160px;
-        height: 250px;
-        border-radius: 12px;
-        transition: box-shadow 0.3s ease;
-        /* 추가: 이미지 컨테이너 비율 고정 */
-        aspect-ratio: 2/3; /* 세로형 비율로 통일 */
-        overflow: hidden;
-    }
-
-    .cardName {
-        font-size: 0.9rem;
-    }
-
-    .eventBadge {
-        width: 40px;
-        height: 40px;
-        font-size: 0.65rem;
-    }
+    background-color: #218838;
 }
