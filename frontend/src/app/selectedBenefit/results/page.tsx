@@ -51,12 +51,12 @@ export default function Results() {
         };
 
         fetchFilteredCards(categories);
-    }, [categories]); // categories 값이 변경될 때마다 실행
+    }, []); // categories 값이 변경될 때마다 실행
 
     // 로딩 상태 표시
-    // if (loading) {
-    //     return <div className={styles.loading}>카드 정보를 불러오는 중...</div>;
-    // }
+    if (loading) {
+        return <div className={styles.loading}>카드 정보를 불러오는 중...</div>;
+    }
 
     // 에러 상태 표시
     if (error) {
