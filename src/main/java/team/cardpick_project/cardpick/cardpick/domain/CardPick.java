@@ -54,6 +54,10 @@ public class CardPick {
     @Column(nullable = true)
     private LocalDateTime createAt;
 
+    //광고
+    @OneToMany(mappedBy = "cardPick")
+    private List<Advertise> advertiseList = new ArrayList<>();
+
     public void addCategory(List<CardCategory> categories){
         this.cardCategories.addAll(categories);
     }

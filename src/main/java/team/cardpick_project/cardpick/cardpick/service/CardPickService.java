@@ -11,6 +11,7 @@ import org.apache.commons.csv.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -18,6 +19,7 @@ import java.util.*;
 public class CardPickService {
     private final CardPickRepository cardPickRepository;
     private final CardPickDao cardPickDao;
+    private final AdQueryRepository adQueryRepository;
 
     public List<CardResponse> getCardsByConditions(String issuer, List<String> categories) {
         List<CardResponse> cardResponse = cardPickDao.getCardsByConditions(issuer, categories).stream()
@@ -46,7 +48,7 @@ public class CardPickService {
                 // parsed_desc 문자열을 리스트로 변환
                 String parsedDescStr = record.get("parsed_desc").replace("[", "").replace("]", "").replace("'", "");
                 List<CardCategory> parsedDesc = Arrays.asList(parsedDescStr.split(", ")).stream()
-                        .map( category -> new CardCategory(cardPick, Category.fromString(category)))
+                        .map(category -> new CardCategory(cardPick, Category.fromString(category)))
                         .toList();
                 cardPick.addCategory(parsedDesc);
                 cardPickRepository.save(cardPick);
@@ -66,8 +68,22 @@ public class CardPickService {
 
     public List<CardResponse> getCardsByMbti(String mbti) {
         List<CardResponse> cardResponse = cardPickDao.getCardsByMbti(mbti).stream()
-                .map(CardResponse::toDtoFromQDto)
+//                .map(CardResponse::toDtoFromQDto)
+                .map(data -> CardResponse.toDtoFromQDto(data, false))
                 .toList();
+        // TODO: 광고 중인 카드 1개 가지고 오기 db에서
+
+        LocalDateTime today = LocalDateTime.now();
+        CardPick activeAdCard = adQueryRepository.findActiveAdCard(today);
+
+        // 광고 카드 존재하면, CardResponse 목록에 추가
+        if (activeAdCard != null) {
+            // 광고 카드를 CardResponse로 변환
+            CardResponse adCardResponse = CardResponse.toDtoFromQDto(activeAdCard, true);
+            cardResponse.add(adCardResponse);
+        }
         return cardResponse;
     }
+
+
 }
