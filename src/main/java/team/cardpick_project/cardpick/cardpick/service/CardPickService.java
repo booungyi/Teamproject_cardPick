@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponse;
+import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponseQDto;
 import team.cardpick_project.cardpick.cardpick.domain.*;
 import org.apache.commons.csv.*;
 
@@ -13,6 +14,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +25,23 @@ public class CardPickService {
 
     public List<CardResponse> getCardsByConditions(String issuer, List<String> categories) {
         List<CardResponse> cardResponse = cardPickDao.getCardsByConditions(issuer, categories).stream()
-                .map(CardResponse::toDtoFromQDto)
-                .toList();
+                .map(data -> CardResponse.toDtoFromQDto(data, false))
+                .collect(Collectors.toList());
+
+        LocalDateTime today = LocalDateTime.now();
+        CardPick activeAdCard = adQueryRepository.findActiveAdCard(today);
+
+        // 광고 카드이면, 같은 CardResponse에 추가
+        if (activeAdCard != null) {
+            CardResponse adCardResponse = new CardResponse(
+                    activeAdCard.getCardName(),
+                    activeAdCard.getImageUrl(),
+                    activeAdCard.getDetailUrl(),
+                    true
+            );
+
+            cardResponse.add(adCardResponse);
+        }
         return cardResponse;
     }
 
@@ -70,16 +87,21 @@ public class CardPickService {
         List<CardResponse> cardResponse = cardPickDao.getCardsByMbti(mbti).stream()
 //                .map(CardResponse::toDtoFromQDto)
                 .map(data -> CardResponse.toDtoFromQDto(data, false))
-                .toList();
-        // TODO: 광고 중인 카드 1개 가지고 오기 db에서
+                .collect(Collectors.toList());
 
+        // TODO: 광고 중인 카드 1개 가지고 오기 db에서
         LocalDateTime today = LocalDateTime.now();
         CardPick activeAdCard = adQueryRepository.findActiveAdCard(today);
 
-        // 광고 카드 존재하면, CardResponse 목록에 추가
+        // 광고 카드이면, 같은 CardResponse에 추가
         if (activeAdCard != null) {
-            // 광고 카드를 CardResponse로 변환
-            CardResponse adCardResponse = CardResponse.toDtoFromQDto(activeAdCard, true);
+            CardResponse adCardResponse = new CardResponse(
+                    activeAdCard.getCardName(),
+                    activeAdCard.getImageUrl(),
+                    activeAdCard.getDetailUrl(),
+                    true
+            );
+
             cardResponse.add(adCardResponse);
         }
         return cardResponse;
