@@ -4,6 +4,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class AdQueryRepository {
@@ -32,17 +35,20 @@ public class AdQueryRepository {
         return count != null ? count.intValue() : 0;
     }
 
-    public CardPick findActiveAdCard(LocalDateTime today) {
-        Advertise advertise = jpaQueryFactory.selectFrom(this.advertise)
+    public List<CardPick> findActiveAdCard(LocalDateTime today) {
+        List<Advertise> advertiseList = jpaQueryFactory.selectFrom(this.advertise)
                 .where(
                         this.advertise.startDate.loe(today),
                         this.advertise.endDate.goe(today)
                 )
-                .fetchOne();
+                .fetch();
 
-        if (advertise == null){
-            return null;
+        if (advertiseList == null || advertiseList.isEmpty()){
+            return null; // 빈 리스트 반환
         }
-        return advertise.getCardPick();
+        // 리스트에서 모든 CardPick을 추출
+        return advertiseList.stream()
+                .map(advertise -> advertise.getCardPick())
+                .collect(Collectors.toList());
     }
 }
