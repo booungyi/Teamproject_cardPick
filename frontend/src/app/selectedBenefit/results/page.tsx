@@ -68,6 +68,7 @@ export default function Results() {
         return pages;
     };
 
+
     // 로딩 상태 표시
     if (loading) {
         return <div className={styles.loading}>카드 정보를 불러오는 중...</div>;

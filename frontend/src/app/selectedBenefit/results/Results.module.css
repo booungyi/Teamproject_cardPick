@@ -42,13 +42,17 @@
 
 .cardGrid {
     display: flex;
-    justify-content: flex-start; /* 카드들이 한 줄로 나열되도록 */
     gap: 1.5rem;
     width: 100%;
     max-width: 100%; /* 카드들이 부모 컨테이너를 넘지 않도록 */
     padding: 1rem;
     overflow-x: auto; /* 가로 스크롤 활성화 */
     white-space: nowrap; /* 카드들이 한 줄에 놓이게 설정 */
+    justify-content: space-evenly; /*스크롤 할떄 왼쪽 카드 짤림 방지*/
+}
+/*스크롤바 숨김*/
+.cardGrid::-webkit-scrollbar {
+    display: none;
 }
 
 .cardItem {

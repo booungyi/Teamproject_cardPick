@@ -2,7 +2,7 @@ package team.cardpick_project.cardpick.cardpick.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
- 
+
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -10,6 +10,7 @@ import lombok.*;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class CardCategory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include

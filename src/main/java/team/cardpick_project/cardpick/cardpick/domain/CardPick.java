@@ -3,7 +3,7 @@ package team.cardpick_project.cardpick.cardpick.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
-
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
+@EntityListeners(AuditingEntityListener.class)
 public class CardPick {
 
     @Id
@@ -25,7 +26,7 @@ public class CardPick {
     @NonNull
     private String cardName;
 
-    @Column(nullable = false)
+    @NonNull
     @OneToMany(mappedBy = "cardPick",cascade = CascadeType.ALL)
     private List<CardCategory> cardCategories = new ArrayList<>();
 
@@ -53,6 +54,10 @@ public class CardPick {
     @CreatedBy
     @Column(nullable = true)
     private LocalDateTime createAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "card_ad_id" , nullable = true)
+    private CardAd cardAd;
 
     public void addCategory(List<CardCategory> categories){
         this.cardCategories.addAll(categories);
