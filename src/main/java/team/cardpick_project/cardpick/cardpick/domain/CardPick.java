@@ -3,6 +3,7 @@ package team.cardpick_project.cardpick.cardpick.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
+import team.cardpick_project.cardpick.cardpick.cardbenefits.CardBenefits;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,6 +50,9 @@ public class CardPick {
     @Column(nullable = false)
     @NonNull
     private String detailUrl;
+
+    @OneToMany(mappedBy = "cardPick")
+    private List<CardBenefits> cardBenefitsList = new ArrayList<>();
 
     @CreatedBy
     @Column(nullable = true)
