@@ -6,9 +6,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AdvertiseRepository extends JpaRepository<Advertise,Long> {
-    int countByCardPickAndStartDateLessThanEqualAndEndDateGreaterThanEqual(CardPick cardPick, LocalDateTime end, LocalDateTime start);
-
     List<Advertise> findByAdStatusIn(List<AdStatus> statuses);
 
-    Advertise findByCardPickAndIsDeleted(CardPick cardPick, boolean isDeleted);
+    Advertise findByCardPick(CardPick cardPick);
+
+    //Advertise findByCardPickAndIsDeleted(CardPick cardPick, boolean isDeleted);
+
 }
