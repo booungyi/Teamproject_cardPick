@@ -4,6 +4,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.AdResponse;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CreateAdRequest;
+import team.cardpick_project.cardpick.cardpick.cardpickDto.CreateAdTermRequest;
 import team.cardpick_project.cardpick.cardpick.domain.*;
 
 import java.time.LocalDateTime;
@@ -59,5 +60,17 @@ public class AdvertiseService {
         advertiseRepository.saveAll(ads);
     }
 
+//    //광고 찾기 - 진행중인 광고만
+//    public void find(Long cardPickId) {
+//
+//    }
 
+
+    // 광고 기간 수정
+    //TODO: 등록된 카드인지 확인 - 광고카드인지 확인 - pending,active인 카드만 수정
+    public void termUpdate(CreateAdTermRequest request) {
+        Advertise advertise = advertiseRepository.findById(request.adCardId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
+
+    }
 }
