@@ -29,19 +29,17 @@ public class CardPickService {
                 .collect(Collectors.toList());
 
         LocalDateTime today = LocalDateTime.now();
-        CardPick activeAdCard = adQueryRepository.findActiveAdCard(today);
+        List<CardPick> activeAdCard = adQueryRepository.findActiveAdCard(today);
 
-        // 광고 카드이면, 같은 CardResponse에 추가
-        if (activeAdCard != null) {
-            CardResponse adCardResponse = new CardResponse(
-                    activeAdCard.getCardName(),
-                    activeAdCard.getImageUrl(),
-                    activeAdCard.getDetailUrl(),
-                    true
-            );
+        List<CardResponse> adCardReponses = activeAdCard.stream()
+                .map(active -> new CardResponse(
+                        active.getCardName(),
+                        active.getImageUrl(),
+                        active.getDetailUrl(),
+                        true
+                ))
+                .toList();
 
-            cardResponse.add(adCardResponse);
-        }
         return cardResponse;
     }
 
@@ -91,19 +89,18 @@ public class CardPickService {
 
         // TODO: 광고 중인 카드 1개 가지고 오기 db에서
         LocalDateTime today = LocalDateTime.now();
-        CardPick activeAdCard = adQueryRepository.findActiveAdCard(today);
+        List<CardPick> activeAdCard = adQueryRepository.findActiveAdCard(today);
 
         // 광고 카드이면, 같은 CardResponse에 추가
-        if (activeAdCard != null) {
-            CardResponse adCardResponse = new CardResponse(
-                    activeAdCard.getCardName(),
-                    activeAdCard.getImageUrl(),
-                    activeAdCard.getDetailUrl(),
-                    true
-            );
+        List<CardResponse> adCardReponses = activeAdCard.stream()
+                .map(active -> new CardResponse(
+                        active.getCardName(),
+                        active.getImageUrl(),
+                        active.getDetailUrl(),
+                        true
+                ))
+                .toList();
 
-            cardResponse.add(adCardResponse);
-        }
         return cardResponse;
     }
 
