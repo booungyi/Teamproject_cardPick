@@ -1,5 +1,6 @@
 package team.cardpick_project.cardpick.cardpick.service;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,9 @@ public class AdController {
     public AdResponse create(@RequestBody CreateAdRequest request){
         return advertiseService.create(request);
     };
+
+//    @GetMapping("/ad/active")
+//    public ActiveResponse find(@RequestBody ){}
 
 
 }
