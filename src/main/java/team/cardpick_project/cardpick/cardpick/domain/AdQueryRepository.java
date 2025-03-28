@@ -18,21 +18,10 @@ public class AdQueryRepository {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
+    //수정하려는 날짜에 광고가 다 차있으면 수정하지 못하도록
+    //수정할때는 광고카드만 비교
+    public void compareAds(CardPick cardPick, LocalDateTime start, LocalDateTime end) {
 
-    public int CountExistingAds(CardPick cardPick, LocalDateTime start, LocalDateTime end) {
-
-        Long count = jpaQueryFactory
-                .select(advertise.count())
-                .from(advertise)
-                .where(
-                        advertise.cardPick.eq(cardPick),    //카드 선택
-                        advertise.startDate.loe(end),       // 시작이 종료보다 이전
-                        advertise.endDate.goe(start),        // 종료일이 시작보다 이후
-                        advertise.isDeleted.isFalse()       //소프트 딜리트 제외
-                )
-                .fetchOne();
-
-        return count != null ? count.intValue() : 0;
     }
 
     public List<CardPick> findActiveAdCard(LocalDateTime today) {
@@ -43,7 +32,7 @@ public class AdQueryRepository {
                 )
                 .fetch();
 
-        if (advertiseList == null || advertiseList.isEmpty()){
+        if (advertiseList == null || advertiseList.isEmpty()) {
             return null; // 빈 리스트 반환
         }
         // 리스트에서 모든 CardPick을 추출
