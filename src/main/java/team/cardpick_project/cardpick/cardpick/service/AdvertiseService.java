@@ -1,7 +1,9 @@
 package team.cardpick_project.cardpick.cardpick.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import team.cardpick_project.cardpick.cardpick.cardpickDto.ActiveResponse;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.AdResponse;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CreateAdRequest;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CreateAdTermRequest;
@@ -27,12 +29,6 @@ public class AdvertiseService {
         CardPick cardPick =
                 cardPickRepository.findById(request.cardpickId())
                         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
-
-        //겹치는 광고 개수 확인
-        int existingAdCount = adQueryRepository.CountExistingAds(cardPick, request.start(), request.end());
-        if (existingAdCount >= 3) {
-            throw new IllegalArgumentException("최대 3개의 광고만 등록 가능");
-        }
 
         //새 광고 생성
         Advertise advertise = new Advertise(
@@ -60,17 +56,35 @@ public class AdvertiseService {
         advertiseRepository.saveAll(ads);
     }
 
-//    //광고 찾기 - 진행중인 광고만
-//    public void find(Long cardPickId) {
-//
-//    }
+    //광고 조회- isDelete= false인 광고만 찾아옴
+    public List<ActiveResponse> findAllAD(){
+        List<Advertise> advertiseList = advertiseRepository.findByIsDeletedFalse();
 
+        return advertiseList.stream()
+                .map(advertise -> new ActiveResponse(
+                        advertise.getId(),
+                        advertise.getCardPick().getCardName(),
+                        advertise.getCardPick().getImageUrl(),
+                        advertise.getCardPick().getDetailUrl()
+                )).toList();
+    }
 
     // 광고 기간 수정
     //TODO: 등록된 카드인지 확인 - 광고카드인지 확인 - pending,active인 카드만 수정
-    public void termUpdate(CreateAdTermRequest request) {
-        Advertise advertise = advertiseRepository.findById(request.adCardId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
+    @Transactional
+    public void termUpdate(Long adCardId,CreateAdTermRequest request) {
+        Advertise advertise = advertiseRepository.findById(adCardId)
+                .orElseThrow(() -> new IllegalArgumentException("광고카드 아님"));
 
+        //겹치는 광고 개수 확인
+        int existingAdCount = adQueryRepository.CountExistingAds(cardPick, request.start(), request.end());
+        if (existingAdCount >= 3) {
+            throw new IllegalArgumentException("최대 3개의 광고만 등록 가능");
+        }
+
+        advertise.termUpdate(
+                request.start(),
+                request.end()
+        );
     }
 }

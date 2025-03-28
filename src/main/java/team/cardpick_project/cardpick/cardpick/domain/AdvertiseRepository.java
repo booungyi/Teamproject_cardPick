@@ -8,8 +8,7 @@ import java.util.List;
 public interface AdvertiseRepository extends JpaRepository<Advertise,Long> {
     List<Advertise> findByAdStatusIn(List<AdStatus> statuses);
 
-    Advertise findByCardPick(CardPick cardPick);
+    List<Advertise> findByIsDeletedFalse();
 
-    //Advertise findByCardPickAndIsDeleted(CardPick cardPick, boolean isDeleted);
 
 }
