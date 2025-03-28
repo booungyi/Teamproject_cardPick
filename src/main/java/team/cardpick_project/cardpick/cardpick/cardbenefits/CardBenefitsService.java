@@ -38,11 +38,15 @@ import java.util.Map;
                     String name = record.get("name");
 
                     String benefitsString = record.get("benefits").replace("'", "\"");
+                    System.out.println(benefitsString);
 
                     ObjectMapper objectMapper = new ObjectMapper();
                     List<Map<String, String>> benefits = objectMapper.readValue(benefitsString, new TypeReference<List<Map<String, String>>>() {});
 
-                    CardPick cardPick = cardPickRepository.findByCardName(name).orElseThrow(()->new NoExistsCardNameException("존재하지 않는 카드명"));
+                    CardPick cardPick = cardPickRepository.findByCardName(name);
+                    if (cardPick==null){
+                        continue;
+                    }
 
                     for (Map<String, String> benefit : benefits) {
                         CardBenefits cardBenefits = new CardBenefits(benefit.get("benefit_name"),benefit.get("benefit_detail"),cardPick);

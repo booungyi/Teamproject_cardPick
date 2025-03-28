@@ -28,6 +28,7 @@ public class CardPick {
 
     @Column(nullable = false)
     @OneToMany(mappedBy = "cardPick",cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<CardCategory> cardCategories = new ArrayList<>();
 
     @Column(nullable = false)
@@ -52,6 +53,7 @@ public class CardPick {
     private String detailUrl;
 
     @OneToMany(mappedBy = "cardPick")
+    @ToString.Exclude
     private List<CardBenefits> cardBenefitsList = new ArrayList<>();
 
     @CreatedBy

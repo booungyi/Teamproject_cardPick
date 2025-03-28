@@ -26,6 +26,7 @@ public class CardBenefits {
     private String benefitDetail;
 
     @ManyToOne
+    @ToString.Exclude
     private CardPick cardPick;
 
     public CardBenefits(String benefitName, String benefitDetail, CardPick cardPick) {
