@@ -62,5 +62,11 @@ public class Advertise {
         return isDeleted;
     }
 
+    //광고기간 수정
+    public void termUpdate(LocalDateTime startDate,
+                           LocalDateTime endDate){
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
 }
