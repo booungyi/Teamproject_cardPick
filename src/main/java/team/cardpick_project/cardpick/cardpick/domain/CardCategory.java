@@ -17,6 +17,7 @@ public class CardCategory {
 
     @ManyToOne
     @NonNull
+    @ToString.Exclude
     private CardPick cardPick;
 
     @Enumerated(EnumType.STRING)
