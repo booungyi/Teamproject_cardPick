@@ -3,8 +3,7 @@ package team.cardpick_project.cardpick;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import team.cardpick_project.cardpick.cardpick.cardbenefits.CardBenefitsService;
-import team.cardpick_project.cardpick.cardpick.domain.CardPick;
+import team.cardpick_project.cardpick.cardbenefits.CardBenefitsService;
 import team.cardpick_project.cardpick.cardpick.service.CardPickService;
 
 @Component

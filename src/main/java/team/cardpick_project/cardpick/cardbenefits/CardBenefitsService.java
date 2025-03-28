@@ -1,4 +1,4 @@
-package team.cardpick_project.cardpick.cardpick.cardbenefits;
+package team.cardpick_project.cardpick.cardbenefits;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,18 +8,14 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
-import team.cardpick_project.cardpick.cardpick.domain.CardCategory;
 import team.cardpick_project.cardpick.cardpick.domain.CardPick;
 import team.cardpick_project.cardpick.cardpick.domain.CardPickRepository;
-import team.cardpick_project.cardpick.cardpick.domain.Category;
-import team.cardpick_project.cardpick.cardpick.exception.NoExistsCardNameException;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

@@ -3,7 +3,7 @@ package team.cardpick_project.cardpick.cardpick.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
-import team.cardpick_project.cardpick.cardpick.cardbenefits.CardBenefits;
+import team.cardpick_project.cardpick.cardbenefits.CardBenefits;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

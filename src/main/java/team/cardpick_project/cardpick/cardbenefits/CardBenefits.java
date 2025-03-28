@@ -1,4 +1,4 @@
-package team.cardpick_project.cardpick.cardpick.cardbenefits;
+package team.cardpick_project.cardpick.cardbenefits;
 
 import jakarta.persistence.*;
 import lombok.*;
