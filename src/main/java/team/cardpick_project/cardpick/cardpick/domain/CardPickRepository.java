@@ -6,6 +6,4 @@ import java.util.Optional;
 
 public interface CardPickRepository extends JpaRepository<CardPick, Long> {
     Optional<CardPick> findByCardName(String cardName);
-
-
 }

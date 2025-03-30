@@ -46,6 +46,9 @@ dependencies {
     //h2 database
     testImplementation 'com.h2database:h2'
 
+    //Jackson 라이브러리
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+
 }
 
 tasks.named('test') {
