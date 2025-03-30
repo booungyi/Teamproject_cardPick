@@ -1,17 +1,19 @@
 package team.cardpick_project.cardpick.cardpick.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
+@RequiredArgsConstructor
+@NoArgsConstructor
+@Setter
 @Getter
 public class Advertise {
 
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -25,24 +27,14 @@ public class Advertise {
     @Enumerated(EnumType.STRING)
     private AdStatus adStatus = AdStatus.PENDING;
 
-    @Setter
     @Column(nullable = false)
     private boolean isDeleted = false;
 
     //광고:카드 = n:1
-    @Setter
     @ManyToOne
+    @JoinColumn(name = "card_pick_id")
     private CardPick cardPick;
 
-    protected Advertise(){}
-
-    public Advertise(LocalDateTime startDate, LocalDateTime endDate, CardPick cardPick) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.cardPick= cardPick;
-    }
-
-    //광고 상태 업데이트 함수 + end일 경우 소프트 딜리트
     public void updateStatus(){
         LocalDateTime now = LocalDateTime.now();
 
@@ -50,23 +42,25 @@ public class Advertise {
             this.adStatus = AdStatus.PENDING;
         }
         else if (now.isAfter(endDate)){
-            this.adStatus = AdStatus.END;
-            this.isDeleted = true;
+            deleted();
         }
         else {
             this.adStatus = AdStatus.ACTIVE;
         }
     }
 
-    public boolean isDeleted(){
-        return isDeleted;
+    // ID만 받아서 생성하는 생성자
+    public Advertise(Long cardPickId, LocalDateTime start, LocalDateTime end) {
+        this.cardPick = new CardPick(cardPickId); // 프록시 객체로 설정
+        this.startDate = start;
+        this.endDate = end;
     }
 
-    //광고기간 수정
-    public void termUpdate(LocalDateTime startDate,
-                           LocalDateTime endDate){
-        this.startDate = startDate;
-        this.endDate = endDate;
+    //test 용 또는 수동으로 delete 를 해야될떄 + 함수 최적화
+    // isDeleted = ture 로 변경
+    // AdStatus 를 END 로 저장
+    public void deleted(){
+        this.isDeleted = true;
+        this.adStatus = AdStatus.END;
     }
-
 }

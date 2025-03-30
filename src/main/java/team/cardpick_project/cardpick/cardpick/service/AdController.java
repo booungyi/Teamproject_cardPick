@@ -17,19 +17,24 @@ public class AdController {
     }
 
     @PostMapping("/ad")
-    public AdResponse create(@RequestBody CreateAdRequest request) {
-        return advertiseService.create(request);
+    public void createAd(@RequestBody CreateAdRequest request) {
+        advertiseService.create(request);
     }
 
     @GetMapping("/ad")
-    public List<ActiveResponse> find() {
+    public List<ActiveResponse> findAd() {
         return advertiseService.findAllAD();
     }
 
     @PutMapping("/ad/{adCardId}")
-    public void term(
+    public void updateAd(
             @PathVariable Long adCardId,
-                     @RequestBody CreateAdTermRequest request) {
+            @RequestBody CreateAdTermRequest request) {
         advertiseService.termUpdate(adCardId, request);
+    }
+
+    @DeleteMapping("ad/{adCardId}")
+    public void deleteAd(@PathVariable Long adCardId) {
+        advertiseService.deleteAd(adCardId);
     }
 }

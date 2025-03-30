@@ -61,4 +61,10 @@ public class CardPick {
     public void addCategory(List<CardCategory> categories){
         this.cardCategories.addAll(categories);
     }
+
+    // ID만 받는 생성자 추가 (프록시 객체 생성용)
+    public CardPick(Long id) {
+        this.id = id;
+    }
+
 }

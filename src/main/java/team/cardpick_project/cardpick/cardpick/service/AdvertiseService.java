@@ -25,24 +25,17 @@ public class AdvertiseService {
         this.adQueryRepository = adQueryRepository;
     }
 
-    public AdResponse create(CreateAdRequest request) {
-        CardPick cardPick =
-                cardPickRepository.findById(request.cardpickId())
-                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
+    public void create(CreateAdRequest request) {
+        CardPick cardPick = cardPickRepository.findById(request.cardpickId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
 
         //새 광고 생성
-        Advertise advertise = new Advertise(
-                request.start(),
-                request.end(),
-                cardPick
-        );
-        advertiseRepository.save(advertise);
-
-        return new AdResponse(
-                advertise.getId(),
-                advertise.getStartDate(),
-                advertise.getEndDate()
-        );
+        advertiseRepository.save(
+                new Advertise(
+                        cardPick.getId(),
+                        request.start(),
+                        request.end()
+                ));
     }
 
     //광고 매일 자정 업데이트
@@ -57,7 +50,7 @@ public class AdvertiseService {
     }
 
     //광고 조회- isDelete= false인 광고만 찾아옴
-    public List<ActiveResponse> findAllAD(){
+    public List<ActiveResponse> findAllAD() {
         List<Advertise> advertiseList = advertiseRepository.findByIsDeletedFalse();
 
         return advertiseList.stream()
@@ -72,19 +65,21 @@ public class AdvertiseService {
     // 광고 기간 수정
     //TODO: 등록된 카드인지 확인 - 광고카드인지 확인 - pending,active인 카드만 수정
     @Transactional
-    public void termUpdate(Long adCardId,CreateAdTermRequest request) {
+    public void termUpdate(Long adCardId, CreateAdTermRequest request) {
         Advertise advertise = advertiseRepository.findById(adCardId)
                 .orElseThrow(() -> new IllegalArgumentException("광고카드 아님"));
+        // 광고 기간이 겹치는지 확인
+        adQueryRepository.CountExistingAds(request.start(), request.end());
+        // 에외 처리 없을경우는 바로 수정
+        advertise.setStartDate(request.start());
+        advertise.setEndDate(request.end());
+    }
 
-        //겹치는 광고 개수 확인
-        int existingAdCount = adQueryRepository.CountExistingAds(cardPick, request.start(), request.end());
-        if (existingAdCount >= 3) {
-            throw new IllegalArgumentException("최대 3개의 광고만 등록 가능");
-        }
-
-        advertise.termUpdate(
-                request.start(),
-                request.end()
-        );
+    public void deleteAd(Long adCardId) {
+        // 광고 삭제 시, isDeleted를 true로 , Satatus 를 END 로 설정
+        Advertise advertise = advertiseRepository.findById(adCardId)
+                .orElseThrow(() -> new IllegalArgumentException("광고카드 아님"));
+        advertise.deleted();
+        advertiseRepository.save(advertise);
     }
 }
