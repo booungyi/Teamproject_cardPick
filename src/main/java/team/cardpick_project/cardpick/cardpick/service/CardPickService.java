@@ -6,23 +6,40 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
 import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponse;
+import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponseQDto;
 import team.cardpick_project.cardpick.cardpick.domain.*;
 import org.apache.commons.csv.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CardPickService {
     private final CardPickRepository cardPickRepository;
     private final CardPickDao cardPickDao;
+    private final AdQueryRepository adQueryRepository;
 
     public List<CardResponse> getCardsByConditions(String issuer, List<String> categories) {
         List<CardResponse> cardResponse = cardPickDao.getCardsByConditions(issuer, categories).stream()
-                .map(CardResponse::toDtoFromQDto)
+                .map(data -> CardResponse.toDtoFromQDto(data, false))
+                .collect(Collectors.toList());
+
+        LocalDateTime today = LocalDateTime.now();
+        List<CardPick> activeAdCard = adQueryRepository.findActiveAdCard(today);
+
+        List<CardResponse> adCardReponses = activeAdCard.stream()
+                .map(active -> new CardResponse(
+                        active.getCardName(),
+                        active.getImageUrl(),
+                        active.getDetailUrl(),
+                        true
+                ))
                 .toList();
+
         return cardResponse;
     }
 
@@ -46,7 +63,7 @@ public class CardPickService {
                 // parsed_desc 문자열을 리스트로 변환
                 String parsedDescStr = record.get("parsed_desc").replace("[", "").replace("]", "").replace("'", "");
                 List<CardCategory> parsedDesc = Arrays.asList(parsedDescStr.split(", ")).stream()
-                        .map( category -> new CardCategory(cardPick, Category.fromString(category)))
+                        .map(category -> new CardCategory(cardPick, Category.fromString(category)))
                         .toList();
                 cardPick.addCategory(parsedDesc);
                 cardPickRepository.save(cardPick);
@@ -66,8 +83,26 @@ public class CardPickService {
 
     public List<CardResponse> getCardsByMbti(String mbti) {
         List<CardResponse> cardResponse = cardPickDao.getCardsByMbti(mbti).stream()
-                .map(CardResponse::toDtoFromQDto)
+//                .map(CardResponse::toDtoFromQDto)
+                .map(data -> CardResponse.toDtoFromQDto(data, false))
+                .collect(Collectors.toList());
+
+        // TODO: 광고 중인 카드 1개 가지고 오기 db에서
+        LocalDateTime today = LocalDateTime.now();
+        List<CardPick> activeAdCard = adQueryRepository.findActiveAdCard(today);
+
+        // 광고 카드이면, 같은 CardResponse에 추가
+        List<CardResponse> adCardReponses = activeAdCard.stream()
+                .map(active -> new CardResponse(
+                        active.getCardName(),
+                        active.getImageUrl(),
+                        active.getDetailUrl(),
+                        true
+                ))
                 .toList();
+
         return cardResponse;
     }
+
+
 }
