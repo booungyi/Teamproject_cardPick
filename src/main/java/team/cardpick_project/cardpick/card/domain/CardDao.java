@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CardDao {
     private final JPAQueryFactory queryFactory;
-    private final QCardPick qCardPick = QCardPick.cardPick;
+    private final QCard qCard = QCard.card;
     private final QCardCategory qCardCategory = QCardCategory.cardCategory;
 
     public List<CardResponseQDto> getCardsByConditions(String issuer, List<String> categories) {
@@ -26,28 +26,28 @@ public class CardDao {
         BooleanBuilder bb = new BooleanBuilder();
 
         if (issuer != null){
-            bb.and(qCardPick.cardName.contains(issuer));
+            bb.and(qCard.cardName.contains(issuer));
         }
 
         bb.and(JPAExpressions
                 .selectOne()
                 .from(qCardCategory)
-                .where(qCardCategory.cardPick.eq(qCardPick)
+                .where(qCardCategory.card.eq(qCard)
                         .and(qCardCategory.category.in(categoryList)))
-                .groupBy(qCardCategory.cardPick)
-                .having(qCardCategory.cardPick.count().goe((long)categoryList.size()))
+                .groupBy(qCardCategory.card)
+                .having(qCardCategory.card.count().goe((long)categoryList.size()))
                 .exists());
 
         List<CardResponseQDto> cardResponseQDtos = queryFactory
                 .select(
                         Projections.constructor(
                                 CardResponseQDto.class,
-                                qCardPick.cardName,
-                                qCardPick.imageUrl,
-                                qCardPick.detailUrl
+                                qCard.cardName,
+                                qCard.imageUrl,
+                                qCard.detailUrl
                         )
                 )
-                .from(qCardPick)
+                .from(qCard)
                 .where(bb)
                 .fetch();
 
@@ -61,23 +61,23 @@ public class CardDao {
         bb.and(JPAExpressions
                 .selectOne()
                 .from(qCardCategory)
-                .where(qCardCategory.cardPick.eq(qCardPick)
+                .where(qCardCategory.card.eq(qCard)
                         .and(qCardCategory.category.in(Mbti.fromString(mbti).getCategories())))
-                .groupBy(qCardCategory.cardPick)
-                .having(qCardCategory.cardPick.count().goe((long)Mbti.fromString(mbti).getCategories().size()))
+                .groupBy(qCardCategory.card)
+                .having(qCardCategory.card.count().goe((long)Mbti.fromString(mbti).getCategories().size()))
                 .exists());
 
         List<CardResponseQDto> cardResponseQDtos = queryFactory
                 .select(
                         Projections.constructor(
                                 CardResponseQDto.class,
-                                qCardPick.cardName,
-                                qCardPick.imageUrl,
-                                qCardPick.detailUrl
+                                qCard.cardName,
+                                qCard.imageUrl,
+                                qCard.detailUrl
                         )
                 )
-                .from(qCardPick)
-                .leftJoin(qCardCategory).on(qCardCategory.cardPick.eq(qCardPick))
+                .from(qCard)
+                .leftJoin(qCardCategory).on(qCardCategory.card.eq(qCard))
                 .where(bb)
                 .fetch();
 
@@ -95,25 +95,25 @@ public class CardDao {
         BooleanBuilder bb = new BooleanBuilder();
 
         if (issuer != null){
-            bb.and(qCardPick.cardName.contains(issuer));
+            bb.and(qCard.cardName.contains(issuer));
         }
 
         if (!categories.isEmpty()){
             bb.and(JPAExpressions
                     .selectOne()
                     .from(qCardCategory)
-                    .where(qCardCategory.cardPick.eq(qCardPick)
+                    .where(qCardCategory.card.eq(qCard)
                             .and(qCardCategory.category.in(categoryList)))
-                    .groupBy(qCardCategory.cardPick)
-                    .having(qCardCategory.cardPick.count().goe((long)categoryList.size()))
+                    .groupBy(qCardCategory.card)
+                    .having(qCardCategory.card.count().goe((long)categoryList.size()))
                     .exists());
         }
 
         Long count = queryFactory
                 .select(
-                        qCardPick.count()
+                        qCard.count()
                 )
-                .from(qCardPick)
+                .from(qCard)
                 .where(bb)
                 .fetchOne();
 
