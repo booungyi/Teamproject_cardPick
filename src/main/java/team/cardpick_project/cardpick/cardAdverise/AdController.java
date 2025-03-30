@@ -1,10 +1,9 @@
-package team.cardpick_project.cardpick.cardpick.service;
+package team.cardpick_project.cardpick.cardAdverise;
 
 import org.springframework.web.bind.annotation.*;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.ActiveResponse;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.AdResponse;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CreateAdRequest;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CreateAdTermRequest;
+import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdRequest;
+import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdTermRequest;
+import team.cardpick_project.cardpick.card.cardDto.ActiveResponse;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package team.cardpick_project.cardpick.cardpick.domain;
+package team.cardpick_project.cardpick.card.domain;
 
 
 import lombok.Getter;

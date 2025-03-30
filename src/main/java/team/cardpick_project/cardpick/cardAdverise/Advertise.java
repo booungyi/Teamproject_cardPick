@@ -1,7 +1,8 @@
-package team.cardpick_project.cardpick.cardpick.domain;
+package team.cardpick_project.cardpick.cardAdverise;
 
 import jakarta.persistence.*;
 import lombok.*;
+import team.cardpick_project.cardpick.card.domain.Card;
 
 import java.time.LocalDateTime;
 
@@ -33,7 +34,7 @@ public class Advertise {
     //광고:카드 = n:1
     @ManyToOne
     @JoinColumn(name = "card_pick_id")
-    private CardPick cardPick;
+    private Card card;
 
     public void updateStatus(){
         LocalDateTime now = LocalDateTime.now();
@@ -51,7 +52,7 @@ public class Advertise {
 
     // ID만 받아서 생성하는 생성자
     public Advertise(Long cardPickId, LocalDateTime start, LocalDateTime end) {
-        this.cardPick = new CardPick(cardPickId); // 프록시 객체로 설정
+        this.card = new Card(cardPickId); // 프록시 객체로 설정
         this.startDate = start;
         this.endDate = end;
     }

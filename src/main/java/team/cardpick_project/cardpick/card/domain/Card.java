@@ -1,8 +1,9 @@
-package team.cardpick_project.cardpick.cardpick.domain;
+package team.cardpick_project.cardpick.card.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
+import team.cardpick_project.cardpick.cardAdverise.Advertise;
 import team.cardpick_project.cardpick.cardbenefits.CardBenefits;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class CardPick {
+public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +28,7 @@ public class CardPick {
     private String cardName;
 
     @Column(nullable = false)
-    @OneToMany(mappedBy = "cardPick",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "card",cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<CardCategory> cardCategories = new ArrayList<>();
 
@@ -52,7 +53,7 @@ public class CardPick {
     @NonNull
     private String detailUrl;
 
-    @OneToMany(mappedBy = "cardPick")
+    @OneToMany(mappedBy = "card")
     @ToString.Exclude
     private List<CardBenefits> cardBenefitsList = new ArrayList<>();
 
@@ -61,7 +62,7 @@ public class CardPick {
     private LocalDateTime createAt;
 
     //광고
-    @OneToMany(mappedBy = "cardPick")
+    @OneToMany(mappedBy = "card")
     private List<Advertise> advertiseList = new ArrayList<>();
 
     public void addCategory(List<CardCategory> categories){
@@ -69,7 +70,7 @@ public class CardPick {
     }
 
     // ID만 받는 생성자 추가 (프록시 객체 생성용)
-    public CardPick(Long id) {
+    public Card(Long id) {
         this.id = id;
     }
 

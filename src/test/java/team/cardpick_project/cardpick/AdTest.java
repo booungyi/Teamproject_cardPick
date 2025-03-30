@@ -4,9 +4,9 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.AdResponse;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CreateAdRequest;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CreateAdTermRequest;
+import team.cardpick_project.cardpick.cardAdverise.advertiseDto.AdResponse;
+import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdRequest;
+import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdTermRequest;
 
 import java.time.LocalDateTime;
 

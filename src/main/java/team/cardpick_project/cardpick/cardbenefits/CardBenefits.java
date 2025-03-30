@@ -2,10 +2,7 @@ package team.cardpick_project.cardpick.cardbenefits;
 
 import jakarta.persistence.*;
 import lombok.*;
-import team.cardpick_project.cardpick.cardpick.domain.CardPick;
-
-import java.util.List;
-import java.util.Map;
+import team.cardpick_project.cardpick.card.domain.Card;
 
 @Entity
 @NoArgsConstructor
@@ -21,18 +18,19 @@ public class CardBenefits {
     @Column(nullable = false)
     @NonNull
     private String benefitName;
+
     @Column
     @NonNull
     private String benefitDetail;
 
     @ManyToOne
     @ToString.Exclude
-    private CardPick cardPick;
+    private Card card;
 
-    public CardBenefits(String benefitName, String benefitDetail, CardPick cardPick) {
+    public CardBenefits(String benefitName, String benefitDetail, Card card) {
         this.benefitName = benefitName;
         this.benefitDetail = benefitDetail;
-        this.cardPick = cardPick;
-        cardPick.getCardBenefitsList().add(this);
+        this.card = card;
+        card.getCardBenefitsList().add(this);
     }
 }

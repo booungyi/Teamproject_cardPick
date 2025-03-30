@@ -1,38 +1,36 @@
-package team.cardpick_project.cardpick.cardpick.service;
+package team.cardpick_project.cardpick.cardAdverise;
 
 import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.ActiveResponse;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.AdResponse;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CreateAdRequest;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CreateAdTermRequest;
-import team.cardpick_project.cardpick.cardpick.domain.*;
+import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdRequest;
+import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdTermRequest;
+import team.cardpick_project.cardpick.card.cardDto.ActiveResponse;
+import team.cardpick_project.cardpick.card.domain.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class AdvertiseService {
 
-    public final CardPickRepository cardPickRepository;
+    public final CardRepository cardRepository;
     public final AdvertiseRepository advertiseRepository;
     public final AdQueryRepository adQueryRepository;
 
-    public AdvertiseService(CardPickRepository cardPickRepository, AdvertiseRepository advertiseRepository, AdQueryRepository adQueryRepository) {
-        this.cardPickRepository = cardPickRepository;
+    public AdvertiseService(CardRepository cardRepository, AdvertiseRepository advertiseRepository, AdQueryRepository adQueryRepository) {
+        this.cardRepository = cardRepository;
         this.advertiseRepository = advertiseRepository;
         this.adQueryRepository = adQueryRepository;
     }
 
     public void create(CreateAdRequest request) {
-        CardPick cardPick = cardPickRepository.findById(request.cardpickId())
+        Card card = cardRepository.findById(request.cardpickId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
 
         //새 광고 생성
         advertiseRepository.save(
                 new Advertise(
-                        cardPick.getId(),
+                        card.getId(),
                         request.start(),
                         request.end()
                 ));
@@ -56,9 +54,9 @@ public class AdvertiseService {
         return advertiseList.stream()
                 .map(advertise -> new ActiveResponse(
                         advertise.getId(),
-                        advertise.getCardPick().getCardName(),
-                        advertise.getCardPick().getImageUrl(),
-                        advertise.getCardPick().getDetailUrl()
+                        advertise.getCard().getCardName(),
+                        advertise.getCard().getImageUrl(),
+                        advertise.getCard().getDetailUrl()
                 )).toList();
     }
 

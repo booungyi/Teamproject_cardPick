@@ -1,20 +1,18 @@
-package team.cardpick_project.cardpick.cardpick.domain;
+package team.cardpick_project.cardpick.card.domain;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponseQDto;
+import team.cardpick_project.cardpick.card.cardDto.CardResponseQDto;
 
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class CardPickDao {
+public class CardDao {
     private final JPAQueryFactory queryFactory;
     private final QCardPick qCardPick = QCardPick.cardPick;
     private final QCardCategory qCardCategory = QCardCategory.cardCategory;
