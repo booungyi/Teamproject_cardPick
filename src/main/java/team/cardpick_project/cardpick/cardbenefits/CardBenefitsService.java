@@ -8,8 +8,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
-import team.cardpick_project.cardpick.cardpick.domain.CardPick;
-import team.cardpick_project.cardpick.cardpick.domain.CardPickRepository;
+import team.cardpick_project.cardpick.cardPick.domain.CardPick;
+import team.cardpick_project.cardpick.cardPick.domain.CardRepository;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -23,7 +23,7 @@ import java.util.Map;
     @RequiredArgsConstructor
     public class CardBenefitsService {
         private final CardBenefitsRepository cardBenefitsRepository;
-        private final CardPickRepository cardPickRepository;
+        private final CardRepository cardRepository;
 
         @Transactional
         public void saveCardsBenefitsFromCSV(String filePath) {
@@ -39,13 +39,13 @@ import java.util.Map;
                     ObjectMapper objectMapper = new ObjectMapper();
                     List<Map<String, String>> benefits = objectMapper.readValue(benefitsString, new TypeReference<List<Map<String, String>>>() {});
 
-                    CardPick cardPick = cardPickRepository.findByCardName(name);
-                    if (cardPick==null){
+                    CardPick cardPick = cardRepository.findByCardName(name);
+                    if (cardPick ==null){
                         continue;
                     }
 
                     for (Map<String, String> benefit : benefits) {
-                        CardBenefits cardBenefits = new CardBenefits(benefit.get("benefit_name"),benefit.get("benefit_detail"),cardPick);
+                        CardBenefits cardBenefits = new CardBenefits(benefit.get("benefit_name"),benefit.get("benefit_detail"), cardPick);
                         cardBenefitsRepository.save(cardBenefits);
                     }
                 }

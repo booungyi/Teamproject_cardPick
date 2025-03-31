@@ -1,13 +1,12 @@
-package team.cardpick_project.cardpick.cardpick.service;
+package team.cardpick_project.cardpick.cardPick.service;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CardRecommendationRequest;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponse;
-import team.cardpick_project.cardpick.cardpick.cardpickDto.CardResponseQDto;
-import team.cardpick_project.cardpick.cardpick.domain.*;
+import team.cardpick_project.cardpick.cardAdverise.AdQueryRepository;
+import team.cardpick_project.cardpick.cardPick.cardDto.CardRequest;
+import team.cardpick_project.cardpick.cardPick.cardDto.CardResponse;
+import team.cardpick_project.cardpick.cardPick.domain.*;
 import org.apache.commons.csv.*;
 
 import java.io.*;
@@ -19,19 +18,19 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CardPickService {
-    private final CardPickRepository cardPickRepository;
-    private final CardPickDao cardPickDao;
+    private final CardRepository cardRepository;
+    private final CardDao cardDao;
     private final AdQueryRepository adQueryRepository;
 
     public List<CardResponse> getCardsByConditions(String issuer, List<String> categories) {
-        List<CardResponse> cardResponse = cardPickDao.getCardsByConditions(issuer, categories).stream()
+        List<CardResponse> cardResponse = cardDao.getCardsByConditions(issuer, categories).stream()
                 .map(data -> CardResponse.toDtoFromQDto(data, false))
                 .collect(Collectors.toList());
 
         LocalDateTime today = LocalDateTime.now();
-        List<CardPick> activeAdCard = adQueryRepository.findActiveAdCard(today);
+        List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today);
 
-        List<CardResponse> adCardReponses = activeAdCard.stream()
+        List<CardResponse> adCardReponses = activeAdCardPick.stream()
                 .map(active -> new CardResponse(
                         active.getCardName(),
                         active.getImageUrl(),
@@ -66,7 +65,7 @@ public class CardPickService {
                         .map(category -> new CardCategory(cardPick, Category.fromString(category)))
                         .toList();
                 cardPick.addCategory(parsedDesc);
-                cardPickRepository.save(cardPick);
+                cardRepository.save(cardPick);
             }
 
             System.out.println("CSV 데이터가 성공적으로 저장되었습니다!");
@@ -77,22 +76,22 @@ public class CardPickService {
     }
 
     public Long getCountByConditions(String issuer, List<String> categories) {
-        Long count = cardPickDao.getCountByConditions(issuer, categories);
+        Long count = cardDao.getCountByConditions(issuer, categories);
         return count;
     }
 
     public List<CardResponse> getCardsByMbti(String mbti) {
-        List<CardResponse> cardResponse = cardPickDao.getCardsByMbti(mbti).stream()
+        List<CardResponse> cardResponse = cardDao.getCardsByMbti(mbti).stream()
 //                .map(CardResponse::toDtoFromQDto)
                 .map(data -> CardResponse.toDtoFromQDto(data, false))
                 .collect(Collectors.toList());
 
         // TODO: 광고 중인 카드 1개 가지고 오기 db에서
         LocalDateTime today = LocalDateTime.now();
-        List<CardPick> activeAdCard = adQueryRepository.findActiveAdCard(today);
+        List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today);
 
         // 광고 카드이면, 같은 CardResponse에 추가
-        List<CardResponse> adCardReponses = activeAdCard.stream()
+        List<CardResponse> adCardReponses = activeAdCardPick.stream()
                 .map(active -> new CardResponse(
                         active.getCardName(),
                         active.getImageUrl(),
@@ -100,9 +99,6 @@ public class CardPickService {
                         true
                 ))
                 .toList();
-
         return cardResponse;
     }
-
-
 }

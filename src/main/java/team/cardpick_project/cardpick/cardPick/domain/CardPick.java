@@ -1,8 +1,9 @@
-package team.cardpick_project.cardpick.cardpick.domain;
+package team.cardpick_project.cardpick.cardPick.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
+import team.cardpick_project.cardpick.cardAdverise.Advertise;
 import team.cardpick_project.cardpick.cardbenefits.CardBenefits;
 
 import java.time.LocalDateTime;
@@ -63,6 +64,10 @@ public class CardPick {
     //광고
     @OneToMany(mappedBy = "cardPick")
     private List<Advertise> advertiseList = new ArrayList<>();
+
+    //카드 상세 혜택
+    @OneToMany(mappedBy = "cardPick")
+    private List<CardBenefits> cardBenefits = new ArrayList<>();
 
     public void addCategory(List<CardCategory> categories){
         this.cardCategories.addAll(categories);

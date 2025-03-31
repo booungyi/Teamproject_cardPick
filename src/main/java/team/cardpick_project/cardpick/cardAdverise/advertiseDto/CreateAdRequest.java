@@ -1,8 +1,8 @@
-package team.cardpick_project.cardpick.cardpick.cardpickDto;
+package team.cardpick_project.cardpick.cardAdverise.advertiseDto;
 
 import java.time.LocalDateTime;
 
-public record CreateAdRequest(Long cardpickId,
+public record CreateAdRequest(Long cardPickId,
                               LocalDateTime start,
                               LocalDateTime end) {
 }

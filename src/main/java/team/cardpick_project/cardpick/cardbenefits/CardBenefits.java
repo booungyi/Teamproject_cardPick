@@ -2,10 +2,7 @@ package team.cardpick_project.cardpick.cardbenefits;
 
 import jakarta.persistence.*;
 import lombok.*;
-import team.cardpick_project.cardpick.cardpick.domain.CardPick;
-
-import java.util.List;
-import java.util.Map;
+import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
 @Entity
 @NoArgsConstructor
@@ -21,6 +18,7 @@ public class CardBenefits {
     @Column(nullable = false)
     @NonNull
     private String benefitName;
+
     @Column
     @NonNull
     private String benefitDetail;

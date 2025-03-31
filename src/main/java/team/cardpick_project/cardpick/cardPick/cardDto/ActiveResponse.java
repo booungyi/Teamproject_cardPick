@@ -1,6 +1,4 @@
-package team.cardpick_project.cardpick.cardpick.cardpickDto;
-
-import java.time.LocalDateTime;
+package team.cardpick_project.cardpick.cardPick.cardDto;
 
 public record ActiveResponse(Long id,
                              String cardName,

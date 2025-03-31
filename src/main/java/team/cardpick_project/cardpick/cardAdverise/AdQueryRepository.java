@@ -1,7 +1,8 @@
-package team.cardpick_project.cardpick.cardpick.domain;
+package team.cardpick_project.cardpick.cardAdverise;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
+import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
 import java.time.LocalDateTime;
 import java.util.List;

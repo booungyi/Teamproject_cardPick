@@ -159,25 +159,25 @@ export default function Results() {
 
         if (Array.isArray(data)) {
             // API가 배열을 직접 반환하는 경우
-            data.forEach(card => {
-                if (!cardNames.has(card.cardName)) {
-                    cardNames.add(card.cardName);
+            data.forEach(cardPick => {
+                if (!cardNames.has(cardPick.cardName)) {
+                    cardNames.add(cardPick.cardName);
                     uniqueCards.push({
-                        cardName: card.cardName,
-                        imageUrl: card.imageUrl,
-                        detailUrl: card.detailUrl
+                        cardName: cardPick.cardName,
+                        imageUrl: cardPick.imageUrl,
+                        detailUrl: cardPick.detailUrl
                     });
                 }
             });
         } else if (data.cards && Array.isArray(data.cards)) {
             // API가 cards 배열을 포함한 객체를 반환하는 경우
-            data.cards.forEach((card: any) => {
-                if (!cardNames.has(card.cardName)) {
-                    cardNames.add(card.cardName);
+            data.cards.forEach((cardPick: any) => {
+                if (!cardNames.has(cardPick.cardName)) {
+                    cardNames.add(cardPick.cardName);
                     uniqueCards.push({
-                        cardName: card.cardName,
-                        imageUrl: card.imageUrl,
-                        detailUrl: card.detailUrl
+                        cardName: cardPick.cardName,
+                        imageUrl: cardPick.imageUrl,
+                        detailUrl: cardPick.detailUrl
                     });
                 }
             });
@@ -188,9 +188,9 @@ export default function Results() {
 
     // 이벤트 플래그 추가 함수
     const addEventFlags = (cards: Card[]): Card[] => {
-        return cards.map(card => ({
-            ...card,
-            hasEvent: ['신한카드 Mr.Life', '신한카드 Shopping', 'DA카드의정석II', 'KB국민 Easy Pick카드'].includes(card.cardName)
+        return cards.map(cardPick => ({
+            ...cardPick,
+            hasEvent: ['신한카드 Mr.Life', '신한카드 Shopping', 'DA카드의정석II', 'KB국민 Easy Pick카드'].includes(cardPick.cardName)
         }));
     };
 
@@ -258,22 +258,22 @@ export default function Results() {
                     {/* 카드 컨테이너 */}
                     {pages[activePage] && pages[activePage].length > 0 && (
                         <div className={styles.cardContainer}>
-                            {pages[activePage].map((card, index) => (
+                            {pages[activePage].map((cardPick, index) => (
                                 <div
-                                    key={`${card.cardName}-${index}`}
+                                    key={`${cardPick.cardName}-${index}`}
                                     className={styles.cardItem}
-                                    onClick={() => handleCardClick(card.detailUrl)}
+                                    onClick={() => handleCardClick(cardPick.detailUrl)}
                                 >
                                     <div className={styles.cardImageWrapper}>
-                                        {card.hasEvent && (
+                                        {cardPick.hasEvent && (
                                             <div className={styles.eventBadge}>
                                                 이벤트<br/>진행중
                                             </div>
                                         )}
                                         <div className={styles.cardImage}>
                                             <img
-                                                src={card.imageUrl}
-                                                alt={card.cardName}
+                                                src={cardPick.imageUrl}
+                                                alt={cardPick.cardName}
                                                 style={{
                                                     width: '100%',
                                                     height: '100%',
@@ -282,12 +282,12 @@ export default function Results() {
                                                 }}
                                                 onError={(e) => {
                                                     e.currentTarget.onerror = null;
-                                                    e.currentTarget.src = '/images/card-placeholder.jpg';
+                                                    e.currentTarget.src = '/images/cardPick-placeholder.jpg';
                                                 }}
                                             />
                                         </div>
                                     </div>
-                                    <h3 className={styles.cardName}>{card.cardName}</h3>
+                                    <h3 className={styles.cardName}>{cardPick.cardName}</h3>
                                 </div>
                             ))}
                         </div>

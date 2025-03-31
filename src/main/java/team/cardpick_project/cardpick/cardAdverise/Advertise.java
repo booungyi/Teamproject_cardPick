@@ -1,13 +1,12 @@
-package team.cardpick_project.cardpick.cardpick.domain;
+package team.cardpick_project.cardpick.cardAdverise;
 
 import jakarta.persistence.*;
 import lombok.*;
+import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
 import java.time.LocalDateTime;
 
 @Entity
-@RequiredArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
 public class Advertise {
@@ -30,36 +29,37 @@ public class Advertise {
     @Column(nullable = false)
     private boolean isDeleted = false;
 
-    //광고:카드 = n:1
+    // 광고:카드 = n:1
     @ManyToOne
     @JoinColumn(name = "card_pick_id")
     private CardPick cardPick;
 
-    public void updateStatus(){
+    public void updateStatus() {
         LocalDateTime now = LocalDateTime.now();
 
-        if (now.isBefore(startDate)){
+        if (now.isBefore(startDate)) {
             this.adStatus = AdStatus.PENDING;
-        }
-        else if (now.isAfter(endDate)){
+        } else if (now.isAfter(endDate)) {
             deleted();
-        }
-        else {
+        } else {
             this.adStatus = AdStatus.ACTIVE;
         }
     }
 
-    // ID만 받아서 생성하는 생성자
-    public Advertise(Long cardPickId, LocalDateTime start, LocalDateTime end) {
-        this.cardPick = new CardPick(cardPickId); // 프록시 객체로 설정
+    public Advertise() {
+    }
+
+//    // ID만 받아서 생성하는 생성자
+    public Advertise(CardPick cardPick, LocalDateTime start, LocalDateTime end) {
+        this.cardPick = cardPick;
         this.startDate = start;
         this.endDate = end;
     }
 
-    //test 용 또는 수동으로 delete 를 해야될떄 + 함수 최적화
-    // isDeleted = ture 로 변경
+    // test 용 또는 수동으로 delete 를 해야될 때 + 함수 최적화
+    // isDeleted = true 로 변경
     // AdStatus 를 END 로 저장
-    public void deleted(){
+    public void deleted() {
         this.isDeleted = true;
         this.adStatus = AdStatus.END;
     }

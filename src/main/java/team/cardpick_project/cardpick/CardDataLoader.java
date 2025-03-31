@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import team.cardpick_project.cardpick.cardbenefits.CardBenefitsService;
-import team.cardpick_project.cardpick.cardpick.service.CardPickService;
+import team.cardpick_project.cardpick.cardPick.service.CardPickService;
 
 @Component
 @RequiredArgsConstructor
