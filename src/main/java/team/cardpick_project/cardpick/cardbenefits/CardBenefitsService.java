@@ -8,8 +8,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
-import team.cardpick_project.cardpick.card.domain.Card;
-import team.cardpick_project.cardpick.card.domain.CardRepository;
+import team.cardpick_project.cardpick.cardPick.domain.CardPick;
+import team.cardpick_project.cardpick.cardPick.domain.CardRepository;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -39,13 +39,13 @@ import java.util.Map;
                     ObjectMapper objectMapper = new ObjectMapper();
                     List<Map<String, String>> benefits = objectMapper.readValue(benefitsString, new TypeReference<List<Map<String, String>>>() {});
 
-                    Card card = cardRepository.findByCardName(name);
-                    if (card ==null){
+                    CardPick cardPick = cardRepository.findByCardName(name);
+                    if (cardPick ==null){
                         continue;
                     }
 
                     for (Map<String, String> benefit : benefits) {
-                        CardBenefits cardBenefits = new CardBenefits(benefit.get("benefit_name"),benefit.get("benefit_detail"), card);
+                        CardBenefits cardBenefits = new CardBenefits(benefit.get("benefit_name"),benefit.get("benefit_detail"), cardPick);
                         cardBenefitsRepository.save(cardBenefits);
                     }
                 }

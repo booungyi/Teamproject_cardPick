@@ -1,9 +1,10 @@
 package team.cardpick_project.cardpick.cardAdverise;
 
 import org.springframework.web.bind.annotation.*;
+import team.cardpick_project.cardpick.cardAdverise.advertiseDto.AdResponse;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdRequest;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdTermRequest;
-import team.cardpick_project.cardpick.card.cardDto.ActiveResponse;
+import team.cardpick_project.cardpick.cardPick.cardDto.ActiveResponse;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class AdController {
         this.advertiseService = advertiseService;
     }
 
-    @PostMapping("/ad")
+    @PostMapping("/adCard")
     public void createAd(@RequestBody CreateAdRequest request) {
         advertiseService.create(request);
     }
@@ -23,6 +24,11 @@ public class AdController {
     @GetMapping("/ad")
     public List<ActiveResponse> findAd() {
         return advertiseService.findAllAD();
+    }
+    //광고 목록 조회 test용 추가
+    @GetMapping("/adList")
+    public List<AdResponse> findAdList() {
+        return advertiseService.findAdList();
     }
 
     @PutMapping("/ad/{adCardId}")

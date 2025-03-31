@@ -1,4 +1,4 @@
-package team.cardpick_project.cardpick.card.domain;
+package team.cardpick_project.cardpick.cardPick.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Card {
+public class CardPick {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class Card {
     private String cardName;
 
     @Column(nullable = false)
-    @OneToMany(mappedBy = "card",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cardPick",cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<CardCategory> cardCategories = new ArrayList<>();
 
@@ -53,7 +53,7 @@ public class Card {
     @NonNull
     private String detailUrl;
 
-    @OneToMany(mappedBy = "card")
+    @OneToMany(mappedBy = "cardPick")
     @ToString.Exclude
     private List<CardBenefits> cardBenefitsList = new ArrayList<>();
 
@@ -62,7 +62,7 @@ public class Card {
     private LocalDateTime createAt;
 
     //광고
-    @OneToMany(mappedBy = "card")
+    @OneToMany(mappedBy = "cardPick")
     private List<Advertise> advertiseList = new ArrayList<>();
 
     public void addCategory(List<CardCategory> categories){
@@ -70,7 +70,7 @@ public class Card {
     }
 
     // ID만 받는 생성자 추가 (프록시 객체 생성용)
-    public Card(Long id) {
+    public CardPick(Long id) {
         this.id = id;
     }
 

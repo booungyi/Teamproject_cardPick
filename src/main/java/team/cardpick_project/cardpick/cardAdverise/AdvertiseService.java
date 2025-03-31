@@ -3,10 +3,11 @@ package team.cardpick_project.cardpick.cardAdverise;
 import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import team.cardpick_project.cardpick.cardAdverise.advertiseDto.AdResponse;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdRequest;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdTermRequest;
-import team.cardpick_project.cardpick.card.cardDto.ActiveResponse;
-import team.cardpick_project.cardpick.card.domain.*;
+import team.cardpick_project.cardpick.cardPick.cardDto.ActiveResponse;
+import team.cardpick_project.cardpick.cardPick.domain.*;
 
 import java.util.List;
 
@@ -24,13 +25,13 @@ public class AdvertiseService {
     }
 
     public void create(CreateAdRequest request) {
-        Card card = cardRepository.findById(request.cardpickId())
+        CardPick cardPick = cardRepository.findById(request.cardPickId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
 
         //새 광고 생성
         advertiseRepository.save(
                 new Advertise(
-                        card.getId(),
+                        cardPick.getId(),
                         request.start(),
                         request.end()
                 ));
@@ -54,9 +55,9 @@ public class AdvertiseService {
         return advertiseList.stream()
                 .map(advertise -> new ActiveResponse(
                         advertise.getId(),
-                        advertise.getCard().getCardName(),
-                        advertise.getCard().getImageUrl(),
-                        advertise.getCard().getDetailUrl()
+                        advertise.getCardPick().getCardName(),
+                        advertise.getCardPick().getImageUrl(),
+                        advertise.getCardPick().getDetailUrl()
                 )).toList();
     }
 
@@ -79,5 +80,15 @@ public class AdvertiseService {
                 .orElseThrow(() -> new IllegalArgumentException("광고카드 아님"));
         advertise.deleted();
         advertiseRepository.save(advertise);
+    }
+
+    public List<AdResponse> findAdList() {
+        return advertiseRepository.findByIsDeletedFalse().stream()
+                .map(advertise -> new AdResponse(
+                        advertise.getId(),
+                        advertise.getCardPick().getId(),
+                        advertise.getStartDate(),
+                        advertise.getEndDate()
+                )).toList();
     }
 }

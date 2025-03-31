@@ -1,11 +1,11 @@
-package team.cardpick_project.cardpick.card.service;
+package team.cardpick_project.cardpick.cardPick.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.cardpick_project.cardpick.cardAdverise.AdQueryRepository;
-import team.cardpick_project.cardpick.card.cardDto.CardResponse;
-import team.cardpick_project.cardpick.card.domain.*;
+import team.cardpick_project.cardpick.cardPick.cardDto.CardResponse;
+import team.cardpick_project.cardpick.cardPick.domain.*;
 import org.apache.commons.csv.*;
 
 import java.io.*;
@@ -27,9 +27,9 @@ public class CardPickService {
                 .collect(Collectors.toList());
 
         LocalDateTime today = LocalDateTime.now();
-        List<Card> activeAdCard = adQueryRepository.findActiveAdCard(today);
+        List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today);
 
-        List<CardResponse> adCardReponses = activeAdCard.stream()
+        List<CardResponse> adCardReponses = activeAdCardPick.stream()
                 .map(active -> new CardResponse(
                         active.getCardName(),
                         active.getImageUrl(),
@@ -56,15 +56,15 @@ public class CardPickService {
                 String imageUrl = record.get("image_url");
                 String detailUrl = record.get("detail_url");
 
-                Card card = new Card(name, description, annualFee, imageUrl, detailUrl);
+                CardPick cardPick = new CardPick(name, description, annualFee, imageUrl, detailUrl);
 
                 // parsed_desc 문자열을 리스트로 변환
                 String parsedDescStr = record.get("parsed_desc").replace("[", "").replace("]", "").replace("'", "");
                 List<CardCategory> parsedDesc = Arrays.asList(parsedDescStr.split(", ")).stream()
-                        .map(category -> new CardCategory(card, Category.fromString(category)))
+                        .map(category -> new CardCategory(cardPick, Category.fromString(category)))
                         .toList();
-                card.addCategory(parsedDesc);
-                cardRepository.save(card);
+                cardPick.addCategory(parsedDesc);
+                cardRepository.save(cardPick);
             }
 
             System.out.println("CSV 데이터가 성공적으로 저장되었습니다!");
@@ -87,10 +87,10 @@ public class CardPickService {
 
         // TODO: 광고 중인 카드 1개 가지고 오기 db에서
         LocalDateTime today = LocalDateTime.now();
-        List<Card> activeAdCard = adQueryRepository.findActiveAdCard(today);
+        List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today);
 
         // 광고 카드이면, 같은 CardResponse에 추가
-        List<CardResponse> adCardReponses = activeAdCard.stream()
+        List<CardResponse> adCardReponses = activeAdCardPick.stream()
                 .map(active -> new CardResponse(
                         active.getCardName(),
                         active.getImageUrl(),

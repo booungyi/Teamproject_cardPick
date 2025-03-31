@@ -1,4 +1,4 @@
-package team.cardpick_project.cardpick.card.domain;
+package team.cardpick_project.cardpick.cardPick.domain;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
@@ -6,7 +6,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import team.cardpick_project.cardpick.card.cardDto.CardResponseQDto;
+import team.cardpick_project.cardpick.cardPick.cardDto.CardResponseQDto;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CardDao {
     private final JPAQueryFactory queryFactory;
-    private final QCard qCard = QCard.card;
+    private final QCardPick qCardPick = QCardPick.cardPick;
     private final QCardCategory qCardCategory = QCardCategory.cardCategory;
 
     public List<CardResponseQDto> getCardsByConditions(String issuer, List<String> categories) {
@@ -26,28 +26,28 @@ public class CardDao {
         BooleanBuilder bb = new BooleanBuilder();
 
         if (issuer != null){
-            bb.and(qCard.cardName.contains(issuer));
+            bb.and(qCardPick.cardName.contains(issuer));
         }
 
         bb.and(JPAExpressions
                 .selectOne()
                 .from(qCardCategory)
-                .where(qCardCategory.card.eq(qCard)
+                .where(qCardCategory.cardPick.eq(qCardPick)
                         .and(qCardCategory.category.in(categoryList)))
-                .groupBy(qCardCategory.card)
-                .having(qCardCategory.card.count().goe((long)categoryList.size()))
+                .groupBy(qCardCategory.cardPick)
+                .having(qCardCategory.cardPick.count().goe((long)categoryList.size()))
                 .exists());
 
         List<CardResponseQDto> cardResponseQDtos = queryFactory
                 .select(
                         Projections.constructor(
                                 CardResponseQDto.class,
-                                qCard.cardName,
-                                qCard.imageUrl,
-                                qCard.detailUrl
+                                qCardPick.cardName,
+                                qCardPick.imageUrl,
+                                qCardPick.detailUrl
                         )
                 )
-                .from(qCard)
+                .from(qCardPick)
                 .where(bb)
                 .fetch();
 
@@ -61,23 +61,23 @@ public class CardDao {
         bb.and(JPAExpressions
                 .selectOne()
                 .from(qCardCategory)
-                .where(qCardCategory.card.eq(qCard)
+                .where(qCardCategory.cardPick.eq(qCardPick)
                         .and(qCardCategory.category.in(Mbti.fromString(mbti).getCategories())))
-                .groupBy(qCardCategory.card)
-                .having(qCardCategory.card.count().goe((long)Mbti.fromString(mbti).getCategories().size()))
+                .groupBy(qCardCategory.cardPick)
+                .having(qCardCategory.cardPick.count().goe((long)Mbti.fromString(mbti).getCategories().size()))
                 .exists());
 
         List<CardResponseQDto> cardResponseQDtos = queryFactory
                 .select(
                         Projections.constructor(
                                 CardResponseQDto.class,
-                                qCard.cardName,
-                                qCard.imageUrl,
-                                qCard.detailUrl
+                                qCardPick.cardName,
+                                qCardPick.imageUrl,
+                                qCardPick.detailUrl
                         )
                 )
-                .from(qCard)
-                .leftJoin(qCardCategory).on(qCardCategory.card.eq(qCard))
+                .from(qCardPick)
+                .leftJoin(qCardCategory).on(qCardCategory.cardPick.eq(qCardPick))
                 .where(bb)
                 .fetch();
 
@@ -95,25 +95,25 @@ public class CardDao {
         BooleanBuilder bb = new BooleanBuilder();
 
         if (issuer != null){
-            bb.and(qCard.cardName.contains(issuer));
+            bb.and(qCardPick.cardName.contains(issuer));
         }
 
         if (!categories.isEmpty()){
             bb.and(JPAExpressions
                     .selectOne()
                     .from(qCardCategory)
-                    .where(qCardCategory.card.eq(qCard)
+                    .where(qCardCategory.cardPick.eq(qCardPick)
                             .and(qCardCategory.category.in(categoryList)))
-                    .groupBy(qCardCategory.card)
-                    .having(qCardCategory.card.count().goe((long)categoryList.size()))
+                    .groupBy(qCardCategory.cardPick)
+                    .having(qCardCategory.cardPick.count().goe((long)categoryList.size()))
                     .exists());
         }
 
         Long count = queryFactory
                 .select(
-                        qCard.count()
+                        qCardPick.count()
                 )
-                .from(qCard)
+                .from(qCardPick)
                 .where(bb)
                 .fetchOne();
 

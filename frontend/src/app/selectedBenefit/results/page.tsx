@@ -97,19 +97,19 @@ export default function Results() {
 
             <main className={styles.main}>
                 <div className={styles.cardGrid}>
-                    {pages[activePage] && pages[activePage].map((card) => (
-                        <div key={card.detailUrl} className={styles.cardItem}
-                             onClick={() => window.open(card.detailUrl, '_blank')}>
+                    {pages[activePage] && pages[activePage].map((cardPick) => (
+                        <div key={cardPick.detailUrl} className={styles.cardItem}
+                             onClick={() => window.open(cardPick.detailUrl, '_blank')}>
                             <img
-                                src={card.imageUrl}
-                                alt={card.cardName}
+                                src={cardPick.imageUrl}
+                                alt={cardPick.cardName}
                                 className={styles.cardImage}
                                 onError={(e) => {
                                     e.currentTarget.onerror = null;
-                                    e.currentTarget.src = '/images/card-placeholder.jpg';
+                                    e.currentTarget.src = '/images/cardPick-placeholder.jpg';
                                 }}
                             />
-                            <h3 className={styles.cardName}>{card.cardName}</h3>
+                            <h3 className={styles.cardName}>{cardPick.cardName}</h3>
                         </div>
                     ))}
                 </div>

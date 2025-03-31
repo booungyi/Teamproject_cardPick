@@ -2,7 +2,7 @@ package team.cardpick_project.cardpick.cardbenefits;
 
 import jakarta.persistence.*;
 import lombok.*;
-import team.cardpick_project.cardpick.card.domain.Card;
+import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
 @Entity
 @NoArgsConstructor
@@ -25,12 +25,12 @@ public class CardBenefits {
 
     @ManyToOne
     @ToString.Exclude
-    private Card card;
+    private CardPick cardPick;
 
-    public CardBenefits(String benefitName, String benefitDetail, Card card) {
+    public CardBenefits(String benefitName, String benefitDetail, CardPick cardPick) {
         this.benefitName = benefitName;
         this.benefitDetail = benefitDetail;
-        this.card = card;
-        card.getCardBenefitsList().add(this);
+        this.cardPick = cardPick;
+        cardPick.getCardBenefitsList().add(this);
     }
 }

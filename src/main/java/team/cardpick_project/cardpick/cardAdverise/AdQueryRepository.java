@@ -2,7 +2,7 @@ package team.cardpick_project.cardpick.cardAdverise;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
-import team.cardpick_project.cardpick.card.domain.Card;
+import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,7 +46,7 @@ public class AdQueryRepository {
         }
     }
 
-    public List<Card> findActiveAdCard(LocalDateTime today) {
+    public List<CardPick> findActiveAdCard(LocalDateTime today) {
         List<Advertise> advertiseList = jpaQueryFactory.selectFrom(this.advertise)
                 .where(
                         this.advertise.startDate.loe(today),
@@ -59,7 +59,7 @@ public class AdQueryRepository {
         }
         // 리스트에서 모든 CardPick을 추출
         return advertiseList.stream()
-                .map(advertise -> advertise.getCard())
+                .map(advertise -> advertise.getCardPick())
                 .collect(Collectors.toList());
     }
 }

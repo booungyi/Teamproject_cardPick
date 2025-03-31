@@ -1,4 +1,4 @@
-package team.cardpick_project.cardpick.card.cardDto;
+package team.cardpick_project.cardpick.cardPick.cardDto;
 
 public record CardResponseQDto(
         String cardName,

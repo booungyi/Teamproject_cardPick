@@ -1,4 +1,4 @@
-package team.cardpick_project.cardpick.card.domain;
+package team.cardpick_project.cardpick.cardPick.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +18,7 @@ public class CardCategory {
     @ManyToOne
     @NonNull
     @ToString.Exclude
-    private Card card;
+    private CardPick cardPick;
 
     @Enumerated(EnumType.STRING)
     @NonNull
