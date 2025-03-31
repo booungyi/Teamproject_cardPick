@@ -82,6 +82,14 @@ public class AdController {
 
 }
 
-
+//    //광고 예산 변경
+//    @PatchMapping("/ads/{id}/budget")
+//    public ResponseEntity<AdResponse> updateBudget(
+//            @PathVariable Long id,
+//            @RequestParam("budget") int budget) {
+//
+//        AdResponse updatedAd = adService.updateAdBudget(id, budget);
+//        return ResponseEntity.ok(updatedAd);
+//    }
 
 }

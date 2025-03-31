@@ -111,5 +111,8 @@ public class AdService {
 
         return new AdResponse(ad);
     }
-
+//    //광고 예산수정
+//    public AdResponse updateAdBudget(Long id, int budget) {
+//        return null;
+//    }
 }
