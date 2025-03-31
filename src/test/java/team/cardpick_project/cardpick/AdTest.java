@@ -8,7 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.AdResponse;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdRequest;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdTermRequest;
+import team.cardpick_project.cardpick.cardPick.cardDto.CardResponse;
 import team.cardpick_project.cardpick.cardPick.domain.CardPick;
+import team.cardpick_project.cardpick.cardPick.domain.CardRepository;
 import team.cardpick_project.cardpick.cardPick.service.CardPickService;
 import team.cardpick_project.cardpick.cardbenefits.CardBenefitsService;
 
@@ -18,23 +20,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdTest extends AcceptanceTest{
+
     @Autowired
-    public AdTest(CardPickService cardPickService, CardBenefitsService cardBenefitsService) {
-        super(cardPickService, cardBenefitsService);
-    }
-
-    @Test
-    void name() {
-        List<CardPick> cardPicks =
-     RestAssured.given().log().all()
-             .when().get("api/card_picks")
-             .then().log().all()
-             .statusCode(200) .extract()
-             .jsonPath()
-             .getList(".", CardPick.class);
-
-        System.out.println(cardPicks);
-    }
+    private CardRepository cardRepository;
 
     @Test
     void 광고_생성() {

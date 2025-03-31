@@ -37,14 +37,4 @@ public class CardPickController {
     public List<CardResponse> getCardsByMbti(@RequestParam String mbti){
         return cardPickService.getCardsByMbti(mbti);
     }
-
-    @PostMapping
-    public void CardPick(@RequestBody CardRequest cardRequest) {
-        cardPickService.saveCard(cardRequest);
-    }
-
-    @GetMapping
-    public List<CardPick> getAllCards() {
-        return cardPickService.getAllCards();
-    }
 }

@@ -101,21 +101,4 @@ public class CardPickService {
                 .toList();
         return cardResponse;
     }
-
-    public void saveCard(CardRequest cardRequest) {
-        CardPick cardPick = new CardPick(
-                cardRequest.cardName(),
-                cardRequest.description(),
-                cardRequest.annualFee(),
-                cardRequest.imageUrl(),
-                cardRequest.detailUrl()
-        );
-
-
-        cardRepository.save(cardPick);
-    }
-
-    public List<CardPick> getAllCards() {
-        return cardRepository.findAll();
-    }
 }
