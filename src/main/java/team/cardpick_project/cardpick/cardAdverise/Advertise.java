@@ -49,9 +49,9 @@ public class Advertise {
     public Advertise() {
     }
 
-    // ID만 받아서 생성하는 생성자
-    public Advertise(Long cardPickId, LocalDateTime start, LocalDateTime end) {
-        this.cardPick = new CardPick(cardPickId); // 프록시 객체로 설정
+//    // ID만 받아서 생성하는 생성자
+    public Advertise(CardPick cardPick, LocalDateTime start, LocalDateTime end) {
+        this.cardPick = cardPick;
         this.startDate = start;
         this.endDate = end;
     }

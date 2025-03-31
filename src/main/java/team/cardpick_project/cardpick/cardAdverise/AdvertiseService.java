@@ -31,7 +31,7 @@ public class AdvertiseService {
         //새 광고 생성
         advertiseRepository.save(
                 new Advertise(
-                        cardPick.getId(),
+                        cardPick,
                         request.start(),
                         request.end()
                 ));

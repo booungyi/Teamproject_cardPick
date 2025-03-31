@@ -2,23 +2,39 @@ package team.cardpick_project.cardpick;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.parsing.Parser;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.AdResponse;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdRequest;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdTermRequest;
+import team.cardpick_project.cardpick.cardPick.domain.CardPick;
+import team.cardpick_project.cardpick.cardPick.service.CardPickService;
+import team.cardpick_project.cardpick.cardbenefits.CardBenefitsService;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-public class AdTest {
-//    static {
-//         기본 파서 설정
-//        RestAssured.defaultParser = Parser.JSON;
-//    }
+public class AdTest extends AcceptanceTest{
+    @Autowired
+    public AdTest(CardPickService cardPickService, CardBenefitsService cardBenefitsService) {
+        super(cardPickService, cardBenefitsService);
+    }
+
+    @Test
+    void name() {
+        List<CardPick> cardPicks =
+     RestAssured.given().log().all()
+             .when().get("api/card_picks")
+             .then().log().all()
+             .statusCode(200) .extract()
+             .jsonPath()
+             .getList(".", CardPick.class);
+
+        System.out.println(cardPicks);
+    }
 
     @Test
     void 광고_생성() {

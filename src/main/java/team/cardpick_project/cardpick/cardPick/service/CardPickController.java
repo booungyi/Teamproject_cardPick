@@ -2,7 +2,9 @@ package team.cardpick_project.cardpick.cardPick.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import team.cardpick_project.cardpick.cardPick.cardDto.CardRequest;
 import team.cardpick_project.cardpick.cardPick.cardDto.CardResponse;
+import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,5 +36,15 @@ public class CardPickController {
     @GetMapping("/mbti")
     public List<CardResponse> getCardsByMbti(@RequestParam String mbti){
         return cardPickService.getCardsByMbti(mbti);
+    }
+
+    @PostMapping
+    public void CardPick(@RequestBody CardRequest cardRequest) {
+        cardPickService.saveCard(cardRequest);
+    }
+
+    @GetMapping
+    public List<CardPick> getAllCards() {
+        return cardPickService.getAllCards();
     }
 }
