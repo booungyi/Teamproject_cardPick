@@ -25,6 +25,7 @@ public class AdController {
     public List<ActiveResponse> findAd() {
         return advertiseService.findAllAD();
     }
+
     //광고 목록 조회 test용 추가
     @GetMapping("/adList")
     public List<AdResponse> findAdList() {

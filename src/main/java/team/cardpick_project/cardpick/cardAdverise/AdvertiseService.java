@@ -68,11 +68,15 @@ public class AdvertiseService {
         Advertise advertise = advertiseRepository.findById(adCardId)
                 .orElseThrow(() -> new IllegalArgumentException("광고카드 아님"));
         // 광고 기간이 겹치는지 확인
-        adQueryRepository.validateAdPeriod(request.start(), request.end(),adCardId);
+        adQueryRepository.findOverlappingAdDates(request.start(), request.end(),adCardId);
+
+
         // 에외 처리 없을경우는 바로 수정
         advertise.setStartDate(request.start());
         advertise.setEndDate(request.end());
     }
+
+
 
     public void deleteAd(Long adCardId) {
         // 광고 삭제 시, isDeleted를 true로 , Satatus 를 END 로 설정
