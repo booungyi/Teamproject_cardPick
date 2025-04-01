@@ -88,7 +88,7 @@ public class AdTest extends AcceptanceTest{
                 .body(new CreateAdRequest(
                         1L, // cardPickId
                         LocalDateTime.parse("2025-03-26T00:00:00"), // start date
-                        LocalDateTime.parse("2025-04-25T00:00:00"))) // end date
+                        LocalDateTime.parse("2025-03-26T00:00:00"))) // end date
                 .when()
                 .post("/adCard") // POST 요청
                 .then().log().all()
@@ -104,7 +104,7 @@ public class AdTest extends AcceptanceTest{
                 .pathParam("adCardId", 1L)
                 .body(new CreateAdTermRequest(
                         LocalDateTime.parse("2025-03-26T00:00:00"),
-                        LocalDateTime.parse("2025-04-20T00:00:00")
+                        LocalDateTime.parse("2025-03-27T00:00:00")
                 ))
                 .when()
                 .put("/ad/{adCardId}")
@@ -135,7 +135,7 @@ public class AdTest extends AcceptanceTest{
         assertThat(광고.id()).isEqualTo(1L); // 광고의 id가 1이어야 함
         assertThat(광고.cardPickId()).isEqualTo(1L); // 광고의 cardPickId가 1이어야 함
         assertThat(광고.start()).isEqualTo(LocalDateTime.parse("2025-03-26T00:00:00"));
-        assertThat(광고.end()).isEqualTo(LocalDateTime.parse("2025-04-20T00:00:00"));
+        assertThat(광고.end()).isEqualTo(LocalDateTime.parse("2025-03-27T00:00:00"));
 
     }
 }
