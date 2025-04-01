@@ -68,7 +68,7 @@ public class AdvertiseService {
         Advertise advertise = advertiseRepository.findById(adCardId)
                 .orElseThrow(() -> new IllegalArgumentException("광고카드 아님"));
         // 광고 기간이 겹치는지 확인
-        adQueryRepository.CountExistingAds(request.start(), request.end());
+        adQueryRepository.validateAdPeriod(request.start(), request.end(),adCardId);
         // 에외 처리 없을경우는 바로 수정
         advertise.setStartDate(request.start());
         advertise.setEndDate(request.end());
