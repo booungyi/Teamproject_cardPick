@@ -30,7 +30,7 @@ public class AdvertiseService {
     public void create(CreateAdRequest request) {
         CardPick cardPick = cardRepository.findById(request.cardPickId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
-
+        adQueryRepository.CountExistingAds(request.start(), request.end());
         //새 광고 생성
         advertiseRepository.save(
                 new Advertise(

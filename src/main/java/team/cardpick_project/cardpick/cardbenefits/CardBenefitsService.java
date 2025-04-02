@@ -24,6 +24,7 @@ import java.util.Map;
     public class CardBenefitsService {
         private final CardBenefitsRepository cardBenefitsRepository;
         private final CardRepository cardRepository;
+        private final CardBenefitsDao cardBenefitsDao;
 
         @Transactional
         public void saveCardsBenefitsFromCSV(String filePath) {
@@ -56,5 +57,17 @@ import java.util.Map;
             } catch (IOException e) {
                 System.err.println("CSV 파일을 읽는 중 오류 발생: " + e.getMessage());
             }
+        }
+
+        public CardBenefitsResponse getCardxBenefits(Long cardId) {
+
+            List<CardBenefitsQDto> cardBenefits = cardBenefitsDao.getcardBenefitlist(cardId);
+            CardPick cardPick = cardRepository.findById(cardId).orElseThrow(
+                    () -> new IllegalArgumentException("해당 카드가 없습니다."));
+            return new CardBenefitsResponse(
+                    cardPick.getCardName(),
+                    cardPick.getImageUrl(),
+                    cardBenefits
+            );
         }
     }
