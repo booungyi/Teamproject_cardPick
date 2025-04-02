@@ -1,6 +1,6 @@
 package team.cardpick_project.cardpick.cardPick.cardDto;
 
-public record CardRequest(
+public record CreateCardRequest(
         String cardName,
         String description,
         String annualFee,
