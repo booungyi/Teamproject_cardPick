@@ -128,20 +128,20 @@ public class CardDao {
                 .where(qCardPick.id.eq(cardId))
                 .execute();
     }
-//    //클릭증가가 높은순으로 카드 정렬(인기순)
-//    public List<CardResponseQDto> getPopularCards() {
-//        return queryFactory
-//                .select(Projections.constructor(
-//                        CardResponseQDto.class,
-//                        qCardPick.id,
-//                        qCardPick.cardName,
-//                        qCardPick.imageUrl,
-//                        qCardPick.detailUrl,
-//                        qCardPick.clickCount
-//                ))
-//                .from(qCardPick)
-//                .orderBy(qCardPick.clickCount.desc()) // ⭐ 클릭 수 높은 순 정렬
-//                .limit(10) // 상위 10개만 가져옴
-//                .fetch();
-//    }
+    //클릭증가가 높은순으로 카드 정렬(인기순)
+    public List<CardResponseQDto> getPopularCards() {
+        return queryFactory
+                .select(Projections.constructor(
+                        CardResponseQDto.class,
+                        qCardPick.id,
+                        qCardPick.cardName,
+                        qCardPick.imageUrl,
+                        qCardPick.detailUrl,
+                        qCardPick.clickCount
+                ))
+                .from(qCardPick)
+                .orderBy(qCardPick.clickCount.desc()) // ⭐ 클릭 수 높은 순 정렬
+                .limit(10) // 상위 10개만 가져옴
+                .fetch();
+    }
 }

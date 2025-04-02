@@ -125,4 +125,14 @@ public class CardPickService {
         CardPick cardPick = cardRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Card not found: " + id));
         cardPick.incrementClickCount();
-}}
+        getPopularCards();
+    }
+
+   //인기순으로 정렬하는 함수
+    public List<CardResponse> getPopularCards() {
+        return cardDao.getPopularCards().stream()
+                .map(data -> CardResponse.toDtoFromQDto(data, false, data.clickCount())) // clickCount() 사용
+                .toList();
+    }
+
+}
