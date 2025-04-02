@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.cardpick_project.cardpick.cardAdverise.AdQueryRepository;
-import team.cardpick_project.cardpick.cardPick.cardDto.CardRequest;
 import team.cardpick_project.cardpick.cardPick.cardDto.CardResponse;
 import team.cardpick_project.cardpick.cardPick.domain.*;
 import org.apache.commons.csv.*;

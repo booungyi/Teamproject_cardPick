@@ -2,10 +2,7 @@ package team.cardpick_project.cardpick.cardPick.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import team.cardpick_project.cardpick.cardPick.cardDto.CardRequest;
 import team.cardpick_project.cardpick.cardPick.cardDto.CardResponse;
-import team.cardpick_project.cardpick.cardPick.domain.CardPick;
-
 import java.util.ArrayList;
 import java.util.List;
 
