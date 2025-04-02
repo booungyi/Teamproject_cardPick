@@ -120,6 +120,7 @@ public class CardPickService {
 
         return cardResponse;
     }
+    //상세조회 카운트 하는 서비스 로직에 인기순으로 정ㄹ렬하는 함수 추가
     @Transactional
     public void incrementClickCount(Long id) {
         CardPick cardPick = cardRepository.findById(id)
