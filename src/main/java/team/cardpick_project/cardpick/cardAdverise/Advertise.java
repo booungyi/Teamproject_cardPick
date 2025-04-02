@@ -56,14 +56,6 @@ public class Advertise {
         this.endDate = end;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
     // test 용 또는 수동으로 delete 를 해야될 때 + 함수 최적화
     // isDeleted = true 로 변경
     // AdStatus 를 END 로 저장
