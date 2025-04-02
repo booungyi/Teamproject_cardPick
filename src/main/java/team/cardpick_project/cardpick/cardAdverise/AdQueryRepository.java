@@ -69,7 +69,7 @@ public class AdQueryRepository {
                 .fetch();
 
         if (advertiseList == null || advertiseList.isEmpty()) {
-            return null; // 빈 리스트 반환
+            return List.of(); // 빈 리스트 반환
         }
         // 리스트에서 모든 CardPick을 추출
         return advertiseList.stream()
