@@ -43,7 +43,7 @@ public class AdQueryRepository {
 //    }
 
     //수정하려는 날짜에 광고가 다 차있으면 수정하지 못하도록
-    //수정할때는 광고카드만 비교
+    //start,end 날짜 사이에 겹치는 광고들 찾아서 반환
     // 겹치는 광고가 있는 날짜 한번에 다 가져옴, 그리고 service에서 비교
     public List<Advertise> findOverlappingAdDates(LocalDateTime start, LocalDateTime end) {
         return jpaQueryFactory

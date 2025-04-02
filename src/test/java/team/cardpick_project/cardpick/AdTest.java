@@ -104,7 +104,7 @@ public class AdTest extends AcceptanceTest{
                 .pathParam("adCardId", 1L)
                 .body(new CreateAdTermRequest(
                         LocalDateTime.parse("2025-03-26T00:00:00"),
-                        LocalDateTime.parse("2026-03-25T00:00:00")
+                        LocalDateTime.parse("2026-01-25T00:00:00")
                 ))
                 .when()
                 .put("/ad/{adCardId}")
