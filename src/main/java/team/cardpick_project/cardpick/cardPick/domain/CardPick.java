@@ -78,4 +78,15 @@ public class CardPick {
         this.id = id;
     }
 
+    // 클릭 카운트 필드 추가
+    private Integer clickCount=0 ;
+
+    public void incrementClickCount() {
+        // 1️⃣ 클릭 수 증가
+
+       clickCount = clickCount+1;
+
+
+    }
+
 }

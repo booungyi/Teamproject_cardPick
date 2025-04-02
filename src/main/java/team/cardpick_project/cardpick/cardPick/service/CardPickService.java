@@ -1,10 +1,10 @@
 package team.cardpick_project.cardpick.cardPick.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.cardpick_project.cardpick.cardAdverise.AdQueryRepository;
-import team.cardpick_project.cardpick.cardPick.cardDto.CardRequest;
 import team.cardpick_project.cardpick.cardPick.cardDto.CardResponse;
 import team.cardpick_project.cardpick.cardPick.domain.*;
 import org.apache.commons.csv.*;
@@ -15,29 +15,40 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 @Service
 @RequiredArgsConstructor
 public class CardPickService {
+
     private final CardRepository cardRepository;
     private final CardDao cardDao;
     private final AdQueryRepository adQueryRepository;
 
+
+
     public List<CardResponse> getCardsByConditions(String issuer, List<String> categories) {
         List<CardResponse> cardResponse = cardDao.getCardsByConditions(issuer, categories).stream()
-                .map(data -> CardResponse.toDtoFromQDto(data, false))
+                .map(data -> CardResponse.toDtoFromQDto(data, false,1))
                 .collect(Collectors.toList());
+
+        // ⭐ 클릭 수 증가 로직 추가
+        cardResponse.forEach(card -> cardDao.incrementClickCount(card.id()));
 
         LocalDateTime today = LocalDateTime.now();
         List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today);
 
         List<CardResponse> adCardReponses = activeAdCardPick.stream()
                 .map(active -> new CardResponse(
+                        active.getId(),
                         active.getCardName(),
                         active.getImageUrl(),
                         active.getDetailUrl(),
-                        true
+                        true,
+                        active.getClickCount()+1//증가된 클릭수 값
                 ))
                 .toList();
+
+
 
         return cardResponse;
     }
@@ -83,8 +94,11 @@ public class CardPickService {
     public List<CardResponse> getCardsByMbti(String mbti) {
         List<CardResponse> cardResponse = cardDao.getCardsByMbti(mbti).stream()
 //                .map(CardResponse::toDtoFromQDto)
-                .map(data -> CardResponse.toDtoFromQDto(data, false))
+                .map(data -> CardResponse.toDtoFromQDto(data, false,1))
                 .collect(Collectors.toList());
+
+        // ⭐ 클릭 수 증가 로직 추가
+        cardResponse.forEach(card -> cardDao.incrementClickCount(card.id()));
 
         // TODO: 광고 중인 카드 1개 가지고 오기 db에서
         LocalDateTime today = LocalDateTime.now();
@@ -93,12 +107,22 @@ public class CardPickService {
         // 광고 카드이면, 같은 CardResponse에 추가
         List<CardResponse> adCardReponses = activeAdCardPick.stream()
                 .map(active -> new CardResponse(
+                        active.getId(),
                         active.getCardName(),
                         active.getImageUrl(),
                         active.getDetailUrl(),
-                        true
+                        true,
+                        active.getClickCount()
                 ))
                 .toList();
+
+
+
         return cardResponse;
     }
-}
+    @Transactional
+    public void incrementClickCount(Long id) {
+        CardPick cardPick = cardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Card not found: " + id));
+        cardPick.incrementClickCount();
+}}
