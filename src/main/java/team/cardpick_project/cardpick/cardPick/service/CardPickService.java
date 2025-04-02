@@ -56,7 +56,7 @@ public class CardPickService {
                 String imageUrl = record.get("image_url");
                 String detailUrl = record.get("detail_url");
 
-                CardPick cardPick = new CardPick(name, description, annualFee, imageUrl, detailUrl);
+                CardPick cardPick = new CardPick(name, description, annualFee, applyLink, imageUrl, detailUrl);
 
                 // parsed_desc 문자열을 리스트로 변환
                 String parsedDescStr = record.get("parsed_desc").replace("[", "").replace("]", "").replace("'", "");
@@ -74,8 +74,8 @@ public class CardPickService {
         }
     }
 
-    public Long getCountByConditions(String issuer, List<String> categories) {
-        Long count = cardDao.getCountByConditions(issuer, categories);
+    public Long getCountByConditions(List<String> categories) {
+        Long count = cardDao.getCountByConditions(categories);
         return count;
     }
 

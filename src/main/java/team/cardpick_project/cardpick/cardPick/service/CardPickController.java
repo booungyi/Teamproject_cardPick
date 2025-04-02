@@ -20,14 +20,15 @@ public class CardPickController {
         return cardPickService.getCardsByConditions(issuer, categories);
     }
     //현재 선택된 조건에 맞는 카드 개수
+    //issuer 잠시보류
     @GetMapping("/conditions/count")
     public Long getCountByConditions(
-            @RequestParam(required = false) String issuer,
+//            @RequestParam(required = false) String issuer,
             @RequestParam(required = false) List<String> categories){
         if (categories == null){
             categories = new ArrayList<>();
         }
-        return cardPickService.getCountByConditions(issuer, categories);
+        return cardPickService.getCountByConditions(categories);
     }
     //성향에 맞는 카드 추천
     @GetMapping("/mbti")

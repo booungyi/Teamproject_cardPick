@@ -84,9 +84,7 @@ public class CardDao {
         return cardResponseQDtos;
     }
 
-    public Long getCountByConditions(String issuer, List<String> categories) {
-
-
+    public Long getCountByConditions(List<String> categories) {
 
         List<Category> categoryList = categories.stream()
                 .map(Category::valueOf)
@@ -94,9 +92,9 @@ public class CardDao {
 
         BooleanBuilder bb = new BooleanBuilder();
 
-        if (issuer != null){
-            bb.and(qCardPick.cardName.contains(issuer));
-        }
+//        if (issuer != null){
+//            bb.and(qCardPick.cardName.contains(issuer));
+//        }
 
         if (!categories.isEmpty()){
             bb.and(JPAExpressions

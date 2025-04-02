@@ -1,0 +1,107 @@
+/* 전체 페이지 스타일 */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: aliceblue;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 카드 정보 컨테이너 */
+.card-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+}
+
+/* 카드 이미지 */
+.card-image {
+    width: 10px;
+    height: 10px;
+    border-radius: 8px;
+}
+
+/* 카드 제목 */
+.card-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* 카드 설명 */
+.card-description {
+    font-size: 16px;
+    color: #666;
+}
+
+/* 카드 신청 버튼 */
+.apply-button {
+    display: block;
+    width: 200px;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #ffcc00;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.apply-button:hover {
+    background-color: #ffb700;
+}
+
+/* 혜택 목록 스타일 */
+.benefit-list {
+    margin-top: 20px;
+    padding: 10px;
+}
+
+/* 개별 혜택 스타일 */
+.benefit-item {
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+/* 펼쳐지는 혜택 상세 */
+.benefit-details {
+    display: none;
+    padding: 10px;
+    font-size: 14px;
+    color: #444;
+    border-top: 1px solid #ddd;
+}
+
+.benefit-item.open .benefit-details {
+    display: block;
+}
+
+.benefit_name {
+    background-color: white;
+    font-size: 30px;
+    color: black;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+}
+.benefit_detail{
+    background-color: white;
+    font-size: 15px;
+    color: black;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+}
+.benefit_layout {
+    border-radius: 10px;
+    height: 100px;
+    background-color: white;
+    font-size: 15px;
+    color: black;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+}

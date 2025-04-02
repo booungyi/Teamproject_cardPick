@@ -40,10 +40,10 @@ public class CardPick {
     @NonNull
     private String annualFee;
 
-    //신청 페이지는 일단 보류
-//    @Column(nullable = false)
-//    @NonNull
-//    private String applyLink;
+//    상세 조회
+    @Column(nullable = false , columnDefinition = "TEXT")
+    @NonNull
+    private String applyLink;
 
     @Column(nullable = false)
     @NonNull

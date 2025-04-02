@@ -4,31 +4,30 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "@/app/selectedBenefit/results/Results.module.css";
 
-// 카드 정보를 포함하는 객체 (categories 제거)
+// 카드 정보를 포함하는 객체
 interface CardInfo {
+    id: number;  // ✅ 카드 ID 추가
     cardName: string;
     imageUrl: string;
     detailUrl: string;
-    hasEvent?: boolean; // 이벤트 진행 여부
+    hasEvent?: boolean;
 }
 
 export default function Results() {
-    const [cards, setCards] = useState<CardInfo[]>([]); // 전체 카드 목록
+    const [cards, setCards] = useState<CardInfo[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [pages, setPages] = useState<CardInfo[][]>([]); // 카드 페이지 배열
-    const [activePage, setActivePage] = useState(0); // 현재 페이지
+    const [pages, setPages] = useState<CardInfo[][]>([]);
+    const [activePage, setActivePage] = useState(0);
 
     const router = useRouter();
     const searchParams = useSearchParams();
     const categories = searchParams.getAll("categories");
 
-    // API 호출 및 데이터 처리
     useEffect(() => {
         const fetchFilteredCards = async (categories: string[]) => {
             try {
                 setLoading(true);
-
                 const queryString = categories.map(c => `categories=${encodeURIComponent(c)}`).join("&");
                 const requestUrl = `http://localhost:8080/api/card_picks/conditions?${queryString}`;
                 console.log("🔍 API 요청 URL:", requestUrl);
@@ -44,10 +43,7 @@ export default function Results() {
 
                 const data: CardInfo[] = await response.json();
                 setCards(data);
-
-                // 카드 페이지로 그룹화 (5개씩)
-                const groupedPages = groupCardsIntoPages(data, 5);
-                setPages(groupedPages);
+                setPages(groupCardsIntoPages(data, 5));
             } catch (error) {
                 console.error("카드 데이터 가져오기 실패:", error);
                 setError("카드 정보를 불러오는데 실패했습니다.");
@@ -57,9 +53,8 @@ export default function Results() {
         };
 
         fetchFilteredCards(categories);
-    }, []); // categories 값이 변경될 때마다 실행
+    }, []);
 
-    // 카드를 5개씩 그룹화하는 함수
     const groupCardsIntoPages = (cards: CardInfo[], groupSize: number): CardInfo[][] => {
         const pages: CardInfo[][] = [];
         for (let i = 0; i < cards.length; i += groupSize) {
@@ -68,26 +63,18 @@ export default function Results() {
         return pages;
     };
 
-    // 로딩 상태 표시
+    // ✅ 상세 페이지로 이동하는 함수
+    const handleCardClick = (id: number) => {
+        router.push(`/card-benefit/${id}`);
+    };
+
     if (loading) {
         return <div className={styles.loading}>카드 정보를 불러오는 중...</div>;
     }
 
-    // 에러 상태 표시
     if (error) {
         return <div className={styles.error}>{error}</div>;
     }
-
-    // 페이지 변경 핸들러
-    const handlePageChange = (direction: 'prev' | 'next') => {
-        setActivePage(prevPage => {
-            if (direction === 'prev') {
-                return Math.max(prevPage - 1, 0);  // 최소 0 페이지
-            } else {
-                return Math.min(prevPage + 1, pages.length - 1);  // 최대 페이지 제한
-            }
-        });
-    };
 
     return (
         <div className={styles.container}>
@@ -98,8 +85,8 @@ export default function Results() {
             <main className={styles.main}>
                 <div className={styles.cardGrid}>
                     {pages[activePage] && pages[activePage].map((cardPick) => (
-                        <div key={cardPick.detailUrl} className={styles.cardItem}
-                             onClick={() => window.open(cardPick.detailUrl, '_blank')}>
+                        <div key={cardPick.id} className={styles.cardItem}
+                             onClick={() => handleCardClick(cardPick.id)}>
                             <img
                                 src={cardPick.imageUrl}
                                 alt={cardPick.cardName}
@@ -115,20 +102,15 @@ export default function Results() {
                 </div>
             </main>
 
-            {/* 페이지 버튼 */}
             <footer className={styles.footer}>
                 <div className={styles.pageButtons}>
-                    <button
-                        onClick={() => handlePageChange('prev')}
-                        disabled={activePage === 0} // 첫 페이지에서는 '이전' 버튼 비활성화
-                    >
+                    <button onClick={() => setActivePage(Math.max(activePage - 1, 0))}
+                            disabled={activePage === 0}>
                         이전
                     </button>
                     <span>{activePage + 1} / {pages.length}</span>
-                    <button
-                        onClick={() => handlePageChange('next')}
-                        disabled={activePage === pages.length - 1} // 마지막 페이지에서는 '다음' 버튼 비활성화
-                    >
+                    <button onClick={() => setActivePage(Math.min(activePage + 1, pages.length - 1))}
+                            disabled={activePage === pages.length - 1}>
                         다음
                     </button>
                 </div>
