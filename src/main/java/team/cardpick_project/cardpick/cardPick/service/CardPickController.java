@@ -43,4 +43,12 @@ public class CardPickController {
     public void incrementClickCount(@PathVariable Long cardId) {
         cardPickService.incrementClickCount(cardId);
     }
+
+
+    //인기순으로 주는 api
+    @GetMapping("/popular")
+    public List<CardResponse> popularCard(){
+        return cardPickService.getPopularCards();
+
+    }
 }

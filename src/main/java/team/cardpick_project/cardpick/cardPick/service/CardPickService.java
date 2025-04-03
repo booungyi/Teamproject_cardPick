@@ -114,7 +114,7 @@ public class CardPickService {
         CardPick cardPick = cardRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Card not found: " + id));
         cardPick.incrementClickCount();
-        getPopularCards();
+//        getPopularCards();
     }
 
     //인기순으로 정렬하는 함수
