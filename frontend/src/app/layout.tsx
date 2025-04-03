@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Banner from "@/components/Banner"; // 올바른 경로로 import
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
