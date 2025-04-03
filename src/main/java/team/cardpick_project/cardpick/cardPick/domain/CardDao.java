@@ -41,9 +41,11 @@ public class CardDao {
                 .select(
                         Projections.constructor(
                                 CardResponseQDto.class,
+                                qCardPick.id,
                                 qCardPick.cardName,
                                 qCardPick.imageUrl,
-                                qCardPick.detailUrl
+                                qCardPick.detailUrl,
+                                qCardPick.clickCount
                         )
                 )
                 .from(qCardPick)
@@ -70,9 +72,11 @@ public class CardDao {
                 .select(
                         Projections.constructor(
                                 CardResponseQDto.class,
+                                qCardPick.id,
                                 qCardPick.cardName,
                                 qCardPick.imageUrl,
-                                qCardPick.detailUrl
+                                qCardPick.detailUrl,
+                                qCardPick.clickCount
                         )
                 )
                 .from(qCardPick)
@@ -115,5 +119,22 @@ public class CardDao {
                 .fetchOne();
 
         return count;
+    }
+
+    //클릭증가가 높은순으로 카드 정렬(인기순)
+    public List<CardResponseQDto> getPopularCards() {
+        return queryFactory
+                .select(Projections.constructor(
+                        CardResponseQDto.class,
+                        qCardPick.id,
+                        qCardPick.cardName,
+                        qCardPick.imageUrl,
+                        qCardPick.detailUrl,
+                        qCardPick.clickCount
+                ))
+                .from(qCardPick)
+                .orderBy(qCardPick.clickCount.desc()) // ⭐ 클릭 수 높은 순 정렬
+                .limit(10) // 상위 10개만 가져옴
+                .fetch();
     }
 }
