@@ -18,6 +18,7 @@ public class AdController {
 
     @PostMapping("/adCard")
     public void createAd(@RequestBody CreateAdRequest request) {
+        System.out.println("📌 받은 요청 데이터: " + request);
         advertiseService.create(request);
     }
 

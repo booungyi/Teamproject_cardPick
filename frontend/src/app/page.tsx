@@ -4,9 +4,31 @@ import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Banner from "@/components/Banner";
+import PopularCards from "@/components/ui/popular-cards";
+import {useEffect, useState} from "react";
+
+export interface Card {
+    id: number;
+    cardName: string;
+    imageUrl: string;
+    detailUrl: string;
+    isAdCard: boolean;
+    clickCount: number
+}
 
 export default function Home() {
     const router = useRouter();
+    const [cards, setCards] = useState<Card[]>([]);
+
+    useEffect(() => {
+        fetch("http://localhost:8080/api/card_picks/popular")
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("Fetched ads:", data); // 디버깅용
+                setCards(data);
+            })
+            .catch((err) => console.error("Failed to fetch ads:", err));
+    }, []);
 
     return (
         <>
@@ -55,6 +77,9 @@ export default function Home() {
                             맞춤 카드 검색
                         </button>
                     </div>
+                </div>
+                <div>
+                    <PopularCards cards={cards}/>
                 </div>
             </div>
         </>
