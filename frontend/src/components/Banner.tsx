@@ -1,16 +1,20 @@
 "use client";
 
 import {useEffect, useState} from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import styles from "./Banner.module.css";
 import {fetch} from "undici-types";
 
 interface Ad{
     id: number;
     cardName: string;
-    imageUrl: string;
+    image?: string;
+    imageUrl?: string;
     detailUrl: string;
 }
 
 export default function  Banner (){
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
     const [ads, setAds] = useState<Ad[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -37,107 +41,88 @@ export default function  Banner (){
         const mockAds: Ad[] = [
             {
                 id: 1,
-                cardName: "Ad 1: 카드 광고 1 배너",
-                imageUrl: "https://via.placeholder.com/300x150?text=Ad+1",
-                detailUrl: "https://example.com/ad1"
+                cardName: "Ad 1: 카드 광고 이미지",
+                image: "/images/banner1.jpg",
+                detailUrl: "https://cardPick-search.naver.com/item?cardAdId=17151"
             },
             {
                 id: 2,
                 cardName: "Ad 2: 카드 광고 2 배너",
-                imageUrl: "https://via.placeholder.com/300x150?text=Ad+2",
+                image: "/images/banner2.jpg",
                 detailUrl: "https://example.com/ad2"
             },
             {
                 id: 3,
                 cardName: "Ad 3: Free Shipping on All Orders!",
-                imageUrl: "https://via.placeholder.com/300x150?text=Ad+3",
+                image: "/images/ad1.jpg",
                 detailUrl: "https://example.com/ad3"
             },
             {
                 id: 4,
                 cardName: "Ad 4: New Arrivals - Shop Now!",
-                imageUrl: "https://via.placeholder.com/300x150?text=Ad+4",
+                image: "/images/ad1.jpg",
                 detailUrl: "https://example.com/ad4"
             },
             {
                 id: 5,
                 cardName: "Ad 5: 50% Off - Limited Time Only!",
-                imageUrl: "https://via.placeholder.com/300x150?text=Ad+5",
+                image: "/images/ad1.jpg",
                 detailUrl: "https://example.com/ad5"
             },
         ];
         setAds(mockAds); // Mock 데이터로 설정
     }, []);
 
-
-
-    // 5초마다 자동 슬라이드
+    // 자동 슬라이드 기능
     useEffect(() => {
-        if (ads.length === 0) return; // 광고가 없으면 실행하지 않음
-
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % ads.length);
+        if (!emblaApi) return;
+        const autoplay = setInterval(() => {
+            emblaApi.scrollNext();
         }, 5000);
+        return () => clearInterval(autoplay);
+    }, [emblaApi]);
 
-        return () => clearInterval(interval); // 컴포넌트 언마운트 시 정리
-    }, [ads]); // ads가 변경될 때마다 실행
-
-    // 인디케이터를 클릭하여 특정 슬라이드로 이동하는 함수
-    const goToSlide = (index: number) => {
-        setCurrentIndex(index);
-    };
-
-    // 이전 슬라이드로 이동
-    const goToPrevSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + ads.length) % ads.length);
-    };
-
-    // 다음 슬라이드로 이동
-    const goToNextSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % ads.length);
-    };
+    // 현재 슬라이드 감지
+    useEffect(() => {
+        if (!emblaApi) return;
+        const updateIndex = () => {
+            setCurrentIndex(emblaApi.selectedScrollSnap());
+        };
+        emblaApi.on("select", updateIndex);
+        return () => emblaApi.off("select", updateIndex);
+    }, [emblaApi]);
 
     return (
-        <div className="banner-container">
-            <div className="banner">
-                <div
-                    className="banner-track"
-                    style={{ transform: `translateX(-${currentIndex * 100}%)` }} // 슬라이드 효과 적용
-                >
+        <div className={styles.bannerContainer}>
+            <div className={styles.bannerWrapper} ref={emblaRef}>
+                <div className={styles.bannerTrack}>
                     {ads.map((ad) => (
-                        <a key={ad.id} href={ad.detailUrl} className="banner-item">
-                            <img src={ad.imageUrl} alt={ad.cardName} />
-                            <p>{ad.cardName}</p>
+                        <a key={ad.id} href={ad.detailUrl} className={styles.bannerItem}>
+                            <img src={ad.image} alt={ad.cardName} className={styles.bannerImage} />
+                            {/*<p className={styles.bannerText}>{ad.cardName}</p>*/}
                         </a>
                     ))}
                 </div>
+            </div>
 
-                {/* 슬라이드 인디케이터 */}
-                <div className="banner-indicators">
-                    {ads.map((_, index) => (
-                        <span
-                            key={index}
-                            className={`indicator ${index === currentIndex ? 'active' : ''}`}
-                            onClick={() => goToSlide(index)}
-                        />
-                    ))}
-                </div>
+            {/* 네비게이션 버튼 */}
+            <button className={`${styles.navButton} ${styles.left}`} onClick={() => emblaApi?.scrollPrev()}>
+                ◀
+            </button>
+            <button className={`${styles.navButton} ${styles.right}`} onClick={() => emblaApi?.scrollNext()}>
+                ▶
+            </button>
 
-                {/* 수동 슬라이드 버튼 */}
-                <div className="banner-controls">
+            {/* 인디케이터 */}
+            <div className={styles.indicatorContainer}>
+                {ads.map((_, index) => (
                     <button
-                        className="banner-control prev"
-                        onClick={() => setCurrentIndex((prev) => (prev - 1 + ads.length) % ads.length)}
-                    >
-                        ◀
-                    </button>
-                    <button
-                        className="banner-control next"
-                        onClick={() => setCurrentIndex((prev) => (prev + 1) % ads.length)}
-                    >
-                        ▶
-                    </button>
-                </div>
+                        key={index}
+                        className={`${styles.indicator} ${currentIndex === index ? styles.active : ""}`}
+                        onClick={() => emblaApi?.scrollTo(index)}
+                        aria-label={`Go to slide ${index + 1}`}
+                    />
+                ))}
             </div>
         </div>
     );

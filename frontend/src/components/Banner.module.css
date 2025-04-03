@@ -1,0 +1,271 @@
+/* styles/banner.css 파일에 추가하거나 global.css에 포함 */
+
+/*.relative {*/
+/*    position: relative;*/
+/*}*/
+
+/*.w-full {*/
+/*    width: 100%;*/
+/*}*/
+
+/*.max-w-3xl {*/
+/*    max-width: 48rem;*/
+/*}*/
+
+/*.mx-auto {*/
+/*    margin-left: auto;*/
+/*    margin-right: auto;*/
+/*}*/
+
+/*.my-4 {*/
+/*    margin-top: 1rem;*/
+/*    margin-bottom: 1rem;*/
+/*}*/
+
+/*.overflow-hidden {*/
+/*    overflow: hidden;*/
+/*}*/
+
+/*.flex {*/
+/*    display: flex;*/
+/*}*/
+
+/*.transition-transform {*/
+/*    transition-property: transform;*/
+/*}*/
+
+/*.duration-500 {*/
+/*    transition-duration: 500ms;*/
+/*}*/
+
+/*.ease-in-out {*/
+/*    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);*/
+/*}*/
+
+/*.min-w-full {*/
+/*    min-width: 100%;*/
+/*}*/
+
+/*.flex-shrink-0 {*/
+/*    flex-shrink: 0;*/
+/*}*/
+
+/*.w-full {*/
+/*    width: 100%;*/
+/*}*/
+
+/*.h-auto {*/
+/*    height: auto;*/
+/*}*/
+
+/*.object-cover {*/
+/*    object-fit: cover;*/
+/*}*/
+
+/*.text-center {*/
+/*    text-align: center;*/
+/*}*/
+
+/*.py-2 {*/
+/*    padding-top: 0.5rem;*/
+/*    padding-bottom: 0.5rem;*/
+/*}*/
+
+/*.bg-white {*/
+/*    background-color: #ffffff;*/
+/*}*/
+
+/*.bg-opacity-90 {*/
+/*    --bg-opacity: 0.9;*/
+/*}*/
+
+/*.absolute {*/
+/*    position: absolute;*/
+/*}*/
+
+/*.bottom-0 {*/
+/*    bottom: 0;*/
+/*}*/
+
+/*.left-0 {*/
+/*    left: 0;*/
+/*}*/
+
+/*.right-0 {*/
+/*    right: 0;*/
+/*}*/
+
+/*.left-2 {*/
+/*    left: 0.5rem;*/
+/*}*/
+
+/*.right-2 {*/
+/*    right: 0.5rem;*/
+/*}*/
+
+/*.top-1\/2 {*/
+/*    top: 50%;*/
+/*}*/
+
+/*.transform {*/
+/*    transform: translateY(-50%);*/
+/*}*/
+
+/*.bg-black {*/
+/*    background-color: #000000;*/
+/*}*/
+
+/*.bg-opacity-30 {*/
+/*    --bg-opacity: 0.3;*/
+/*}*/
+
+/*.bg-opacity-50 {*/
+/*    --bg-opacity: 0.5;*/
+/*}*/
+
+/*.text-white {*/
+/*    color: #ffffff;*/
+/*}*/
+
+/*.w-8 {*/
+/*    width: 2rem;*/
+/*}*/
+
+/*.h-8 {*/
+/*    height: 2rem;*/
+/*}*/
+
+/*.rounded-full {*/
+/*    border-radius: 9999px;*/
+/*}*/
+
+/*.flex {*/
+/*    display: flex;*/
+/*}*/
+
+/*.items-center {*/
+/*    align-items: center;*/
+/*}*/
+
+/*.justify-center {*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.hover\:bg-opacity-50:hover {*/
+/*    --bg-opacity: 0.5;*/
+/*}*/
+
+/*.focus\:outline-none:focus {*/
+/*    outline: none;*/
+/*}*/
+
+/*.pb-1 {*/
+/*    padding-bottom: 0.25rem;*/
+/*}*/
+
+/*.pt-3 {*/
+/*    padding-top: 0.75rem;*/
+/*}*/
+
+/*.w-2 {*/
+/*    width: 0.5rem;*/
+/*}*/
+
+/*.h-2 {*/
+/*    height: 0.5rem;*/
+/*}*/
+
+/*.mx-1 {*/
+/*    margin-left: 0.25rem;*/
+/*    margin-right: 0.25rem;*/
+/*}*/
+
+/*.bg-gray-800 {*/
+/*    background-color: #2d3748;*/
+/*}*/
+
+/*.bg-gray-300 {*/
+/*    background-color: #e2e8f0;*/
+/*}*/
+
+/*배너 css 분리*/
+.bannerContainer {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: 16px auto;
+}
+
+.bannerWrapper {
+    overflow: hidden;
+}
+
+.bannerTrack {
+    display: flex;
+}
+
+.bannerItem {
+    flex: 0 0 100%;
+    position: relative;
+}
+
+.bannerImage {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/*.bannerText {*/
+/*    text-align: center;*/
+/*    padding: 8px;*/
+/*    background: rgba(255, 255, 255, 0.9);*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    width: 100%;*/
+/*}*/
+
+.navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: black;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.navButton.left {
+    left: 10px;
+}
+
+.navButton.right {
+    right: 10px;
+}
+
+.indicatorContainer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 4px;
+    padding-top: 12px;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+    border-radius: 50%;
+    background: #d1d5db;
+    cursor: pointer;
+}
+
+.indicator.active {
+    background: #374151;
+}

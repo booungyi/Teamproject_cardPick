@@ -33,10 +33,11 @@ export default function Home() {
     return (
         <>
             <div className={styles.container}>
-                {/*<Banner />*/}
+
                 <h1 className={styles.title}>💳 Card Picker</h1>
                 <p className={styles.subtitle}>나에게 딱 맞는 카드를 쉽고 빠르게 찾아드립니다</p>
 
+                <Banner />
                 <div className={styles.optionsContainer}>
                     <div className={styles.optionCard}>
                         <div className={styles.iconWrapper}>
@@ -80,9 +81,6 @@ export default function Home() {
                 <div>
                     <PopularCards cards={cards}/>
                 </div>
-                <footer>
-                    {/*<Banner />*/}
-                </footer>
             </div>
         </>
     );
