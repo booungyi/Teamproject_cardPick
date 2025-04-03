@@ -51,7 +51,6 @@ import java.util.Map;
                     }
                 }
 
-
                 System.out.println("CSV 데이터가 성공적으로 저장되었습니다!");
 
             } catch (IOException e) {
@@ -67,6 +66,7 @@ import java.util.Map;
             return new CardBenefitsResponse(
                     cardPick.getCardName(),
                     cardPick.getImageUrl(),
+                    cardPick.getApplyLink(),
                     cardBenefits
             );
         }

@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 @Service
 @RequiredArgsConstructor
 public class CardPickService {
@@ -24,15 +23,10 @@ public class CardPickService {
     private final CardDao cardDao;
     private final AdQueryRepository adQueryRepository;
 
-
-
     public List<CardResponse> getCardsByConditions(String issuer, List<String> categories) {
         List<CardResponse> cardResponse = cardDao.getCardsByConditions(issuer, categories).stream()
-                .map(data -> CardResponse.toDtoFromQDto(data, false,1))
+                .map(data -> CardResponse.toDtoFromQDto(data, false, 1))
                 .collect(Collectors.toList());
-
-        // ⭐ 클릭 수 증가 로직 추가
-        cardResponse.forEach(card -> cardDao.incrementClickCount(card.id()));
 
         LocalDateTime today = LocalDateTime.now();
         List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today);
@@ -44,11 +38,9 @@ public class CardPickService {
                         active.getImageUrl(),
                         active.getDetailUrl(),
                         true,
-                        active.getClickCount()+1//증가된 클릭수 값
+                        active.getClickCount() + 1 //증가된 클릭수 값
                 ))
                 .toList();
-
-
 
         return cardResponse;
     }
@@ -68,7 +60,7 @@ public class CardPickService {
                 String imageUrl = record.get("image_url");
                 String detailUrl = record.get("detail_url");
 
-                CardPick cardPick = new CardPick(name, description, annualFee, imageUrl, detailUrl);
+                CardPick cardPick = new CardPick(name, description, annualFee, applyLink, imageUrl, detailUrl);
 
                 // parsed_desc 문자열을 리스트로 변환
                 String parsedDescStr = record.get("parsed_desc").replace("[", "").replace("]", "").replace("'", "");
@@ -86,19 +78,16 @@ public class CardPickService {
         }
     }
 
-    public Long getCountByConditions(String issuer, List<String> categories) {
-        Long count = cardDao.getCountByConditions(issuer, categories);
+    public Long getCountByConditions(List<String> categories) {
+        Long count = cardDao.getCountByConditions(categories);
         return count;
     }
 
     public List<CardResponse> getCardsByMbti(String mbti) {
         List<CardResponse> cardResponse = cardDao.getCardsByMbti(mbti).stream()
 //                .map(CardResponse::toDtoFromQDto)
-                .map(data -> CardResponse.toDtoFromQDto(data, false,1))
+                .map(data -> CardResponse.toDtoFromQDto(data, false, 1))
                 .collect(Collectors.toList());
-
-        // ⭐ 클릭 수 증가 로직 추가
-        cardResponse.forEach(card -> cardDao.incrementClickCount(card.id()));
 
         // TODO: 광고 중인 카드 1개 가지고 오기 db에서
         LocalDateTime today = LocalDateTime.now();
@@ -116,10 +105,9 @@ public class CardPickService {
                 ))
                 .toList();
 
-
-
         return cardResponse;
     }
+
     //상세조회 카운트 하는 서비스 로직에 인기순으로 정ㄹ렬하는 함수 추가
     @Transactional
     public void incrementClickCount(Long id) {
@@ -129,7 +117,7 @@ public class CardPickService {
         getPopularCards();
     }
 
-   //인기순으로 정렬하는 함수
+    //인기순으로 정렬하는 함수
     public List<CardResponse> getPopularCards() {
         return cardDao.getPopularCards().stream()
                 .map(data -> CardResponse.toDtoFromQDto(data, false, data.clickCount())) // clickCount() 사용

@@ -32,8 +32,6 @@ class CardPickServiceTest {
     @InjectMocks
     private CardPickService cardService;
 
-
-
     @Test
     void testGetCardsByConditions_incrementsClickCount() {
         // given: 테스트 데이터를 준비
@@ -41,7 +39,12 @@ class CardPickServiceTest {
         List<String> categories = Arrays.asList("category1", "category2");
 
         CardResponseQDto cardResponseQDto = new CardResponseQDto(
-                cardId, "Card Name", "imageUrl", "detailUrl");
+                cardId,
+                "Card Name",
+                "imageUrl",
+                "detailUrl",
+                6
+        );
 
         List<CardResponseQDto> mockCards = Arrays.asList(cardResponseQDto);
         when(cardDao.getCardsByConditions(any(), any())).thenReturn(mockCards);
@@ -61,7 +64,12 @@ class CardPickServiceTest {
         List<String> categories = Arrays.asList("category1", "category2");
 
         CardResponseQDto cardResponseQDto = new CardResponseQDto(
-                cardId, "Card Name", "imageUrl", "detailUrl");
+                cardId,
+                "Card Name",
+                "imageUrl",
+                "detailUrl",
+                56
+        );
 
         List<CardResponseQDto> mockCards = Arrays.asList(cardResponseQDto);
         when(cardDao.getCardsByConditions(any(), any())).thenReturn(mockCards);

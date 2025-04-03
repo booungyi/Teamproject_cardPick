@@ -7,7 +7,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import team.cardpick_project.cardpick.cardPick.cardDto.CardResponseQDto;
-
 import java.util.List;
 
 @Repository
@@ -42,9 +41,11 @@ public class CardDao {
                 .select(
                         Projections.constructor(
                                 CardResponseQDto.class,
+                                qCardPick.id,
                                 qCardPick.cardName,
                                 qCardPick.imageUrl,
-                                qCardPick.detailUrl
+                                qCardPick.detailUrl,
+                                qCardPick.clickCount
                         )
                 )
                 .from(qCardPick)
@@ -71,9 +72,11 @@ public class CardDao {
                 .select(
                         Projections.constructor(
                                 CardResponseQDto.class,
+                                qCardPick.id,
                                 qCardPick.cardName,
                                 qCardPick.imageUrl,
-                                qCardPick.detailUrl
+                                qCardPick.detailUrl,
+                                qCardPick.clickCount
                         )
                 )
                 .from(qCardPick)
@@ -84,9 +87,7 @@ public class CardDao {
         return cardResponseQDtos;
     }
 
-    public Long getCountByConditions(String issuer, List<String> categories) {
-
-
+    public Long getCountByConditions(List<String> categories) {
 
         List<Category> categoryList = categories.stream()
                 .map(Category::valueOf)
@@ -94,9 +95,9 @@ public class CardDao {
 
         BooleanBuilder bb = new BooleanBuilder();
 
-        if (issuer != null){
-            bb.and(qCardPick.cardName.contains(issuer));
-        }
+//        if (issuer != null){
+//            bb.and(qCardPick.cardName.contains(issuer));
+//        }
 
         if (!categories.isEmpty()){
             bb.and(JPAExpressions
@@ -120,14 +121,6 @@ public class CardDao {
         return count;
     }
 
-    //클릭증가 메서드
-    public void incrementClickCount(Long cardId) {
-        queryFactory
-                .update(qCardPick)
-                .set(qCardPick.clickCount, qCardPick.clickCount.add(1))
-                .where(qCardPick.id.eq(cardId))
-                .execute();
-    }
     //클릭증가가 높은순으로 카드 정렬(인기순)
     public List<CardResponseQDto> getPopularCards() {
         return queryFactory

@@ -28,7 +28,7 @@ public class CardPick {
     private String cardName;
 
     @Column(nullable = false)
-    @OneToMany(mappedBy = "cardPick",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cardPick", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<CardCategory> cardCategories = new ArrayList<>();
 
@@ -40,10 +40,10 @@ public class CardPick {
     @NonNull
     private String annualFee;
 
-    //신청 페이지는 일단 보류
-//    @Column(nullable = false)
-//    @NonNull
-//    private String applyLink;
+    //    상세 조회
+    @Column(nullable = false, columnDefinition = "TEXT")
+    @NonNull
+    private String applyLink;
 
     @Column(nullable = false)
     @NonNull
@@ -69,24 +69,16 @@ public class CardPick {
     @OneToMany(mappedBy = "cardPick")
     private List<CardBenefits> cardBenefits = new ArrayList<>();
 
-    public void addCategory(List<CardCategory> categories){
+    public void addCategory(List<CardCategory> categories) {
         this.cardCategories.addAll(categories);
     }
 
-    // ID만 받는 생성자 추가 (프록시 객체 생성용)
-    public CardPick(Long id) {
-        this.id = id;
-    }
-
     // 클릭 카운트 필드 추가
-    private Integer clickCount=0 ;
+    private Integer clickCount = 0;
 
     public void incrementClickCount() {
         // 1️⃣ 클릭 수 증가
-
-       clickCount = clickCount+1;
-
-
+        clickCount = clickCount + 1;
     }
 
 }

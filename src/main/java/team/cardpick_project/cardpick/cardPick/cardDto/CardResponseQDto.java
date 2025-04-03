@@ -6,6 +6,5 @@ public record CardResponseQDto(
         String imageUrl,
         String detailUrl,
         Integer clickCount
-
 ) {
 }
