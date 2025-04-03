@@ -157,13 +157,21 @@ export default function CardBenefitPage() {
         {/* 카드 이미지 (왼쪽) */}
         <img
           src={data.cardImageUrl}
-          alt={data.cardName}
+          // alt={data.cardName}
           className={styles.cardImage}
         />
 
         {/* 카드 정보 (오른쪽) */}
         <div className={styles.cardDetails}>
           <h1 className={styles.cardTitle}>{data.cardName}</h1>
+          <p>
+            {data.benefits.slice(0, 3).map((benefit, index) => (
+              <span key={index} className={styles.benefitText}>
+                • {benefit.benefitName}
+                <br /> {/* ✅ 줄바꿈 추가 */}
+              </span>
+            ))}
+          </p>
           <button
             className={styles.applyButton}
             onClick={() => {
@@ -174,7 +182,7 @@ export default function CardBenefitPage() {
               }
             }}
           >
-            카드 신청
+            카드 신청 바로가기
           </button>
         </div>
       </div>
@@ -204,9 +212,11 @@ export default function CardBenefitPage() {
               </div>
               {/*<FaChevronDown className={styles.chevronIcon} />*/}
             </AccordionTrigger>
-            <AccordionContent className={styles.benefit_detail}>
-              {benefit.benefitDetail}
-            </AccordionContent>
+            <div className={styles.benefit_detail_layout}>
+              <AccordionContent className={styles.benefit_detail}>
+                {benefit.benefitDetail}
+              </AccordionContent>
+            </div>
           </AccordionItem>
         ))}
       </Accordion>
