@@ -3,6 +3,7 @@
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Banner from "@/components/Banner";
 
 export default function Home() {
     const router = useRouter();
@@ -10,6 +11,7 @@ export default function Home() {
     return (
         <>
             <div className={styles.container}>
+                <Banner />
                 <h1 className={styles.title}>💳 Card Picker</h1>
                 <p className={styles.subtitle}>나에게 딱 맞는 카드를 쉽고 빠르게 찾아드립니다</p>
 
