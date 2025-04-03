@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import styles from "./CardBenefitPage.module.css";
+import styles from "./styles.module.css";
 import {
   Accordion,
   AccordionContent,
@@ -71,15 +71,19 @@ export default function CardBenefitPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.cardHeader}>
+      <div className={styles.cardInfo}>
+        {/* 카드 이미지 (왼쪽) */}
         <img
           src={data?.cardImageUrl}
           alt={data?.cardName}
           className={styles.cardImage}
         />
-        <div className={styles.cardInfo}>
-          <h1>{data?.cardName}</h1>
+
+        {/* 카드 정보 (오른쪽) */}
+        <div className={styles.cardDetails}>
+          <h1 className={styles.cardTitle}>{data?.cardName}</h1>
           <button
+            className={styles.applyButton}
             onClick={() => {
               if (data?.applyLink) {
                 location.href = data.applyLink;
@@ -87,13 +91,12 @@ export default function CardBenefitPage() {
                 alert("신청 링크가 없습니다.");
               }
             }}
-            className={styles.applyButton}
           >
             카드 신청
           </button>
         </div>
       </div>
-      <div className={styles.benefitsSection}>
+      <div className={styles.benefitItem}>
         <h2>주요 혜택</h2>
         <Accordion type="single" collapsible>
           {data?.benefits.map((benefit, index) => (
@@ -106,6 +109,7 @@ export default function CardBenefitPage() {
                 {benefit.benefitName}
               </AccordionTrigger>
               <AccordionContent className={styles.benefit_detail}>
+                {benefit.benefitDetail}
                 {benefit.benefitDetail}
               </AccordionContent>
             </AccordionItem>
