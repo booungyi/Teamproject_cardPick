@@ -50,7 +50,8 @@ public class AdQueryRepository {
         List<Advertise> advertiseList = jpaQueryFactory.selectFrom(this.advertise)
                 .where(
                         this.advertise.startDate.loe(today),
-                        this.advertise.endDate.goe(today)
+                        this.advertise.endDate.goe(today),
+                        this.advertise.adStatus.eq(AdStatus.ACTIVE)
                 )
                 .fetch();
 

@@ -49,7 +49,11 @@ public class Advertise {
     public Advertise() {
     }
 
-//    // ID만 받아서 생성하는 생성자
+    public void setAdStatus(AdStatus adStatus) {
+        this.adStatus = adStatus;
+    }
+
+    //    // ID만 받아서 생성하는 생성자
     public Advertise(CardPick cardPick, LocalDateTime start, LocalDateTime end) {
         this.cardPick = cardPick;
         this.startDate = start;
