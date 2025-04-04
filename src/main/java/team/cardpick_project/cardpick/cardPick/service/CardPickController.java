@@ -44,7 +44,6 @@ public class CardPickController {
         cardPickService.incrementClickCount(cardId);
     }
 
-
     //인기순으로 주는 api
     @GetMapping("/popular")
     public List<CardResponse> popularCard(){

@@ -138,8 +138,19 @@ export default function CardBenefitPage() {
   useEffect(() => {
     if (!cardId) return;
 
-    // 실제 구현 시에는 아래 코드 사용
+    // 로딩 상태 설정
     setLoading(true);
+
+    // 카드 조회수 증가 API 호출 (페이지 진입 시 실행)
+    fetch(`http://localhost:8080/api/card_picks/${cardId}`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).catch((error) => console.error("조회수 증가 API 오류:", error));
+
+    // 카드 상세 정보 가져오는 API 호출
     fetch(`http://localhost:8080/api/card-benefits/${cardId}`)
       .then((res) => (res.ok ? res.json() : Promise.reject("Failed to fetch")))
       .then(setData)

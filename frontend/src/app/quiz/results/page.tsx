@@ -2,8 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import styles from "@/app/selectedBenefit/results/Results.module.css";
+import styles from "./quizResults.module.css";
+// import Image from "next/image";
+// import styles from "@/app/selectedBenefit/styles.module.css";
 
 // 카드 정보 인터페이스
 interface Card {
