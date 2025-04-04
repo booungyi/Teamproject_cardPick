@@ -31,6 +31,7 @@ export default function Results() {
                 setLoading(true);
                 const queryString = categories.map(c => `categories=${encodeURIComponent(c)}`).join("&");
                 const requestUrl = `http://localhost:8080/api/card_picks/conditions?${queryString}`;
+
                 console.log("🔍 API 요청 URL:", requestUrl);
 
                 const response = await fetch(requestUrl, {
@@ -43,6 +44,8 @@ export default function Results() {
                 }
 
                 const data: CardInfo[] = await response.json();
+                console.log("📢 API 응답 데이터:", data); // 광고 카드 포함 여부 확인
+
                 setCards(data);
                 setPages(groupCardsIntoPages(data, 5));
             } catch (error) {
