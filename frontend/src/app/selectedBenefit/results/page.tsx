@@ -88,23 +88,27 @@ export default function Results() {
 
             <main className={styles.main}>
                 <div className={styles.cardGrid}>
-                    {pages[activePage] && pages[activePage].map((cardPick) => (
-                        <div key={cardPick.id}
-                             className={`${styles.cardItem} ${cardPick.isAdCard ? styles.adCard : ""}`}
-                             onClick={() => handleCardClick(cardPick.id)}>
-                            <img
-                                src={cardPick.imageUrl}
-                                alt={cardPick.cardName}
-                                className={styles.cardImage}
-                                onError={(e) => {
-                                    e.currentTarget.onerror = null;
-                                    e.currentTarget.src = '/images/cardPick-placeholder.jpg';
-                                }}
-                            />
-                            <h3 className={styles.cardName}>{cardPick.cardName}</h3>
-                            {cardPick.isAdCard && <span className={styles.adBadge}>광고</span>}
-                        </div>
-                    ))}
+                    {pages[activePage] && pages[activePage].map((cardPick) => {
+                        console.log("페이지에 들어있는 카드:")
+                        console.log(cardPick);
+                        return (
+                            <div key={cardPick.id}
+                                 className={`${styles.cardItem} ${cardPick.isAdCard ? styles.adCard : ""}`}
+                                 onClick={() => handleCardClick(cardPick.id)}>
+                                <img
+                                    src={cardPick.imageUrl}
+                                    alt={cardPick.cardName}
+                                    className={styles.cardImage}
+                                    onError={(e) => {
+                                        e.currentTarget.onerror = null;
+                                        e.currentTarget.src = '/images/cardPick-placeholder.jpg';
+                                    }}
+                                />
+                                <h3 className={styles.cardName}>{cardPick.cardName}</h3>
+                                {cardPick.isAdCard && <span className={styles.adBadge}>광고</span>}
+                            </div>
+                        )
+                    })}
                 </div>
             </main>
 
