@@ -61,6 +61,7 @@
     cursor: pointer;
     flex-shrink: 0;
     padding: 1rem;
+    border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -156,3 +157,20 @@
 .homeButton:hover {
     background-color: #218838;
 }
+
+/* 일반 카드와 광고 카드를 구분 */
+.adCard {
+    background-color: #fffbe6; /* 광고 카드 배경색 예시 */
+    border-color: #f0c040;
+}
+
+.adBadge {
+    display: inline-block;
+    background-color: #f00;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    margin-top: 4px;
+}
+

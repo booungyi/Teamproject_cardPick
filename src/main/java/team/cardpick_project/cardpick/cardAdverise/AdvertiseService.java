@@ -9,6 +9,7 @@ import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdTermRequ
 import team.cardpick_project.cardpick.cardPick.cardDto.ActiveResponse;
 import team.cardpick_project.cardpick.cardPick.domain.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -40,10 +41,15 @@ public class AdvertiseService {
     //광고 매일 자정 업데이트
     @Scheduled(cron = "0 0 0 * * *")
     public void update() {
+        LocalDateTime now = LocalDateTime.now();
         List<Advertise> ads = advertiseRepository.findByAdStatusIn(List.of(AdStatus.PENDING, AdStatus.ACTIVE));
 
         for (Advertise ad : ads) {
-            ad.updateStatus();
+            if (ad.getStartDate().isBefore(now) && ad.getEndDate().isAfter(now)) {
+                ad.setAdStatus(AdStatus.ACTIVE);
+            } else if (ad.getEndDate().isBefore(now)) {
+                ad.setAdStatus(AdStatus.END);
+            }
         }
         advertiseRepository.saveAll(ads);
     }

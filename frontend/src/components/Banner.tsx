@@ -43,30 +43,30 @@ export default function  Banner (){
                 id: 1,
                 cardName: "Ad 1: 카드 광고 이미지",
                 image: "/images/banner1.jpg",
-                detailUrl: "https://cardPick-search.naver.com/item?cardAdId=17151"
+                detailUrl: "https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?mainCC=a&cooperationcode=09061&solicitorcode=7030023014&utm_source=google_sa&utm_medium=cpc&utm_campaign=goodday_card&utm_content=goodday_card&utm_term=KB%EA%B5%BF%EB%8D%B0%EC%9D%B4%EC%B9%B4%EB%93%9C&gad_source=1&gclid=EAIaIQobChMIif3Wxqa9jAMVkmoPAh1BJyOKEAAYASAAEgKMcvD_BwE"
             },
             {
                 id: 2,
                 cardName: "Ad 2: 카드 광고 2 배너",
-                image: "/images/banner2.jpg",
+                image: "/images/banner1.jpg",
                 detailUrl: "https://example.com/ad2"
             },
             {
                 id: 3,
                 cardName: "Ad 3: Free Shipping on All Orders!",
-                image: "/images/ad1.jpg",
+                image: "/images/banner1.jpg",
                 detailUrl: "https://example.com/ad3"
             },
             {
                 id: 4,
                 cardName: "Ad 4: New Arrivals - Shop Now!",
-                image: "/images/ad1.jpg",
+                image: "/images/banner1.jpg",
                 detailUrl: "https://example.com/ad4"
             },
             {
                 id: 5,
                 cardName: "Ad 5: 50% Off - Limited Time Only!",
-                image: "/images/ad1.jpg",
+                image: "/images/banner1.jpg",
                 detailUrl: "https://example.com/ad5"
             },
         ];
@@ -97,7 +97,7 @@ export default function  Banner (){
             <div className={styles.bannerWrapper} ref={emblaRef}>
                 <div className={styles.bannerTrack}>
                     {ads.map((ad) => (
-                        <a key={ad.id} href={ad.detailUrl} className={styles.bannerItem}>
+                        <a key={ad.id} href={ad.detailUrl} target="_blank" rel="noopener noreferrer" className={styles.bannerItem}>
                             <img src={ad.image} alt={ad.cardName} className={styles.bannerImage} />
                             {/*<p className={styles.bannerText}>{ad.cardName}</p>*/}
                         </a>

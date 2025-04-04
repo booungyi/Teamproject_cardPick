@@ -42,7 +42,13 @@ public class CardPickService {
                 ))
                 .toList();
 
-        return cardResponse;
+        // 여기서 adCardResponses를 cardResponse에 추가하지 않고 있음
+        // 광고 카드와 일반 카드를 합침 + 무작위
+        List<CardResponse> combineList = new ArrayList<>(cardResponse);
+        combineList.addAll(adCardReponses);
+        Collections.shuffle(combineList);
+
+        return combineList;
     }
 
     @Transactional
@@ -105,7 +111,12 @@ public class CardPickService {
                 ))
                 .toList();
 
-        return cardResponse;
+        // 광고 카드와 일반 카드를 합침
+        List<CardResponse> combineList = new ArrayList<>(cardResponse);
+        combineList.addAll(adCardReponses);
+        Collections.shuffle(combineList);
+
+        return combineList;
     }
 
     //상세조회 카운트 하는 서비스 로직에 인기순으로 정ㄹ렬하는 함수 추가
