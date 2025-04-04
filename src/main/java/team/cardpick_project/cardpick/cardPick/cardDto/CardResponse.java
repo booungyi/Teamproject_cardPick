@@ -12,6 +12,4 @@ public record CardResponse(
     public static CardResponse toDtoFromQDto(CardResponseQDto qDto, boolean isAdCard,int clickCount){
         return new CardResponse(qDto.id(),qDto.cardName(), qDto.imageUrl(),qDto.detailUrl(),isAdCard,clickCount);
     }
-
-
 }
