@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import {useEffect, useState} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
 import styles from "@/app/selectedBenefit/results/Results.module.css";
 
 // 카드 정보를 포함하는 객체
@@ -11,6 +11,7 @@ interface CardInfo {
     imageUrl: string;
     detailUrl: string;
     hasEvent?: boolean;
+    isAdCard?: boolean;
 }
 
 export default function Results() {
@@ -30,11 +31,12 @@ export default function Results() {
                 setLoading(true);
                 const queryString = categories.map(c => `categories=${encodeURIComponent(c)}`).join("&");
                 const requestUrl = `http://localhost:8080/api/card_picks/conditions?${queryString}`;
+
                 console.log("🔍 API 요청 URL:", requestUrl);
 
                 const response = await fetch(requestUrl, {
                     method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {'Content-Type': 'application/json'},
                 });
 
                 if (!response.ok) {
@@ -42,6 +44,8 @@ export default function Results() {
                 }
 
                 const data: CardInfo[] = await response.json();
+                console.log("📢 API 응답 데이터:", data); // 광고 카드 포함 여부 확인
+
                 setCards(data);
                 setPages(groupCardsIntoPages(data, 5));
             } catch (error) {
@@ -85,7 +89,8 @@ export default function Results() {
             <main className={styles.main}>
                 <div className={styles.cardGrid}>
                     {pages[activePage] && pages[activePage].map((cardPick) => (
-                        <div key={cardPick.id} className={styles.cardItem}
+                        <div key={cardPick.id}
+                             className={`${styles.cardItem} ${cardPick.isAdCard ? styles.adCard : ""}`}
                              onClick={() => handleCardClick(cardPick.id)}>
                             <img
                                 src={cardPick.imageUrl}
@@ -97,6 +102,7 @@ export default function Results() {
                                 }}
                             />
                             <h3 className={styles.cardName}>{cardPick.cardName}</h3>
+                            {cardPick.isAdCard && <span className={styles.adBadge}>광고</span>}
                         </div>
                     ))}
                 </div>

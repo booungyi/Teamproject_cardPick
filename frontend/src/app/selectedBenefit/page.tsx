@@ -5,14 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from './styles.module.css';
 import { FaTags } from "react-icons/fa";
 import Link from "next/link";
-
-type Category = '쇼핑' | '교통' | '통신' | '할인_및_적립' | '주유' | '항공' | '음식';
-
-interface CardInfo {
-    cardName: string;
-    imageUrl: string;
-    detailUrl: string;
-}
+import {CardInfo, Category, getFilteredCards, getTotalCardCount} from "@/app/lib/data";
 
 interface CategoryInfo {
     name: Category;
@@ -32,7 +25,7 @@ const categories: CategoryInfo[] = [
 
 export default function SelectedBenefit() {
     const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-    const [totalCardCount, setTotalCardCount] = useState<number>(0);
+    const [totalCardCount, setTotalCardCount] = useState(0);
     const [filteredCards, setFilteredCards] = useState<CardInfo[]>([]);
     const router = useRouter();
 
@@ -63,8 +56,7 @@ export default function SelectedBenefit() {
 
     const fetchTotalCardCount = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/card_picks/conditions/count");
-            const count = await response.json();
+            const count = await getTotalCardCount();
             setTotalCardCount(count);
         } catch (error) {
             console.error("카드 개수 가져오기 실패:", error);
@@ -75,9 +67,7 @@ export default function SelectedBenefit() {
         if (categories.length === 0) return; // 카테고리 없으면 요청 안 함
 
         try {
-            const queryString = `categories=${categories.join(",")}`;
-            const response = await fetch(`http://localhost:8080/api/card_picks/conditions?${queryString}`);
-            const cards = await response.json();
+            const cards = await getFilteredCards(categories);
             setFilteredCards(cards);
         } catch (error) {
             console.error("카드 데이터 가져오기 실패:", error);
@@ -127,7 +117,7 @@ export default function SelectedBenefit() {
                 <div className={styles.searchResult}>
                     <h3>🔍 검색 결과</h3>
                     <span className={styles.cardCount}>
-                        맞춤 카드: {selectedCategories.length === 0 ? totalCardCount : filteredCards.length}개
+                        맞춤 카드: {selectedCategories.length === 0 ? totalCardCount : filteredCards.filter(c => c.isAdCard === false) .length}개
                     </span>
                     <div>
                         <Link
