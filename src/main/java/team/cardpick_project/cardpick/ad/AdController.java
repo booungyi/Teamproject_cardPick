@@ -10,7 +10,7 @@ import java.net.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.List;
 
-import static team.cardpick_project.cardpick.ad.QAdvertising.advertising;
+//import static team.cardpick_project.cardpick.ad.QAdvertising.advertising;
 
 @RestController
 public class AdController {
@@ -21,27 +21,14 @@ public class AdController {
         this.adService = adService;
     }
 
-//
-//    //광고 생성
-//    @PostMapping("/ads")
-//    public void adCreate(@Valid @RequestBody AdRequest request) {
-//        adService.save(request);
-//    }
-//
-//
-//    //여러광고 조회
-//    @GetMapping("/ads")
-//    public List<AdResponse> adRead(@RequestParam(required = false) Long id) {
-//        if (id == null) {
-//            return adService.findAllAds(); // 모든 광고 조회
-//        } else {
-//            AdRequest request = new AdRequest(id);
-//            return adService.read(request); // 특정 ID의 광고 조회
-//        }
-//    }
 
 
-    //광고 예산 소진 상태 확인 API
+
+
+
+
+
+    //광고 예산 소진 상태 확인 API ok
     @GetMapping("/ads/{id}/budget-status")
     public List<AdResponse> getBudgetStatus(@PathVariable Long id) {
         // 광고 ID에 해당하는 예산 상태를 조회하는 로직 구현
@@ -50,7 +37,7 @@ public class AdController {
     }
 
 
-    // 여러 광고 조회 API (상태별로도 조회 가능)
+    // 여러 광고 조회 API (상태별로도 조회 가능) OK
     @GetMapping("/ads")
     public List<AdResponse> adRead(
             @RequestParam(required = false) AdStatuse status) { // 상태 추가
@@ -62,7 +49,7 @@ public class AdController {
     }
 
 
-    // 상태별 광고 조회 API (ACTIVE, INACTIVE, EXPIRED 포함)
+    // 상태별 광고 조회 API (ACTIVE, INACTIVE, EXPIRED 포함) ok
     @GetMapping("/ads/status")
     public List<AdResponse> getAdsByStatus(
             @RequestParam(value = "status", required = false) AdStatuse status) {
@@ -74,7 +61,7 @@ public class AdController {
         }
     }
 
-    //예산 추가시 광고 생성
+    //예산 추가시 광고 생성 ok
     @PostMapping("/ads")
     public ResponseEntity<AdResponse> adCreate(@Valid @RequestBody AdRequest request) {
         AdResponse adResponse = adService.save(request);
@@ -82,14 +69,14 @@ public class AdController {
 
 }
 
-//    //광고 예산 변경
-//    @PatchMapping("/ads/{id}/budget")
-//    public ResponseEntity<AdResponse> updateBudget(
-//            @PathVariable Long id,
-//            @RequestParam("budget") int budget) {
-//
-//        AdResponse updatedAd = adService.updateAdBudget(id, budget);
-//        return ResponseEntity.ok(updatedAd);
-//    }
+    //광고 예산 변경
+    @PatchMapping("/ads/{id}/budget")
+    public ResponseEntity<AdResponse> updateBudget(
+            @PathVariable Long id,
+            @RequestParam("budget") int budget) {
+
+        AdResponse updatedAd = adService.updateAdBudget(id, budget);
+        return ResponseEntity.ok(updatedAd);
+    }
 
 }

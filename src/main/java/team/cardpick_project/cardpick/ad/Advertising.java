@@ -28,7 +28,7 @@ public class Advertising {
     @LastModifiedDate
     private LocalDate endDate;        // 광고 종료일
 
-    public Advertising(Long aLong, Double budget, Double spentAmount, AdStatuse status, LocalDate startDate, LocalDate endDate) {
+    public Advertising() {
     }
 
     public Advertising( Double budget, Double spentAmount, AdStatuse status) {

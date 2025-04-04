@@ -99,20 +99,20 @@ public class AdService {
         );
         if (overlapCount >= 3) throw new IllegalStateException("광고 기간 중첩 3개 초과");
 
-        // 광고 저장
+        // 광고 저장 (status는 무조건 ACTIVE로 고정)
         Advertising ad = adRepository.save(new Advertising(
                 cardPick,
                 request.budget(),
                 request.spentAmount(),
-                request.status(),
+                AdStatuse.ACTIVE, // ✅ 여기 고정!
                 request.startDate(),
                 request.endDate()
         ));
 
         return new AdResponse(ad);
     }
-//    //광고 예산수정
-//    public AdResponse updateAdBudget(Long id, int budget) {
-//        return null;
-//    }
+    //광고 예산수정
+    public AdResponse updateAdBudget(Long id, int budget) {
+        return null;
+    }
 }
