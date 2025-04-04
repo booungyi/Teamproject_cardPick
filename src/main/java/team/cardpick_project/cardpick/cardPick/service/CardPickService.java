@@ -31,6 +31,10 @@ public class CardPickService {
         LocalDateTime today = LocalDateTime.now();
         List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today);
 
+        // 광고 데이터 정상적으로 가져와지는지 확인
+        System.out.println("📢 조회된 광고 카드 개수: " + activeAdCardPick.size());
+        activeAdCardPick.forEach(ad -> System.out.println("광고 카드: " + ad.getCardName()));
+
         List<CardResponse> adCardReponses = activeAdCardPick.stream()
                 .map(active -> new CardResponse(
                         active.getId(),
@@ -42,12 +46,14 @@ public class CardPickService {
                 ))
                 .toList();
 
-        // 여기서 adCardResponses를 cardResponse에 추가하지 않고 있음
+        //adCardResponses를 cardResponse에 추가하지 않고 있음
         // 광고 카드와 일반 카드를 합침 + 무작위
         List<CardResponse> combineList = new ArrayList<>(cardResponse);
         combineList.addAll(adCardReponses);
         Collections.shuffle(combineList);
 
+        // 최종 반환되는 카드 목록 확인
+        System.out.println("📢 최종 반환 카드 개수: " + combineList.size());
         return combineList;
     }
 
