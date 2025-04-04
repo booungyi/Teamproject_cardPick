@@ -1,35 +1,19 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Banner from "@/components/Banner"; // 올바른 경로로 import
-import { Inter } from "next/font/google";
-import Header from "@/components/Header"; // 올바른 경로로 import
+import Header from "@/components/Header";
+import PopularCards from "@/components/ui/popular-cards";
+import { Card } from "@/app/page";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Card Picker: [쉽고 빠르게 찾아드립니다.] ",
-  description: "나에게 딱 맞는 카드를 쉽고 빠르게 찾아드립니다.",
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+  const res = await fetch("http://localhost:8080/api/card_picks/popular", {
+    cache: "no-store",
+  });
+  const cards: Card[] = await res.json();
+
   return (
     <html lang="ko">
-      <body className={inter.className}>
-        <Header />
+      <body>
+        <Header cards={cards} />
         <main>{children}</main>
       </body>
     </html>

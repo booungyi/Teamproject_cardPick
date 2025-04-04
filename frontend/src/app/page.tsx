@@ -83,9 +83,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <div>
-          <PopularCards cards={cards} />
-        </div>
+        <div>{/*<PopularCards cards={cards} />*/}</div>
       </div>
     </>
   );
