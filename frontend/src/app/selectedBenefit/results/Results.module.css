@@ -42,7 +42,7 @@
 
 .cardGrid {
     display: flex;
-    justify-content: flex-start; /* 카드들이 한 줄로 나열되도록 */
+    justify-content: center; /* 카드들이 한 줄로 나열되도록 */
     gap: 1.5rem;
     width: 100%;
     max-width: 100%; /* 카드들이 부모 컨테이너를 넘지 않도록 */
