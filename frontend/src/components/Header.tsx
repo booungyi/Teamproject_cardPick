@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "../app/Header.module.css";
 import PopularCards from "@/components/ui/popular-cards";
 
+
 export interface Card {
   id: number;
   cardName: string;
@@ -14,7 +15,8 @@ export interface Card {
   clickCount: number;
 }
 
-export default function Header() {
+
+export default function Header({ cards }: { cards: Card[] }) {
   const router = useRouter();
 
   const [cards, setCards] = useState<Card[]>([]);
