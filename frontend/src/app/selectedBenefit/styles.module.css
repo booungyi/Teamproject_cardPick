@@ -1,168 +1,175 @@
-/* 전체 레이아웃을 감싸는 래퍼 */
-.wrapper {
-    background-color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    padding: 40px 0;
-    min-height: 100vh;
-}
-
-/* 컨테이너 - 중앙 정렬을 위해 max-width 설정 */
 .container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 1200px;
-    width: 100%;
-}
-
-/* 제목 영역 */
-.title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eaeaea;
-}
-
-/* 카드 정보 영역 */
-.cardInfo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.cardCount {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.cardCountLabel {
-    font-size: 14px;
-    color: #666;
-}
-
-/* 혜택 선택 영역 */
-.benefitsGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-}
-
-@media (min-width: 768px) {
-    .benefitsGrid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-@media (min-width: 1024px) {
-    .benefitsGrid {
-        grid-template-columns: repeat(5, 1fr);
-    }
-}
-
-/* 혜택 카드 */
-.benefitCard {
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    padding: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    border: 1px solid #eaeaea;
+    padding: 2rem;
+    background-color: #fff;
+    min-height: 100vh;
+    margin: 0 10vw; /* 양옆에 일정한 공간 띄우기 */
 }
 
-.benefitCard:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transform: translateY(-2px);
-}
-
-.benefitCard.selected {
-    background-color: #f0f7ff;
-    border-color: #3182ce;
-}
-
-.iconWrapper {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: white;
+.loading, .error {
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.icon {
-    font-size: 20px;
-    color: #333;
-}
-
-.benefitName {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 12px;
-    text-align: center;
-}
-
-.selectButton {
-    width: 100%;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background-color: #eeeeee;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.2rem;
     color: #666;
-    border: none;
-    font-size: 12px;
+}
+
+.error {
+    color: #e74c3c;
+}
+
+.header {
+    text-align: center; /* 제목 중앙 정렬 */
+    width: 100%; /* 전체 너비 */
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #222;
+}
+
+.main {
+    width: 100%; /* 전체 너비 */
+    display: flex;
+    justify-content: center; /* 카드 목록 중앙 정렬 */
+    margin-bottom: 3rem;
+}
+
+.cardGrid {
+    display: flex;
+    justify-content: center; /* 카드들이 한 줄로 나열되도록 */
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 100%; /* 카드들이 부모 컨테이너를 넘지 않도록 */
+    padding: 1rem;
+    overflow-x: auto; /* 가로 스크롤 활성화 */
+    white-space: nowrap; /* 카드들이 한 줄에 놓이게 설정 */
+}
+
+.cardItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px; /* 카드 너비 고정 */
+    height: 350px; /* 카드 높이 고정 */
+    transition: transform 0.3s ease;
     cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.selected .selectButton {
-    background-color: #3182ce;
-    color: white;
-}
-
-/* 검색 결과 영역 */
-.searchResult {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #eaeaea;
-}
-
-.searchResultButton {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: #FFC107;
-    color: #333;
-    border-radius: 30px;
-    font-weight: 600;
-    text-decoration: none;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    transition: all 0.2s;
-}
-
-.searchResultButton:hover {
-    background-color: #FFB300;
+    flex-shrink: 0;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.resetButton {
-    background-color: #FF5252;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 8px 20px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
+.cardItem:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-.resetButton:hover {
-    background-color: #FF1744;
+.cardImageWrapper {
+    position: relative;
+    margin-bottom: 1rem;
+    width: 160px;
+    height: 250px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #eaeaea;
+}
+
+.cardImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.cardName {
+    font-size: 1rem;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 0.5rem;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.cardItem:hover .cardName {
+    color: #bb8b2f;
+}
+
+.footer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.pageButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pageButtons button {
+    padding: 0.5rem 1rem;
+    background-color: #333;
+    color: white;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+.pageButtons button:hover {
+    background-color: #FFB300;
+}
+
+.pageButtons button:disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+}
+
+.pageButtons span {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.homeButton {
+    padding: 0.75rem 1.5rem;
+    background-color: #333;
+    color: white;
+    font-size: 1.125rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.homeButton:hover {
+    background-color: #218838;
+}
+
+/* 일반 카드와 광고 카드를 구분 */
+.adCard {
+    background-color: #f9f9f9; /* 광고 카드 배경색 예시 */
+    border: 1px solid #ccc;
+}
+
+.adBadge {
+    display: inline-block;
+    background-color:  #f9f9f9;
+    color: #333;
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    margin-top: 4px;
 }
