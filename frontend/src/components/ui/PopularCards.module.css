@@ -1,15 +1,7 @@
-/*실시간 Top 10 신용카드 */
-.popularCardsTitle {
-    margin : 5px;
-    font-weight: bold;
-    text-align: center;
-    font-size: 12px;
-    border : 1px solid black;
-}
 
 /* 🔹 실시간 인기 카드 컨테이너 */
 .popularCardsContainer {
-    position: fixed;  필요 시 위치 조정 *!*/
+    position: fixed;
     top: 1.5rem;
     left: 1.5rem;
     z-index: 50;
@@ -103,6 +95,7 @@
 }
 
 /* 🔹 순위 표시 */
+.rankNumber {
     display: inline-flex;
     align-items: center;
     justify-content: center;
