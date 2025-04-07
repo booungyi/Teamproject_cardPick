@@ -6,6 +6,7 @@ import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Repository
@@ -46,12 +47,18 @@ public class AdQueryRepository {
         }
     }
 
-    public List<CardPick> findActiveAdCard(LocalDateTime today) {
-        List<Advertise> advertiseList = jpaQueryFactory.selectFrom(this.advertise)
+    //이름이 같은 카드에 대해선 광고 제외
+    public List<CardPick> findActiveAdCard(LocalDateTime today,
+                                           Set<String> excludeNames) {
+        List<Advertise> advertiseList = jpaQueryFactory
+                .selectFrom(this.advertise)
                 .where(
                         this.advertise.startDate.loe(today),
                         this.advertise.endDate.goe(today),
-                        this.advertise.adStatus.eq(AdStatus.ACTIVE)
+                        this.advertise.adStatus.eq(AdStatus.ACTIVE),
+                        excludeNames.isEmpty()  //중복이름 없으면 나머지 3조건식만, 있으면 중복 포함되지 않은 것만
+                                ? null
+                                : advertise.cardPick.cardName.notIn(excludeNames)
                 )
                 .fetch();
 
