@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "../app/Header.module.css";
 import PopularCards from "@/components/ui/popular-cards";
 
+
 export interface Card {
   id: number;
   cardName: string;
