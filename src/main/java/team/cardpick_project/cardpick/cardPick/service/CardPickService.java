@@ -5,6 +5,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.cardpick_project.cardpick.cardAdverise.AdQueryRepository;
+import team.cardpick_project.cardpick.cardAdverise.Advertise;
+import team.cardpick_project.cardpick.cardAdverise.AdvertiseRepository;
 import team.cardpick_project.cardpick.cardPick.cardDto.CardResponse;
 import team.cardpick_project.cardpick.cardPick.domain.*;
 import org.apache.commons.csv.*;
@@ -22,38 +24,45 @@ public class CardPickService {
     private final CardRepository cardRepository;
     private final CardDao cardDao;
     private final AdQueryRepository adQueryRepository;
+    private final AdvertiseRepository advertiseRepository;
 
     public List<CardResponse> getCardsByConditions(List<String> categories) {
         List<CardResponse> cardResponse = cardDao.getCardsByConditions(categories).stream()
                 .map(data -> CardResponse.toDtoFromQDto(data, false, 1))
                 .collect(Collectors.toList());
 
+        //일반 카드 이름 집합
+        Set<String> normalNames = cardResponse.stream()
+                .map(CardResponse::cardName)
+                .collect(Collectors.toSet());
+
+        //활성화된 광고 조회(중복 이름 제외)
         LocalDateTime today = LocalDateTime.now();
-        List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today);
+        List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today,normalNames);
 
         // 광고 데이터 정상적으로 가져와지는지 확인
-        System.out.println("📢 조회된 광고 카드 개수: " + activeAdCardPick.size());
+        System.out.println("조회된 광고 카드 개수: " + activeAdCardPick.size());
         activeAdCardPick.forEach(ad -> System.out.println("광고 카드: " + ad.getCardName()));
 
-        List<CardResponse> adCardReponses = activeAdCardPick.stream()
-                .map(active -> new CardResponse(
-                        active.getId(),
-                        active.getCardName(),
-                        active.getImageUrl(),
-                        active.getDetailUrl(),
+        List<CardResponse> adCards = activeAdCardPick.stream()
+                .map(ad -> new CardResponse(
+                        ad.getId(),
+                        ad.getCardName(),
+                        ad.getImageUrl(),
+                        ad.getDetailUrl(),
                         true,
-                        active.getClickCount() + 1 //증가된 클릭수 값
+                        ad.getClickCount() + 1 //증가된 클릭수 값
                 ))
                 .toList();
 
-        //adCardResponses를 cardResponse에 추가하지 않고 있음
+        //adCards를 cardResponse에 추가하지 않는 문제
         // 광고 카드와 일반 카드를 합침 + 무작위
         List<CardResponse> combineList = new ArrayList<>(cardResponse);
-        combineList.addAll(adCardReponses);
+        combineList.addAll(adCards);
         Collections.shuffle(combineList);
 
         // 최종 반환되는 카드 목록 확인
-        System.out.println("📢 최종 반환 카드 개수: " + combineList.size());
+        System.out.println("최종 반환 카드 개수: " + combineList.size());
         return combineList;
     }
 
@@ -102,26 +111,38 @@ public class CardPickService {
                 .collect(Collectors.toList());
 
         // TODO: 광고 중인 카드 1개 가지고 오기 db에서
-        LocalDateTime today = LocalDateTime.now();
-        List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today);
+        //일반 카드 이름 집합
+        Set<String> normalNames = cardResponse.stream()
+                .map(CardResponse::cardName)
+                .collect(Collectors.toSet());
 
-        // 광고 카드이면, 같은 CardResponse에 추가
-        List<CardResponse> adCardReponses = activeAdCardPick.stream()
-                .map(active -> new CardResponse(
-                        active.getId(),
-                        active.getCardName(),
-                        active.getImageUrl(),
-                        active.getDetailUrl(),
+        //활성화된 광고 조회(중복 이름 제외)
+        LocalDateTime today = LocalDateTime.now();
+        List<CardPick> activeAdCardPick = adQueryRepository.findActiveAdCard(today,normalNames);
+
+        // 광고 데이터 정상적으로 가져와지는지 확인
+        System.out.println("조회된 광고 카드 개수: " + activeAdCardPick.size());
+        activeAdCardPick.forEach(ad -> System.out.println("광고 카드: " + ad.getCardName()));
+
+        List<CardResponse> adCards = activeAdCardPick.stream()
+                .map(ad -> new CardResponse(
+                        ad.getId(),
+                        ad.getCardName(),
+                        ad.getImageUrl(),
+                        ad.getDetailUrl(),
                         true,
-                        active.getClickCount()
+                        ad.getClickCount() + 1 //증가된 클릭수 값
                 ))
                 .toList();
 
-        // 광고 카드와 일반 카드를 합침
+        //adCards를 cardResponse에 추가하지 않는 문제
+        // 광고 카드와 일반 카드를 합침 + 무작위
         List<CardResponse> combineList = new ArrayList<>(cardResponse);
-        combineList.addAll(adCardReponses);
+        combineList.addAll(adCards);
         Collections.shuffle(combineList);
 
+        // 최종 반환되는 카드 목록 확인
+        System.out.println("최종 반환 카드 개수: " + combineList.size());
         return combineList;
     }
 
