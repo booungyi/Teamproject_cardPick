@@ -19,7 +19,7 @@ public class CardPickController {
     public List<CardResponse> getCardsByConditions(
             @RequestParam(required = false) String issuer,
             @RequestParam List<String> categories) {
-        return cardPickService.getCardsByConditions(issuer, categories);
+        return cardPickService.getCardsByConditions(categories);
     }
 
     //현재 선택된 조건에 맞는 카드 개수
