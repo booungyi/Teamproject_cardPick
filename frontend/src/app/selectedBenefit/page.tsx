@@ -152,7 +152,16 @@ export default function SelectedBenefit() {
                   {} as Record<string, string[]>,
                 ),
               }}
-              className={styles.searchResultButton}
+              className={`${styles.searchResultButton} ${
+                selectedCategories.length === 0 ||
+                filteredCards.filter((c) => !c.isAdCard).length === 0
+                  ? styles.disabled
+                  : ""
+              }`}
+              aria-disabled={
+                selectedCategories.length === 0 ||
+                filteredCards.filter((c) => !c.isAdCard).length === 0
+              }
             >
               검색된 카드 목록 보기
             </Link>
