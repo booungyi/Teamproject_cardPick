@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import Banner from "@/components/Banner";
 import PopularCards from "@/components/ui/popular-cards";
 import { useEffect, useState } from "react";
-import Header from "@/components/Header";
 
 export interface Card {
   id: number;

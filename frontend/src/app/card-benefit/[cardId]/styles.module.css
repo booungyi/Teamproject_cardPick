@@ -1,11 +1,18 @@
 .container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 1.5rem;
+    padding: 2rem;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #dce1da;
-    border-radius: 10px;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
+
+/*body {*/
+/*    background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);*/
+/*    margin: 0;*/
+/*    padding: 2rem 1rem;*/
+/*}*/
 
 .cardInfo {
     display: flex;
@@ -14,8 +21,9 @@
     margin-bottom: 2rem;
     padding: 1.5rem;
     background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
 }
 
 .cardImage {
@@ -23,7 +31,7 @@
     margin-left: 200px;
     height: auto;
     object-fit: contain;
-    border-radius: 10px;
+    border-radius: 1rem;
 }
 
 .cardDetails {
@@ -34,23 +42,32 @@
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 4.5rem;
-    /*margin-left: 100px;*/
-    color: #1a1a1a;
+    color: #333;
+    position: relative;
+}
+
+.cardTitle:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    border-radius: 3px;
 }
 
 .benefitText {
     font-family: 'Dangdanghae', 'Pretendard', sans-serif;
     font-size: 16px;
-    color: black;
+    color: #333;
     font-weight: 500;
     display: flex;
-    align-items: center; /* 아이콘과 텍스트를 세로 중앙 정렬 */
-    gap: 10px; /* 아이콘과 텍스트 사이 간격 */
+    align-items: center;
+    gap: 10px;
     background: white;
-    /*border-radius: 8px;*/
     margin-bottom: 8px;
     padding: 10px;
-    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
 }
 
 .applyButton {
@@ -58,29 +75,32 @@
     margin-left: 10px;
     font-size: 1rem;
     font-weight: 600;
-    color: black;
-    background-color: #ffaa2a;
-    border: black solid 1px;
-    border-radius: 10px;
+    color: white;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    border: none;
+    border-radius: 2rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(71, 118, 230, 0.3);
 }
 
 .applyButton:hover {
-    background-color: #f08300;
-    box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(71, 118, 230, 0.4);
 }
 
 /* 혜택 아이템 스타일 */
 .benefit_layout {
     background-color: white;
-    border-bottom: 5px solid #dce1da;
-    margin-bottom: 0;
-    border-radius: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 }
 
 .benefit_layout:first-child {
-    border-top: 1px solid #dce1da;
+    border-top: 1px solid #f0f0f0;
 }
 
 .benefit_name {
@@ -104,9 +124,9 @@
     justify-content: center;
     width: 48px;
     height: 48px;
-    background-color: #fff7e6;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
     border-radius: 50%;
-    color: #ff9500;
+    color: #4776e6;
     font-size: 1.2rem;
 }
 
@@ -128,30 +148,30 @@
     margin-top: 0.25rem;
 }
 
-.benefit_detail_layout{
+.benefit_detail_layout {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    /*padding: 1.5rem 0;*/
     background-color: white;
-    border-radius: 10px;
-
+    border-radius: 1rem;
 }
+
 .benefit_detail {
     font-family: 'Dangdanghae', 'Pretendard', sans-serif;
     padding: 1rem 1.5rem 1rem 5.5rem;
-    color: black;
+    color: #333;
     line-height: 1.6;
     font-size: 1rem;
-    background-color: #dce1da;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
     margin-left: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
-    border-radius: 10px;
+    border-radius: 1rem;
 }
 
 .chevronIcon {
     transition: transform 0.3s ease;
+    color: #4776e6;
 }
 
 [data-state="open"] .chevronIcon {
@@ -171,9 +191,9 @@
     justify-content: center;
     min-width: 48px;
     height: 48px;
-    background-color: #fff7e6;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
     border-radius: 50%;
-    color: #ff9500;
+    color: #4776e6;
     font-size: 1.2rem;
 }
 
@@ -186,6 +206,16 @@
 
     .cardImage {
         width: 200px;
+        margin-left: 0;
+    }
+
+    .cardTitle {
+        text-align: center;
+    }
+
+    .cardTitle:after {
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .benefitHeader {
@@ -194,5 +224,9 @@
 
     .benefit_detail {
         padding-left: 1.5rem;
+    }
+
+    .container {
+        padding: 1.5rem;
     }
 }

@@ -5,14 +5,40 @@
     justify-content: center;
     min-height: 100vh;
     padding: 2rem;
-    background-color: #f9f9f9;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    max-width: 1200px;
+    margin: 0 auto;
 }
+
+/*body {*/
+/*    background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);*/
+/*    margin: 0;*/
+/*    padding: 2rem 1rem;*/
+/*    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;*/
+/*    min-height: 100vh;*/
+/*}*/
 
 .title {
     font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
     color: #333;
+    position: relative;
+    text-align: center;
+}
+
+.title:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    border-radius: 3px;
 }
 
 .subtitle {
@@ -36,22 +62,23 @@
     align-items: center;
     padding: 2rem;
     background-color: white;
+    border: 1px solid #f0f0f0;
     border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     width: 100%;
     max-width: 400px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.25s ease;
 }
 
 .optionCard:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .iconWrapper {
     position: relative;
     margin-bottom: 1.5rem;
-    background-color: #f2f2f2;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
     width: 90px;
     height: 90px;
     display: flex;
@@ -64,18 +91,18 @@
     position: absolute;
     right: -10px;
     top: -5px;
-    background-color: #FFD3B5;
-    color: #4A6572; /* 텍스트 색상도 어두운 색으로 변경 */
-    font-weight: bold;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    color: white;
+    font-weight: 600;
     padding: 0.3rem 0.5rem;
     border-radius: 50%;
     font-size: 0.9rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(71, 118, 230, 0.2);
 }
 
 .optionTitle {
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: 700;
     margin-bottom: 1rem;
     color: #333;
 }
@@ -89,21 +116,22 @@
 }
 
 .cardButton {
-    background-color: #FFD3B5;
-    color: #4A6572; /* 대비를 위해 어두운 텍스트 색상 */
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    color: white;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
     padding: 1rem 2rem;
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: 600;
     cursor: pointer;
     width: 100%;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(71, 118, 230, 0.3);
 }
 
 .cardButton:hover {
-    background-color: #EABE9A; /* 호버 시 약간 더 어두운 톤 */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(71, 118, 230, 0.4);
 }
 
 /* 반응형 디자인 */
@@ -119,6 +147,10 @@
     }
 
     .title {
-        font-size: 2rem;
+        font-size: 1.75rem;
+    }
+
+    .container {
+        padding: 1.5rem;
     }
 }
