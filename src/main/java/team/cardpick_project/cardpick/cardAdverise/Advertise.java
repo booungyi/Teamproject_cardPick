@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,6 +35,27 @@ public class Advertise {
     @JoinColumn(name = "card_pick_id")
     private CardPick cardPick;
 
+    private int budget;            // 광고 예산
+    private int spentAmount=0;       // 소진된 예산
+
+    public Advertise() {
+    }
+  
+    public Advertise(CardPick cardPick, LocalDateTime start, LocalDateTime end) {
+        this.cardPick = cardPick;
+        this.startDate = start;
+        this.endDate = end;
+    }
+  
+    public Advertise(LocalDateTime startDate, LocalDateTime endDate, AdStatus adStatus, CardPick cardPick, int budget, int spentAmount) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.adStatus = adStatus;
+        this.cardPick = cardPick;
+        this.budget = budget;
+        this.spentAmount = spentAmount;
+    }
+
     public void updateStatus() {
         LocalDateTime now = LocalDateTime.now();
 
@@ -46,18 +68,8 @@ public class Advertise {
         }
     }
 
-    public Advertise() {
-    }
-
     public void setAdStatus(AdStatus adStatus) {
         this.adStatus = adStatus;
-    }
-
-    //    // ID만 받아서 생성하는 생성자
-    public Advertise(CardPick cardPick, LocalDateTime start, LocalDateTime end) {
-        this.cardPick = cardPick;
-        this.startDate = start;
-        this.endDate = end;
     }
 
     // test 용 또는 수동으로 delete 를 해야될 때 + 함수 최적화
@@ -67,4 +79,25 @@ public class Advertise {
         this.isDeleted = true;
         this.adStatus = AdStatus.END;
     }
+
+
+    // 예산 소진 체크 및 상태 업데이트 메서드
+    public boolean isBudgetExceeded() {
+        return spentAmount >= budget;
+    }
+
+    // 광고 상태 업데이트 메서드
+    public void updateAdStatus() {
+        if (isBudgetExceeded()) {
+            this.adStatus = AdStatus.INACTIVE;  // 예산 소진 시 광고 비활성화
+        }
+    }
+
+    // 예산 추가
+    public void addSpentAmount(int amount) {
+        this.spentAmount += amount;
+        updateAdStatus();  // 예산이 소진되면 상태 업데이트
+    }
+
 }
+
