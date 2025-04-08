@@ -1,24 +1,39 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../app/Header.module.css";
 import PopularCards from "@/components/ui/popular-cards";
-import { Card } from "@/app/page";
 
-export default function Header({ cards }: { cards: Card[] }) {
+export interface Card {
+  id: number;
+  cardName: string;
+  imageUrl: string;
+  detailUrl: string;
+  isAdCard: boolean;
+  clickCount: number;
+}
+
+export default function Header() {
   const router = useRouter();
+
+  const [cards, setCards] = useState<Card[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/card_picks/popular")
+      .then((res) => res.json())
+      .then((data) => setCards(data))
+      .catch((err) => console.error("Failed to fetch cards:", err));
+  }, []);
 
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>
-        {/* 왼쪽: 인기카드 */}
-        <div className={styles.leftSection}>
+        <div className={styles.logo}>
           <PopularCards cards={cards} />
-        </div>
-
-        {/* 오른쪽: 로고 및 설명 */}
-        <div className={styles.logo} onClick={() => router.push("/")}>
-          <h1 className={styles.title}>💳 Card Picker</h1>
+          <h1 className={styles.title} onClick={() => router.push("/")}>
+            💳 Card Picker
+          </h1>
           <p className={styles.subtitle}>
             나에게 딱 맞는 카드를 쉽고 빠르게 찾아드립니다
           </p>

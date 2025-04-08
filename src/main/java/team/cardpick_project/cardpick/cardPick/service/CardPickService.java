@@ -26,8 +26,8 @@ public class CardPickService {
     private final AdQueryRepository adQueryRepository;
     private final AdvertiseRepository advertiseRepository;
 
-    public List<CardResponse> getCardsByConditions(String issuer, List<String> categories) {
-        List<CardResponse> cardResponse = cardDao.getCardsByConditions(issuer, categories).stream()
+    public List<CardResponse> getCardsByConditions(List<String> categories) {
+        List<CardResponse> cardResponse = cardDao.getCardsByConditions(categories).stream()
                 .map(data -> CardResponse.toDtoFromQDto(data, false, 1))
                 .collect(Collectors.toList());
 
