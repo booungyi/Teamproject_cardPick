@@ -13,6 +13,7 @@ interface Card {
   imageUrl: string;
   detailUrl: string;
   hasEvent?: boolean; // 이벤트 진행 여부
+  isAdCard?: boolean; // 광고 카드 여부
 }
 
 // 카테고리 정보 인터페이스
@@ -174,6 +175,7 @@ export default function Results() {
             cardName: cardPick.cardName,
             imageUrl: cardPick.imageUrl,
             detailUrl: cardPick.detailUrl,
+            isAdCard:cardPick.isAdCard, //광고 추가
           });
         }
       });
@@ -286,6 +288,10 @@ export default function Results() {
                         진행중
                       </div>
                     )}
+                    {cardPick.isAdCard && (
+                        <div className={styles.adBadge}>광고</div> // 👈 광고 뱃지 추가
+                    )}
+
                     <div className={styles.cardImage}>
                       <img
                         src={cardPick.imageUrl}

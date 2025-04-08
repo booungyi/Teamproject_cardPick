@@ -241,3 +241,17 @@
         padding-top: 160%; /* 단일 컬럼에서는 더 길게 */
     }
 }
+
+/*광고*/
+.adBadge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #ff9800;
+    color: white;
+    padding: 4px 6px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 4px;
+    z-index: 10;
+}
