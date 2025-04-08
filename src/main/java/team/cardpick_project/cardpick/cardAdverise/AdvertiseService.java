@@ -1,15 +1,17 @@
 package team.cardpick_project.cardpick.cardAdverise;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import team.cardpick_project.cardpick.cardAdverise.advertiseDto.AdResponse;
-import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdRequest;
-import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdTermRequest;
+import team.cardpick_project.cardpick.cardAdverise.advertiseDto.*;
 import team.cardpick_project.cardpick.cardPick.cardDto.ActiveResponse;
 import team.cardpick_project.cardpick.cardPick.domain.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class AdvertiseService {
@@ -91,4 +93,78 @@ public class AdvertiseService {
                         advertise.getEndDate()
                 )).toList();
     }
-}
+
+    //광고 예산 소진 상태 확인
+    public List<BudgetResponse> getBudgetStatus(Long id) {
+        Advertise advertise = advertiseRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("광고 ID " + id + "에 해당하는 광고가 없습니다."));
+
+        boolean isBudgetExceeded = advertise.getSpentAmount() >= advertise.getBudget();
+
+        AdStatus status = isBudgetExceeded ? AdStatus.INACTIVE : advertise.getAdStatus();
+
+
+        BudgetResponse budgetResponse = new BudgetResponse(
+                advertise.getCardPick().getId(),
+                advertise.getId(),               // updatedAdvertising 대신 광고 객체에서 직접 가져오기
+                // status는 Enum이므로 name() 사용
+                advertise.getStartDate(),
+                advertise.getEndDate()
+        );
+
+        return List.of(budgetResponse);
+    }
+
+    public List<BudgetResponse> findAdsByStatus(AdStatus status) {
+        List<Advertise> ads = advertiseRepository.findByAdStatusIn(List.of(status)); // 상태별로 광고 조회
+        return ads.stream().map(ad -> new BudgetResponse(ad)).collect(Collectors.toList());
+    }
+
+
+    //여러개 조회
+    public List<BudgetResponse> findAllAds() {
+        List<Advertise> ads = advertiseRepository.findAll();
+
+        return ads.stream()
+                .map(BudgetResponse::new)
+                .collect(Collectors.toList());
+
+    }
+
+    @Transactional
+    public BudgetResponse save(@Valid BudgetRequest request) {
+        // 카드 조회
+        CardPick cardPick = cardRepository.findById(request.cardPickId())
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 카드입니다."));
+
+        // 중첩 광고 개수 체크
+        int overlapCount = advertiseRepository.countByCardPickAndDateOverlap(
+                cardPick,
+                request.startDate(),
+                request.endDate()
+        );
+        if (overlapCount >= 3) throw new IllegalStateException("광고 기간 중첩 3개 초과");
+
+        // 광고 저장 (status는 무조건 ACTIVE로 고정)
+        Advertise ad = advertiseRepository.save(new Advertise(
+                request.startDate(),
+                request.endDate(),
+                AdStatus.ACTIVE, // ✅ 여기 고정!
+                cardPick,
+                request.budget(),
+                request.spentAmount()
+        ));
+
+        return new BudgetResponse(ad);
+    }
+    //광고 클릭 할떄마다 예산 소진
+    public void handleAdClick(Long advertiseId) {
+        Advertise ad = advertiseRepository.findById(advertiseId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 광고를 찾을 수 없습니다."));
+
+        ad.addSpentAmount(1000);  // 클릭당 1000원 차감만 명확히
+
+        advertiseRepository.save(ad);
+    }
+    }
+
