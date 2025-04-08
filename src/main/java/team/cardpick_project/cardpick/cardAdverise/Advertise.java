@@ -30,8 +30,6 @@ public class Advertise {
     @Column(nullable = false)
     private boolean isDeleted = false;
 
-
-
     // 광고:카드 = n:1
     @ManyToOne
     @JoinColumn(name = "card_pick_id")
@@ -40,11 +38,15 @@ public class Advertise {
     private int budget;            // 광고 예산
     private int spentAmount=0;       // 소진된 예산
 
-
-
     public Advertise() {
     }
-
+  
+    public Advertise(CardPick cardPick, LocalDateTime start, LocalDateTime end) {
+        this.cardPick = cardPick;
+        this.startDate = start;
+        this.endDate = end;
+    }
+  
     public Advertise(LocalDateTime startDate, LocalDateTime endDate, AdStatus adStatus, CardPick cardPick, int budget, int spentAmount) {
         this.startDate = startDate;
         this.endDate = endDate;
@@ -66,11 +68,8 @@ public class Advertise {
         }
     }
 
-//    // ID만 받아서 생성하는 생성자
-    public Advertise(CardPick cardPick, LocalDateTime start, LocalDateTime end) {
-        this.cardPick = cardPick;
-        this.startDate = start;
-        this.endDate = end;
+    public void setAdStatus(AdStatus adStatus) {
+        this.adStatus = adStatus;
     }
 
     // test 용 또는 수동으로 delete 를 해야될 때 + 함수 최적화
@@ -100,8 +99,5 @@ public class Advertise {
         updateAdStatus();  // 예산이 소진되면 상태 업데이트
     }
 
-
-
-
-    }
+}
 

@@ -42,7 +42,7 @@
 
 .cardGrid {
     display: flex;
-    justify-content: flex-start; /* 카드들이 한 줄로 나열되도록 */
+    justify-content: center; /* 카드들이 한 줄로 나열되도록 */
     gap: 1.5rem;
     width: 100%;
     max-width: 100%; /* 카드들이 부모 컨테이너를 넘지 않도록 */
@@ -61,6 +61,7 @@
     cursor: pointer;
     flex-shrink: 0;
     padding: 1rem;
+    border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -156,3 +157,20 @@
 .homeButton:hover {
     background-color: #218838;
 }
+
+/* 일반 카드와 광고 카드를 구분 */
+.adCard {
+    background-color: #f9f9f9; /* 광고 카드 배경색 예시 */
+    border: 1px solid #ccc;
+}
+
+.adBadge {
+    display: inline-block;
+    background-color:  #f9f9f9;
+    color: #333;
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    margin-top: 4px;
+}
+
