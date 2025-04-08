@@ -51,15 +51,12 @@ const PopularCards = ({ cards }: { cards?: Card[] }) => {
   return (
     <div className={styles.popularCardsContainer} ref={containerRef}>
       {!isExpanded ? (
-        <div
-          className={`${styles.currentCard} ${fade ? styles.fadeIn : styles.fadeOut}`}
-          onClick={() => setIsExpanded(true)}
-        >
+        <div className={styles.currentCard} onClick={() => setIsExpanded(true)}>
           {cards && cards.length > 0 ? (
-            <>
+            <div className={`${fade ? styles.fadeIn : styles.fadeOut}`}>
               <span className={styles.rankNumber}>{currentIndex + 1}</span>
               {cards[currentIndex]?.cardName}
-            </>
+            </div>
           ) : (
             <span className={styles.emptyMessage}>인기 카드 정보 없음</span>
           )}

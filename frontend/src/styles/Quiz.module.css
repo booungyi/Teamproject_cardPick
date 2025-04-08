@@ -1,72 +1,284 @@
+/* Quiz.module.css */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    padding: 20px;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 2rem;
     text-align: center;
-    background-color: #f3f4f6;
+    background-color: white;
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    position: relative;
+}
+
+.quizHeader {
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.quizTitle {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.quizDescription {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.questionContainer {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 2rem;
 }
 
 .question {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center; /* 중앙 정렬 추가 */
+    font-size: 1.75rem;
+    font-weight: 700;
+    text-align: center;
+    color: #333;
+    position: absolute;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 1rem;
+    z-index: 1;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.question:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    border-radius: 3px;
+}
+
+/* 개선된 슬라이드 애니메이션 */
+.slide-in-right {
+    transform: translateX(0);
+    opacity: 1;
+    animation: slideInFromRight 0.4s ease-out forwards;
+}
+
+.slide-in-left {
+    transform: translateX(0);
+    opacity: 1;
+    animation: slideInFromLeft 0.4s ease-out forwards;
+}
+
+.slide-out-left {
+    transform: translateX(0);
+    opacity: 1;
+    animation: slideOutToLeft 0.4s ease-out forwards;
+}
+
+.slide-out-right {
+    transform: translateX(0);
+    opacity: 1;
+    animation: slideOutToRight 0.4s ease-out forwards;
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutToLeft {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutToRight {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
 }
 
 .options {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    align-items: center; /* 버튼들을 수평으로 중앙 정렬 */
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 1.5rem;
+    z-index: 2;
 }
 
 .optionButton {
-    padding: 12px 20px;
-    background-color: #3b82f6;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
     color: white;
     font-size: 1rem;
-    border-radius: 8px;
+    font-weight: 600;
+    border-radius: 2rem;
     border: none;
     cursor: pointer;
-    transition: background 0.3s;
-    width: 100%; /* 버튼 너비를 100%로 설정하여 중앙 정렬을 돕기 */
-    max-width: 300px; /* 버튼 너비 제한 */
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+    box-shadow: 0 4px 10px rgba(71, 118, 230, 0.3);
 }
 
 .optionButton:hover {
-    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(71, 118, 230, 0.4);
+}
+
+.optionButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .progressBarContainer {
-    margin-top: 20px;
+    margin-top: 2.5rem;
     width: 100%;
+    max-width: 500px;
     height: 8px;
-    background: #ddd;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
     border-radius: 4px;
     position: relative;
-    text-align: center; /* 중앙 정렬 추가 */
+    text-align: center;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .progressBar {
     height: 100%;
-    background: #3b82f6;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
     border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(71, 118, 230, 0.3);
+    transition: width 0.5s cubic-bezier(0.44, 0.05, 0.55, 0.95);
+}
+
+.navigationControls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5rem;
+    width: 100%;
 }
 
 .backButton {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #ff3b3b;
-    color: white;
-    border-radius: 5px;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #f0f2f5;
+    color: #666;
+    border-radius: 2rem;
+    border: none;
+    font-weight: 600;
     cursor: pointer;
-    width: 100%; /* 버튼 너비를 100%로 설정하여 중앙 정렬을 돕기 */
-    max-width: 300px; /* 버튼 너비 제한 */
+    width: 100%;
+    max-width: 300px;
+    transition: all 0.3s ease;
 }
 
 .backButton:hover {
-    background-color: #d32f2f;
+    background-color: #e0e2e5;
+    color: #333;
+}
+
+.backButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pageIndicator {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Fade-in animation for options */
+.fadeIn {
+    animation: fadeInUp 0.5s forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .quizTitle {
+        font-size: 1.8rem;
+    }
+
+    .quizDescription {
+        font-size: 1rem;
+    }
+
+    .question {
+        font-size: 1.5rem;
+    }
+
+    .questionContainer {
+        height: 100px;
+    }
+
+    .optionButton, .backButton {
+        padding: 0.6rem 1.2rem;
+    }
 }

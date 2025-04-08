@@ -1,0 +1,122 @@
+/* components/LoadingScreen.module.css */
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
+    padding: 2rem;
+}
+
+.loadingContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    max-width: 500px;
+    width: 100%;
+}
+
+.spinner {
+    margin-bottom: 2rem;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.spinnerCircle {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-radius: 50%;
+    animation: spin 1.2s cubic-bezier(0.44, 0.05, 0.55, 0.95) infinite;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    background-clip: padding-box;
+}
+
+.spinnerCircle:before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loadingMessage {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2rem;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: flex;
+    align-items: center;
+}
+
+.loadingDots {
+    font-size: 1.5rem;
+    width: 2rem;
+    text-align: left;
+    display: inline-block;
+    color: #4776e6;
+    margin-left: 0.25rem;
+}
+
+.progressBarContainer {
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.progressBar {
+    height: 100%;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .loadingContent {
+        padding: 2rem;
+    }
+
+    .spinner {
+        width: 60px;
+        height: 60px;
+    }
+
+    .spinnerCircle {
+        width: 60px;
+        height: 60px;
+    }
+
+    .loadingMessage {
+        font-size: 1.2rem;
+    }
+}
