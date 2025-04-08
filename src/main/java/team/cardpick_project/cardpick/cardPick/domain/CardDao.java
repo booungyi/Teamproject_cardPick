@@ -16,17 +16,13 @@ public class CardDao {
     private final QCardPick qCardPick = QCardPick.cardPick;
     private final QCardCategory qCardCategory = QCardCategory.cardCategory;
 
-    public List<CardResponseQDto> getCardsByConditions(String issuer, List<String> categories) {
+    public List<CardResponseQDto> getCardsByConditions(List<String> categories) {
 
         List<Category> categoryList = categories.stream()
                 .map(Category::valueOf)
                 .toList();
 
         BooleanBuilder bb = new BooleanBuilder();
-
-        if (issuer != null){
-            bb.and(qCardPick.cardName.contains(issuer));
-        }
 
         bb.and(JPAExpressions
                 .selectOne()

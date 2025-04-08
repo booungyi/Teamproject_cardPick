@@ -1,175 +1,232 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
-    background-color: #fff;
+/* 메인 래퍼 - 전체 페이지 배경 */
+.wrapper {
+    background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
     min-height: 100vh;
-    margin: 0 10vw; /* 양옆에 일정한 공간 띄우기 */
-}
-
-.loading, .error {
+    padding: 2rem 1rem;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-size: 1.2rem;
-    color: #666;
 }
 
-.error {
-    color: #e74c3c;
+/* 컨텐츠 컨테이너 */
+.container {
+    max-width: 1200px;
+    width: 100%;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
 }
 
-.header {
-    text-align: center; /* 제목 중앙 정렬 */
-    width: 100%; /* 전체 너비 */
-    margin-bottom: 1.5rem;
-}
-
+/* 페이지 제목 */
 .title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #222;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
 }
 
-.main {
-    width: 100%; /* 전체 너비 */
-    display: flex;
-    justify-content: center; /* 카드 목록 중앙 정렬 */
+.title:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    border-radius: 3px;
+}
+
+/* 혜택 그리드 레이아웃 */
+.benefitsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
     margin-bottom: 3rem;
 }
 
-.cardGrid {
-    display: flex;
-    justify-content: center; /* 카드들이 한 줄로 나열되도록 */
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 100%; /* 카드들이 부모 컨테이너를 넘지 않도록 */
-    padding: 1rem;
-    overflow-x: auto; /* 가로 스크롤 활성화 */
-    white-space: nowrap; /* 카드들이 한 줄에 놓이게 설정 */
-}
-
-.cardItem {
+/* 개별 혜택 카드 */
+.benefitCard {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 200px; /* 카드 너비 고정 */
-    height: 350px; /* 카드 높이 고정 */
-    transition: transform 0.3s ease;
+    transition: all 0.25s ease;
     cursor: pointer;
-    flex-shrink: 0;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.cardItem:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-.cardImageWrapper {
     position: relative;
-    margin-bottom: 1rem;
-    width: 160px;
-    height: 250px;
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: #eaeaea;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.cardImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
+.benefitCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-.cardName {
-    font-size: 1rem;
-    font-weight: normal;
-    text-align: center;
-    margin-top: 0.5rem;
-    color: #333;
-    transition: color 0.3s ease;
+/* 선택된 혜택 카드 스타일 */
+.selected {
+    border: 2px solid #4776e6;
+    background-color: rgba(71, 118, 230, 0.05);
 }
 
-.cardItem:hover .cardName {
-    color: #bb8b2f;
-}
-
-.footer {
-    width: 100%;
+/* 아이콘 래퍼 */
+.iconWrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    margin-top: 2rem;
-}
-
-.pageButtons {
-    display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 1rem;
     margin-bottom: 1rem;
 }
 
-.pageButtons button {
-    padding: 0.5rem 1rem;
-    background-color: #333;
-    color: white;
+/* 아이콘 스타일 */
+.icon {
+    font-size: 1.5rem;
+    color: #4776e6;
+}
+
+/* 혜택 이름 */
+.benefitName {
     font-size: 1rem;
-    border-radius: 0.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* 선택 버튼 */
+.selectButton {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
     border: none;
+    background: #f0f2f5;
+    color: #666;
+    font-size: 0.85rem;
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.pageButtons button:hover {
-    background-color: #FFB300;
+.selected .selectButton {
+    background: #4776e6;
+    color: white;
 }
-
-.pageButtons button:disabled {
-    background-color: #bbb;
+.searchResultButton.disabled {
+    pointer-events: none;
+    opacity: 0.5;
     cursor: not-allowed;
 }
 
-.pageButtons span {
-    font-size: 1rem;
-    font-weight: bold;
+/* 검색 결과 섹션 */
+.searchResult {
+    background-color: #f8fafc;
+    border-radius: 1rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid #eaeef3;
 }
 
-.homeButton {
-    padding: 0.75rem 1.5rem;
-    background-color: #333;
-    color: white;
-    font-size: 1.125rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
-    border: none;
-    cursor: pointer;
-}
-
-.homeButton:hover {
-    background-color: #218838;
-}
-
-/* 일반 카드와 광고 카드를 구분 */
-.adCard {
-    background-color: #f9f9f9; /* 광고 카드 배경색 예시 */
-    border: 1px solid #ccc;
-}
-
-.adBadge {
-    display: inline-block;
-    background-color:  #f9f9f9;
+.searchResult h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
     color: #333;
-    font-size: 10px;
-    padding: 2px 4px;
-    border-radius: 4px;
-    margin-top: 4px;
+    margin-bottom: 0.5rem;
+}
+
+/* 카드 개수 표시 */
+.cardCount {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: white;
+    border-radius: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 검색 결과 버튼 */
+.searchResultButton {
+    background: linear-gradient(90deg, #4776e6, #8e54e9);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(71, 118, 230, 0.3);
+}
+
+.searchResultButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(71, 118, 230, 0.4);
+}
+
+/* 초기화 버튼 */
+.resetButton {
+    background: transparent;
+    color: #666;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.resetButton:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .benefitsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .container {
+        padding: 1.5rem;
+    }
+
+    .iconWrapper {
+        width: 50px;
+        height: 50px;
+    }
+
+    .searchResult {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .benefitsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .benefitName {
+        font-size: 0.9rem;
+    }
+
+    .searchResultButton {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
 }
