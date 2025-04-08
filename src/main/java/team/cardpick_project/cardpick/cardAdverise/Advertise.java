@@ -56,17 +56,17 @@ public class Advertise {
         this.spentAmount = spentAmount;
     }
 
-    public void updateStatus() {
-        LocalDateTime now = LocalDateTime.now();
-
-        if (now.isBefore(startDate)) {
-            this.adStatus = AdStatus.PENDING;
-        } else if (now.isAfter(endDate)) {
-            deleted();
-        } else {
-            this.adStatus = AdStatus.ACTIVE;
-        }
-    }
+//    public void updateStatus() {
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        if (now.isBefore(startDate)) {
+//            this.adStatus = AdStatus.PENDING;
+//        } else if (now.isAfter(endDate)) {
+//            deleted();
+//        } else {
+//            this.adStatus = AdStatus.ACTIVE;
+//        }
+//    }
 
     public void setAdStatus(AdStatus adStatus) {
         this.adStatus = adStatus;

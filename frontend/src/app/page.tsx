@@ -32,8 +32,11 @@ export default function Home() {
 
   return (
     <>
-      <div className={styles.container}>
+      <h1>
         <Banner />
+      </h1>
+      <div className={styles.container}>
+
         <div className={styles.optionsContainer}>
           <div className={styles.optionCard}>
             <div className={styles.iconWrapper}>

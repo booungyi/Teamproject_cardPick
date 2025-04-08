@@ -48,7 +48,7 @@ export default function  Banner (){
             {
                 id: 2,
                 cardName: "Ad 2: 카드 광고 2 배너",
-                image: "/images/banner3.jpg",
+                image: "/images/banner1.jpg",
                 detailUrl: "https://example.com/ad2"
             },
             {
@@ -60,7 +60,7 @@ export default function  Banner (){
             {
                 id: 4,
                 cardName: "Ad 4: New Arrivals - Shop Now!",
-                image: "/images/banner3.jpg",
+                image: "/images/banner1.jpg",
                 detailUrl: "https://example.com/ad4"
             },
             {
