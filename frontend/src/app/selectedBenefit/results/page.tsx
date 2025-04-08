@@ -3,6 +3,7 @@
 import {useEffect, useState} from "react";
 import {useRouter, useSearchParams} from "next/navigation";
 import styles from "@/app/selectedBenefit/results/Results.module.css";
+import {Card} from "@/app/page";
 
 // 카드 정보를 포함하는 객체
 interface CardInfo {
@@ -20,6 +21,7 @@ export default function Results() {
     const [error, setError] = useState<string | null>(null);
     const [pages, setPages] = useState<CardInfo[][]>([]);
     const [activePage, setActivePage] = useState(0);
+    const [adCards, setAdCards] = useState<Card[]>([]);
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -91,9 +93,15 @@ export default function Results() {
                 setLoading(false);
             }
         };
+        // 혜택(category) 바뀔 때마다 다시 호출되도록
+        if (categories.length > 0) {
+            fetchFilteredCards(categories);
+        }
 
-        fetchFilteredCards(categories);
+        // fetchFilteredCards(categories);
     }, []);
+
+
 
     //상세 페이지로 이동하는 함수
     const handleCardClick = (id: number) => {
