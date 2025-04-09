@@ -27,6 +27,19 @@ public class AdvertiseService {
         this.adQueryRepository = adQueryRepository;
     }
 
+    //광고 배너 조회
+    public List<BannerAdResponse> findBanner(){
+        List<Advertise> advertiseList = advertiseRepository.findByIsDeletedFalse();
+
+        return advertiseList.stream()
+                .map(advertise -> new BannerAdResponse(
+                        advertise.getId(),
+                        advertise.getCardPick().getCardName(),
+                        advertise.getCardPick().getImageUrl(),
+                        advertise.getCardPick().getDetailUrl()
+                )).toList();
+    }
+
     public void create(CreateAdRequest request) {
         CardPick cardPick = cardRepository.findById(request.cardPickId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
@@ -55,6 +68,7 @@ public class AdvertiseService {
         }
         advertiseRepository.saveAll(ads);
     }
+
 
     //광고 조회- isDelete= false인 광고만 찾아옴
     public List<ActiveResponse> findAllAD() {

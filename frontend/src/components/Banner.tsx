@@ -9,7 +9,6 @@ interface Ad{
     id: number;
     cardName: string;
     image?: string;
-    imageUrl?: string;
     detailUrl: string;
 }
 
@@ -41,6 +40,7 @@ export default function  Banner (){
         const mockAds: Ad[] = [
             {
                 id: 1,
+                //카드
                 cardName: "Ad 1: 카드 광고 이미지",
                 image: "/images/banner3.jpg",
                 detailUrl: "https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?mainCC=a&cooperationcode=09061&solicitorcode=7030023014&utm_source=google_sa&utm_medium=cpc&utm_campaign=goodday_card&utm_content=goodday_card&utm_term=KB%EA%B5%BF%EB%8D%B0%EC%9D%B4%EC%B9%B4%EB%93%9C&gad_source=1&gclid=EAIaIQobChMIif3Wxqa9jAMVkmoPAh1BJyOKEAAYASAAEgKMcvD_BwE"
