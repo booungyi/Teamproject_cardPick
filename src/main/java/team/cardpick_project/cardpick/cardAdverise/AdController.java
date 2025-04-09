@@ -33,6 +33,11 @@ public class AdController {
         return advertiseService.findAdList();
     }
 
+    @GetMapping("/banner")
+    public List<BannerAdResponse> findBanner(){
+        return advertiseService.findBanner();
+    }
+
     @PutMapping("/ad/{adCardId}")
     public void updateAd(
             @PathVariable Long adCardId,
