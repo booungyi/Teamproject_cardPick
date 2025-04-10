@@ -175,7 +175,7 @@ export default function Results() {
             cardName: cardPick.cardName,
             imageUrl: cardPick.imageUrl,
             detailUrl: cardPick.detailUrl,
-            isAdCard:cardPick.isAdCard, //광고 추가
+            isAdCard: cardPick.isAdCard, //광고 추가
           });
         }
       });
@@ -201,12 +201,7 @@ export default function Results() {
   const addEventFlags = (cards: Card[]): Card[] => {
     return cards.map((cardPick) => ({
       ...cardPick,
-      hasEvent: [
-        "신한카드 Mr.Life",
-        "신한카드 Shopping",
-        "DA카드의정석II",
-        "KB국민 Easy Pick카드",
-      ].includes(cardPick.cardName),
+      hasEvent: [""].includes(cardPick.cardName),
     }));
   };
 
@@ -289,7 +284,7 @@ export default function Results() {
                       </div>
                     )}
                     {cardPick.isAdCard && (
-                        <div className={styles.adBadge}>광고</div> // 👈 광고 뱃지 추가
+                      <div className={styles.adBadge}>광고</div> // 👈 광고 뱃지 추가
                     )}
 
                     <div className={styles.cardImage}>
