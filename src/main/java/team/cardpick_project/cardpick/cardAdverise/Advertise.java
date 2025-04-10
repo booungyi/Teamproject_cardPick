@@ -26,9 +26,9 @@ public class Advertise {
     @Enumerated(EnumType.STRING)
     private AdStatus adStatus = AdStatus.PENDING;
 
+    //광고배너
     private AdType adType;
-
-    private String imageUrl;
+    private String bannerImageUrl;
 
     @Column(nullable = false)
     private boolean isDeleted = false;
@@ -51,13 +51,13 @@ public class Advertise {
     }
 
     //광고 배너
-    public Advertise(CardPick cardPick, LocalDateTime startDate, LocalDateTime endDate, AdStatus adStatus, AdType adType, String imageUrl) {
+    public Advertise(CardPick cardPick, LocalDateTime startDate, LocalDateTime endDate, AdStatus adStatus, AdType adType, String bannerImageUrl) {
         this.cardPick = cardPick;
         this.startDate = startDate;
         this.endDate = endDate;
         this.adStatus = adStatus;
         this.adType = AdType.BANNER;
-        this.imageUrl = imageUrl;
+        this.bannerImageUrl = bannerImageUrl;
     }
 
     public Advertise(LocalDateTime startDate, LocalDateTime endDate, AdStatus adStatus, CardPick cardPick, int budget, int spentAmount) {

@@ -32,11 +32,11 @@ public class AdvertiseService {
         List<Advertise> advertiseList = advertiseRepository.findByIsDeletedFalse();
 
         return advertiseList.stream()
-                .map(advertise -> new BannerAdResponse(
-                        advertise.getId(),
-                        advertise.getCardPick().getCardName(),
-                        advertise.getCardPick().getImageUrl(),
-                        advertise.getCardPick().getDetailUrl()
+                .map(banner -> new BannerAdResponse(
+                        banner.getId(),
+                        banner.getCardPick().getCardName(),
+                        banner.getBannerImageUrl(),
+                        banner.getCardPick().getDetailUrl()
                 )).toList();
     }
 
