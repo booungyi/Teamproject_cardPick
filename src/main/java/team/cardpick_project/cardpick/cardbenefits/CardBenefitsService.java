@@ -8,6 +8,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
+import team.cardpick_project.cardpick.cardAdverise.AdStatus;
+import team.cardpick_project.cardpick.cardAdverise.Advertise;
 import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 import team.cardpick_project.cardpick.cardPick.domain.CardRepository;
 
@@ -58,11 +60,20 @@ import java.util.Map;
             }
         }
 
+        @Transactional
         public CardBenefitsResponse getCardxBenefits(Long cardId) {
 
             List<CardBenefitsQDto> cardBenefits = cardBenefitsDao.getcardBenefitlist(cardId);
             CardPick cardPick = cardRepository.findById(cardId).orElseThrow(
                     () -> new IllegalArgumentException("해당 카드가 없습니다."));
+            Advertise advertise = cardPick.getAdvertiseList().
+                    stream().
+                    filter(ad -> ad.getAdStatus() == AdStatus.ACTIVE).findFirst()
+                    .orElse(null);
+            if (advertise != null) {
+                advertise.addSpentAmount(1000);
+            }
+
             return new CardBenefitsResponse(
                     cardPick.getCardName(),
                     cardPick.getImageUrl(),
