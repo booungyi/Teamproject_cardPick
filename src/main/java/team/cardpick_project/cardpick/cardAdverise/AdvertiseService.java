@@ -28,13 +28,12 @@ public class AdvertiseService {
     }
 
     //광고 배너 조회
-    public List<BannerAdResponse> findBanner(){
+    public List<BannerAdResponse> findBanner() {
         List<Advertise> advertiseList = advertiseRepository.findByIsDeletedFalse();
 
         return advertiseList.stream()
                 .map(banner -> new BannerAdResponse(
                         banner.getId(),
-                        banner.getCardPick().getCardName(),
                         banner.getBannerImageUrl(),
                         banner.getCardPick().getDetailUrl()
                 )).toList();
@@ -43,7 +42,18 @@ public class AdvertiseService {
     public void create(CreateAdRequest request) {
         CardPick cardPick = cardRepository.findById(request.cardPickId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
-        adQueryRepository.CountExistingAds(request.start(), request.end());
+
+        long beforeTime = System.currentTimeMillis();
+
+        List<CalendarAdCountDTO> adCounts =adQueryRepository.countExistingAds(request.start(), request.end());
+
+        boolean overLimitExists = adCounts.stream()
+                        .anyMatch(dto -> dto.count() >= 10);
+        if (overLimitExists){
+            throw new IllegalArgumentException("광고는 최대 10개까지 등록 가능합니다");
+        }
+
+        System.out.println("비교 걸린 시간 : " + (System.currentTimeMillis() - beforeTime) / 1000.0 + "초");
         //새 광고 생성
         advertiseRepository.save(
                 new Advertise(
@@ -90,7 +100,11 @@ public class AdvertiseService {
         Advertise advertise = advertiseRepository.findById(adCardId)
                 .orElseThrow(() -> new IllegalArgumentException("광고카드 아님"));
         // 광고 기간이 겹치는지 확인
-        adQueryRepository.CountExistingAds(request.start(), request.end());
+        adQueryRepository.countExistingAds(request.start(), request.end());
+        if (!(advertise.getAdStatus() == AdStatus.PENDING || advertise.getAdStatus() == AdStatus.ACTIVE)) {
+            throw new IllegalStateException("진행 중이거나 대기 중인 광고만 수정할 수 있습니다.");
+        }
+
         // 에외 처리 없을경우는 바로 수정
         advertise.setStartDate(request.start());
         advertise.setEndDate(request.end());
@@ -177,6 +191,7 @@ public class AdvertiseService {
 
         return new BudgetResponse(ad);
     }
+
     //광고 클릭 할떄마다 예산 소진
     public void handleAdClick(Long advertiseId) {
         Advertise ad = advertiseRepository.findById(advertiseId)
@@ -186,5 +201,5 @@ public class AdvertiseService {
 
         advertiseRepository.save(ad);
     }
-    }
+}
 
