@@ -1,10 +1,16 @@
 package team.cardpick_project.cardpick.cardAdverise;
 
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,38 +20,65 @@ public class AdQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final QAdvertise advertise = QAdvertise.advertise;
+    private final EntityManager em;
 
-    public AdQueryRepository(JPAQueryFactory jpaQueryFactory) {
+    public AdQueryRepository(JPAQueryFactory jpaQueryFactory, EntityManager em) {
         this.jpaQueryFactory = jpaQueryFactory;
+        this.em = em;
     }
 
-    //수정하려는 날짜에 광고가 다 차있으면 수정하지 못하도록
-    //수정할때는 광고카드만 비교
-    public void CountExistingAds(LocalDateTime start, LocalDateTime end) {
-        // 시작 날짜와 종료 날짜를 LocalDateTime으로 변환
-        // start와 end 날짜를 00:00:00 시점으로 설정하는 이유는:
-        // 1. 날짜만 비교하려는 목적이기 때문에, 시작일과 종료일을 00:00:00 시점으로 맞추어 범위를 정확히 정의하고,
-        // 2. 날짜가 변경될 때마다 시간대나 시간 정보를 고려하지 않고,
-        // 그날 의 전체 범위(00:00:00부터 23:59:59까지)를 포함하도록 하기 위함.
-        LocalDateTime currentDate = start.toLocalDate().atStartOfDay(); // 시작 날짜의 00:00:00
-        LocalDateTime endDate = end.toLocalDate().atStartOfDay(); // 종료 날짜의 00:00:00
+    // 아래와 같이 generate_series를 활용한 native query 메서드를 추가합니다.
+    public List<CalendarAdCountDTO> findAdCountsWithGenerateSeries(LocalDateTime start, LocalDateTime end) {
+        // start와 end는 LocalDateTime이지만 generate_series는 날짜 단위이므로 toLocalDate()로 변환
+        String sql = "WITH days AS ( " +
+                "    SELECT generate_series(:startDate, :endDate, interval '1 day') AS ad_day " +
+                ") " +
+                "SELECT d.ad_day AS date, COUNT(a.id) AS count " +
+                "FROM days d " +
+                "LEFT JOIN advertise a " +
+                "  ON a.is_deleted = false " +
+                " AND a.start_date <= (d.ad_day + interval '1 day' - interval '1 second') " +
+                " AND a.end_date >= d.ad_day " +
+                "GROUP BY d.ad_day " +
+                "ORDER BY d.ad_day";
 
-        //start부터 end까지 하루씩 증가하면서 반복해야 하므로,
-        //반복 횟수가 정해져 있지 않은 경우에는 for문보다 while문이 더 적절합
-        while (!currentDate.isAfter(endDate)) {
-            Long count = jpaQueryFactory
-                    .select(advertise.count())
-                    .from(advertise)
-                    .where(advertise.isDeleted.isFalse(),
-                            advertise.startDate.loe(currentDate.plusDays(1).minusNanos(1)),
-                            advertise.endDate.goe(currentDate))
-                    .fetchOne();
-            if (count != null && count >= 5) {
-                throw new IllegalArgumentException("광고는 최대 5개까지 등록 가능합니다.");
-            }
-            currentDate = currentDate.plusDays(1);
+        List<Object[]> results = em.createNativeQuery(sql)
+                .setParameter("startDate", start.toLocalDate())
+                .setParameter("endDate", end.toLocalDate())
+                .getResultList();
+
+        List<CalendarAdCountDTO> list = new ArrayList<>();
+        for (Object[] row : results) {
+            // row[0]는 날짜, row[1]는 광고 수
+            LocalDate date = ((java.sql.Date) row[0]).toLocalDate();
+            long count = ((Number) row[1]).longValue();
+            list.add(new CalendarAdCountDTO(date, count));
         }
+        return list;
     }
+
+    public List<CalendarAdCountDTO> countExistingAds(LocalDateTime start, LocalDateTime end) {
+        // 광고 시작일 ~ 종료일 중, 특정 날짜에 유효한 광고 수를 세기 위해 날짜만 추출
+        DateExpression<LocalDate> adDate = Expressions.dateTemplate(
+                LocalDate.class, "date_trunc('day', {0})", advertise.startDate);
+
+        long beforeTime1 = System.currentTimeMillis();
+        // 1. 해당 범위에 걸쳐 있는 광고들을 날짜별로 그룹핑하고 count
+        List<CalendarAdCountDTO> result = jpaQueryFactory
+                .select(Projections.constructor(CalendarAdCountDTO.class,
+                        adDate,
+                        advertise.count()))
+                .from(advertise)
+                .where(advertise.isDeleted.isFalse()
+                        .and(advertise.startDate.loe(end))
+                        .and(advertise.endDate.goe(start)))
+                .groupBy(adDate)
+                .fetch();
+        System.out.println("DSL 걸린 시간 : " + (System.currentTimeMillis() - beforeTime1) / 1000.0 + "초");
+
+        return result;
+    }
+
 
     //이름이 같은 카드에 대해선 광고 제외
     public List<CardPick> findActiveAdCard(LocalDateTime today,
