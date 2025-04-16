@@ -27,7 +27,7 @@ public class Advertise {
     private AdStatus adStatus = AdStatus.PENDING;
 
     //광고배너
-    private AdType adType;
+//    private AdType adType;
     private String bannerImageUrl;
 
     @Column(nullable = false)
@@ -48,16 +48,6 @@ public class Advertise {
         this.cardPick = cardPick;
         this.startDate = start;
         this.endDate = end;
-    }
-
-    //광고 배너
-    public Advertise(CardPick cardPick, LocalDateTime startDate, LocalDateTime endDate, AdStatus adStatus, AdType adType, String bannerImageUrl) {
-        this.cardPick = cardPick;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.adStatus = adStatus;
-        this.adType = AdType.BANNER;
-        this.bannerImageUrl = bannerImageUrl;
     }
 
     public Advertise(LocalDateTime startDate, LocalDateTime endDate, AdStatus adStatus, CardPick cardPick, int budget, int spentAmount) {
