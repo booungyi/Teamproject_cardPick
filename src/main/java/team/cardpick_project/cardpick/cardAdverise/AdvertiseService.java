@@ -10,6 +10,7 @@ import team.cardpick_project.cardpick.cardPick.cardDto.ActiveResponse;
 import team.cardpick_project.cardpick.cardPick.domain.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -39,18 +40,37 @@ public class AdvertiseService {
                 )).toList();
     }
 
+//    private boolean isAdActiveOnDate(CalendarAdCountDTO ad, LocalDateTime targetDate) {
+//        return !ad.startDate().truncatedTo(ChronoUnit.DAYS).isAfter(targetDate)
+//                && !ad.endDate().truncatedTo(ChronoUnit.DAYS).isBefore(targetDate);
+//    }
+
+
     public void create(CreateAdRequest request) {
         CardPick cardPick = cardRepository.findById(request.cardPickId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
 
         long beforeTime = System.currentTimeMillis();
 
-        List<CalendarAdCountDTO> adCounts =adQueryRepository.countExistingAds(request.start(), request.end());
+        List<CalendarAdCountDTO> adCounts = adQueryRepository.countExistingAds(request.start(), request.end());
 
-        boolean overLimitExists = adCounts.stream()
-                        .anyMatch(dto -> dto.count() >= 10);
-        if (overLimitExists){
-            throw new IllegalArgumentException("광고는 최대 10개까지 등록 가능합니다");
+        //while로 하루씩 돌며 날짜에 광고가 5개 있는지 비교
+        LocalDateTime targetDate = request.start().truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime endDate = request.end().truncatedTo(ChronoUnit.DAYS);
+
+        while (!targetDate.isAfter(endDate)) {
+            LocalDateTime finalTargetDate = targetDate;
+            long count = adCounts.stream()
+                    .filter(ad ->
+                            !ad.startDate().truncatedTo(ChronoUnit.DAYS).isAfter(finalTargetDate) &&
+                            !ad.endDate().truncatedTo(ChronoUnit.DAYS).isBefore(finalTargetDate)
+                    )
+                    .count();
+
+            if (count >= 5) {
+                throw new IllegalStateException("날짜 " + targetDate.toLocalDate() + "에 이미 5개 이상의 광고가 존재합니다.");
+            }
+            targetDate = targetDate.plusDays(1);
         }
 
         System.out.println("비교 걸린 시간 : " + (System.currentTimeMillis() - beforeTime) / 1000.0 + "초");
@@ -78,7 +98,6 @@ public class AdvertiseService {
         }
         advertiseRepository.saveAll(ads);
     }
-
 
     //광고 조회- isDelete= false인 광고만 찾아옴
     public List<ActiveResponse> findAllAD() {
