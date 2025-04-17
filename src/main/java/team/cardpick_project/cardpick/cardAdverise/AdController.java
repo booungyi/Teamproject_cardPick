@@ -20,7 +20,13 @@ public class AdController {
     @PostMapping("/adCard")
     public void createAd(@RequestBody CreateAdRequest request) {
         System.out.println("📌 받은 요청 데이터: " + request);
-        advertiseService.create(request);
+        try {
+            advertiseService.create(request);
+        } catch (Exception e) {
+            e.printStackTrace(); // 콘솔에 예외 전체 출력
+            // 다시 예외 던져줘야 테스트도 실패로 인식함
+            throw e;
+        }
     }
 
     @GetMapping("/ad")
