@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,6 +19,7 @@ public class Advertise {
 
     @Column(nullable = false)
     private LocalDateTime startDate = LocalDateTime.now();
+//    private LocalDate date;
 
     @Column(nullable = false)
     private LocalDateTime endDate;
@@ -40,6 +42,8 @@ public class Advertise {
 
     private int budget;            // 광고 예산
     private int spentAmount=0;       // 소진된 예산
+
+
 
     public Advertise() {
     }
