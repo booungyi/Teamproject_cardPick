@@ -20,51 +20,12 @@ public class AdQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final QAdvertise advertise = QAdvertise.advertise;
-    private final EntityManager em;
 
-    public AdQueryRepository(JPAQueryFactory jpaQueryFactory, EntityManager em) {
+    public AdQueryRepository(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
-        this.em = em;
     }
 
-    // 아래와 같이 generate_series를 활용한 native query 메서드를 추가합니다.
-//    public List<CalendarAdCountDTO> findAdCountsWithGenerateSeries(LocalDateTime start, LocalDateTime end) {
-//        // start와 end는 LocalDateTime이지만 generate_series는 날짜 단위이므로 toLocalDate()로 변환
-//        String sql = "WITH days AS ( " +
-//                "    SELECT generate_series(:startDate, :endDate, interval '1 day') AS ad_day " +
-//                ") " +
-//                "SELECT d.ad_day AS date, COUNT(a.id) AS count " +
-//                "FROM days d " +
-//                "LEFT JOIN advertise a " +
-//                "  ON a.is_deleted = false " +
-//                " AND a.start_date <= (d.ad_day + interval '1 day' - interval '1 second') " +
-//                " AND a.end_date >= d.ad_day " +
-//                "GROUP BY d.ad_day " +
-//                "ORDER BY d.ad_day";
-//
-//        long beforeTime1 = System.currentTimeMillis();
-//
-//        List<Object[]> results = em.createNativeQuery(sql)
-//                .setParameter("startDate", start.toLocalDate())
-//                .setParameter("endDate", end.toLocalDate())
-//                .getResultList();
-//
-//        System.out.println("네이티브 쿼리 걸린 시간 : " + (System.currentTimeMillis() - beforeTime1) / 1000.0 + "초");
-//
-//        List<CalendarAdCountDTO> list = new ArrayList<>();
-//        for (Object[] row : results) {
-//            // row[0]는 날짜, row[1]는 광고 수
-//            LocalDate date = ((java.sql.Timestamp) row[0]).toLocalDateTime().toLocalDate();
-//
-//            long count = ((Number) row[1]).longValue();
-//            list.add(new CalendarAdCountDTO(date, count));
-//        }
-//        return list;
-//    }
-
     // 광고 시작일 ~ 종료일 중, 특정 날짜에 유효한 광고 수를 세기 위해 날짜만 추출
-//        DateExpression<LocalDate> adDate = Expressions.dateTemplate(
-//                LocalDate.class, "date_trunc('day', {0})", advertise.startDate);
     public List<CalendarAdCountDTO> countExistingAds(LocalDateTime start, LocalDateTime end) {
 
         long beforeTime1 = System.currentTimeMillis();
