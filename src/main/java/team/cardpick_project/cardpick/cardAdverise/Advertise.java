@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import team.cardpick_project.cardpick.cardPick.domain.CardPick;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,6 +19,7 @@ public class Advertise {
 
     @Column(nullable = false)
     private LocalDateTime startDate = LocalDateTime.now();
+//    private LocalDate date;
 
     @Column(nullable = false)
     private LocalDateTime endDate;
@@ -26,9 +28,9 @@ public class Advertise {
     @Enumerated(EnumType.STRING)
     private AdStatus adStatus = AdStatus.PENDING;
 
-    private AdType adType;
-
-    private String imageUrl;
+    //광고배너
+//    private AdType adType;
+    private String bannerImageUrl;
 
     @Column(nullable = false)
     private boolean isDeleted = false;
@@ -41,6 +43,8 @@ public class Advertise {
     private int budget;            // 광고 예산
     private int spentAmount=0;       // 소진된 예산
 
+
+
     public Advertise() {
     }
   
@@ -48,16 +52,6 @@ public class Advertise {
         this.cardPick = cardPick;
         this.startDate = start;
         this.endDate = end;
-    }
-
-    //광고 배너
-    public Advertise(CardPick cardPick, LocalDateTime startDate, LocalDateTime endDate, AdStatus adStatus, AdType adType, String imageUrl) {
-        this.cardPick = cardPick;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.adStatus = adStatus;
-        this.adType = AdType.BANNER;
-        this.imageUrl = imageUrl;
     }
 
     public Advertise(LocalDateTime startDate, LocalDateTime endDate, AdStatus adStatus, CardPick cardPick, int budget, int spentAmount) {

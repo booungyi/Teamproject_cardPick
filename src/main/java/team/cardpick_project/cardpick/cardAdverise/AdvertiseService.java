@@ -3,13 +3,16 @@ package team.cardpick_project.cardpick.cardAdverise;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.*;
 import team.cardpick_project.cardpick.cardPick.cardDto.ActiveResponse;
 import team.cardpick_project.cardpick.cardPick.domain.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -28,22 +31,54 @@ public class AdvertiseService {
     }
 
     //광고 배너 조회
-    public List<BannerAdResponse> findBanner(){
+    public List<BannerAdResponse> findBanner() {
         List<Advertise> advertiseList = advertiseRepository.findByIsDeletedFalse();
 
         return advertiseList.stream()
-                .map(advertise -> new BannerAdResponse(
-                        advertise.getId(),
-                        advertise.getCardPick().getCardName(),
-                        advertise.getCardPick().getImageUrl(),
-                        advertise.getCardPick().getDetailUrl()
+                .map(banner -> new BannerAdResponse(
+                        banner.getId(),
+                        banner.getBannerImageUrl(),
+                        banner.getCardPick().getDetailUrl()
                 )).toList();
     }
+
+//    private boolean isAdActiveOnDate(CalendarAdCountDTO ad, LocalDateTime targetDate) {
+//        return !ad.startDate().truncatedTo(ChronoUnit.DAYS).isAfter(targetDate)
+//                && !ad.endDate().truncatedTo(ChronoUnit.DAYS).isBefore(targetDate);
+//    }
+
 
     public void create(CreateAdRequest request) {
         CardPick cardPick = cardRepository.findById(request.cardPickId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드"));
-        adQueryRepository.CountExistingAds(request.start(), request.end());
+
+        long beforeTime = System.currentTimeMillis();
+
+        List<CalendarAdCountDTO> adCounts = adQueryRepository.countExistingAds(request.start(), request.end());
+
+        //while로 하루씩 돌며 날짜에 광고가 5개 있는지 비교
+        LocalDateTime targetDate = request.start().truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime endDate = request.end().truncatedTo(ChronoUnit.DAYS);
+
+        while (!targetDate.isAfter(endDate)) {
+            LocalDateTime finalTargetDate = targetDate;
+            long count = adCounts.stream()
+                    .filter(ad ->
+                            !ad.startDate().truncatedTo(ChronoUnit.DAYS).isAfter(finalTargetDate) &&
+                            !ad.endDate().truncatedTo(ChronoUnit.DAYS).isBefore(finalTargetDate)
+                    )
+                    .count();
+
+            if (count >= 5) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "날짜 " + targetDate.toLocalDate() + "에 이미 5개 이상의 광고가 존재합니다."
+                );
+            }
+            targetDate = targetDate.plusDays(1);
+        }
+
+        System.out.println("비교 걸린 시간 : " + (System.currentTimeMillis() - beforeTime) / 1000.0 + "초");
         //새 광고 생성
         advertiseRepository.save(
                 new Advertise(
@@ -69,7 +104,6 @@ public class AdvertiseService {
         advertiseRepository.saveAll(ads);
     }
 
-
     //광고 조회- isDelete= false인 광고만 찾아옴
     public List<ActiveResponse> findAllAD() {
         List<Advertise> advertiseList = advertiseRepository.findByIsDeletedFalse();
@@ -90,7 +124,11 @@ public class AdvertiseService {
         Advertise advertise = advertiseRepository.findById(adCardId)
                 .orElseThrow(() -> new IllegalArgumentException("광고카드 아님"));
         // 광고 기간이 겹치는지 확인
-        adQueryRepository.CountExistingAds(request.start(), request.end());
+        adQueryRepository.countExistingAds(request.start(), request.end());
+        if (!(advertise.getAdStatus() == AdStatus.PENDING || advertise.getAdStatus() == AdStatus.ACTIVE)) {
+            throw new IllegalStateException("진행 중이거나 대기 중인 광고만 수정할 수 있습니다.");
+        }
+
         // 에외 처리 없을경우는 바로 수정
         advertise.setStartDate(request.start());
         advertise.setEndDate(request.end());
@@ -177,6 +215,7 @@ public class AdvertiseService {
 
         return new BudgetResponse(ad);
     }
+
     //광고 클릭 할떄마다 예산 소진
     public void handleAdClick(Long advertiseId) {
         Advertise ad = advertiseRepository.findById(advertiseId)
@@ -186,5 +225,5 @@ public class AdvertiseService {
 
         advertiseRepository.save(ad);
     }
-    }
+}
 
