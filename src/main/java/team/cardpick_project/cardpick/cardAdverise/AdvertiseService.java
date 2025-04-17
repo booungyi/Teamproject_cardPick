@@ -3,8 +3,10 @@ package team.cardpick_project.cardpick.cardAdverise;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.*;
 import team.cardpick_project.cardpick.cardPick.cardDto.ActiveResponse;
 import team.cardpick_project.cardpick.cardPick.domain.*;
@@ -68,7 +70,10 @@ public class AdvertiseService {
                     .count();
 
             if (count >= 5) {
-                throw new IllegalStateException("날짜 " + targetDate.toLocalDate() + "에 이미 5개 이상의 광고가 존재합니다.");
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "날짜 " + targetDate.toLocalDate() + "에 이미 5개 이상의 광고가 존재합니다."
+                );
             }
             targetDate = targetDate.plusDays(1);
         }
