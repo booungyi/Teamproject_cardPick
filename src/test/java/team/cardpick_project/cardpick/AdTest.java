@@ -5,6 +5,7 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import team.cardpick_project.cardpick.cardAdverise.Advertise;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.AdResponse;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdRequest;
 import team.cardpick_project.cardpick.cardAdverise.advertiseDto.CreateAdTermRequest;
@@ -15,14 +16,50 @@ import team.cardpick_project.cardpick.cardPick.service.CardPickService;
 import team.cardpick_project.cardpick.cardbenefits.CardBenefitsService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AdTest extends AcceptanceTest{
+public class AdTest extends AcceptanceTest {
 
     @Autowired
     private CardRepository cardRepository;
+
+    //광고 생성 함수로 만들기
+    @Test
+    void 광고5개이상_생성() {
+        //given
+        LocalDateTime START = LocalDateTime.parse("2025-03-26T00:00:00");
+        LocalDateTime END = LocalDateTime.parse("2025-04-25T00:00:00");
+
+        List<CreateAdRequest> requests = new ArrayList<>();
+        for (long i = 1; i <= 5; i++) {
+            requests.add(new CreateAdRequest(i,START,END));
+        }
+
+        //when,then
+        for (CreateAdRequest request : requests) {
+            RestAssured.given().log().all()
+                    .contentType(ContentType.JSON)
+                    .body(request)
+                    .when()
+                    .post("/adCard")
+                    .then().log().all()
+                    .statusCode(200);
+        }
+
+        // 6번째 광고는 생성 안돼야 됨
+        CreateAdRequest sixthRequest = new CreateAdRequest(6L, START, END);
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(sixthRequest)
+                .when()
+                .post("/adCard")
+                .then().log().all()
+                .statusCode(400);
+    }
+
 
     @Test
     void 광고_생성() {
@@ -33,7 +70,7 @@ public class AdTest extends AcceptanceTest{
                         LocalDateTime.parse("2025-03-26T00:00:00"),
                         LocalDateTime.parse("2025-04-25T00:00:00")))
                 .when()
-                .post("/adCard") // POST /members 요청
+                .post("/adCard")
                 .then().log().all()
                 .statusCode(200);
     }
@@ -50,9 +87,6 @@ public class AdTest extends AcceptanceTest{
                 .post("/adCard") // POST /members 요청
                 .then().log().all()
                 .statusCode(200);
-
-
-
 
 
     }
@@ -72,11 +106,7 @@ public class AdTest extends AcceptanceTest{
                 .statusCode(200); // 응답 상태 코드가 200이어야 함
 
 
-
     }
-
-
-
 
 
     //    @Test
