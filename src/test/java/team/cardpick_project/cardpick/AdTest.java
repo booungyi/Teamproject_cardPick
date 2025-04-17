@@ -36,9 +36,6 @@ public class AdTest extends AcceptanceTest{
                 .post("/adCard") // POST /members 요청
                 .then().log().all()
                 .statusCode(200);
-//                .extract()
-//                .as(AdResponse.class);
-
     }
 
     @Test
